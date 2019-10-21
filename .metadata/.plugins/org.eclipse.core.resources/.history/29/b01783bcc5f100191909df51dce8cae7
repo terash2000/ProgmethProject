@@ -1,0 +1,18 @@
+package application;
+
+public class Delay extends Thread {
+	
+	private long time;
+	
+	public Delay(long time) {
+		this.time = time;
+	}
+	
+	public void run() {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			
+		}
+	}
+}

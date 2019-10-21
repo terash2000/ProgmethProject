@@ -1,0 +1,68 @@
+package application;
+
+import character.Hero;
+import object.Map;
+import object.WorldMap;
+
+import javafx.application.Application;
+import javafx.scene.*;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+	private static double sceneWidth, sceneHeight;
+	private static final double fullSceneWidth = Screen.getPrimary().getVisualBounds().getWidth();
+	private static final double fullSceneHeight = Screen.getPrimary().getVisualBounds().getHeight() + 30;
+
+	public static void main(String[] args) { 
+		launch(args); 
+	}
+  
+	@Override 
+	public void start(Stage stage) throws Exception {
+		Hero hero = new Hero();
+		WorldMap worldMap = createWorld();
+		Group group = worldMap.getMapList().get("Starter Map").setCerrentMap(hero);;
+		Scene scene = new Scene(group, 1000, 600);
+		stage.setScene(scene);
+		Controller.setKey(stage);
+		Controller.addTimer(hero);
+		stage.setTitle("MyGame");
+		stage.show();
+		stage.setFullScreenExitHint("");
+		stage.setFullScreen(true);
+	}
+	
+	public static WorldMap createWorld() {
+		WorldMap worldMap = new WorldMap();
+		Map StarterMap = new Map();
+		StarterMap.addBackground("file:image/Map/SnowField.jpg",2000,1000);
+		worldMap.addMap("Starter Map", StarterMap);
+		return worldMap;
+	}
+
+	public static double getSceneWidth() {
+		return sceneWidth;
+	}
+
+	public static void setSceneWidth(double sceneWidth) {
+		Main.sceneWidth = sceneWidth;
+	}
+
+	public static double getSceneHeight() {
+		return sceneHeight;
+	}
+
+	public static void setSceneHeight(double sceneHeight) {
+		Main.sceneHeight = sceneHeight;
+	}
+
+	public static double getFullscenewidth() {
+		return fullSceneWidth;
+	}
+
+	public static double getFullsceneheight() {
+		return fullSceneHeight;
+	}
+
+}

@@ -1,0 +1,204 @@
+package character;
+
+import application.Delay;
+import object.Map;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public abstract class Character {
+	
+	protected Image turnRightImage;
+	protected Image turnLeftImage;
+	protected ImageView body;
+	protected double ax, ay, dx, dy;
+	protected double x = 0;
+	protected double y = 0;
+	protected double walk;
+	protected double friction = 0.2;
+	protected double unstableFriction = 0.1;
+	protected double speed;
+	protected double maxFallSpeed = 25;
+	protected boolean fallSpeedLimit = true;
+	protected boolean inAir, turnLeft;
+	protected Delay unstable = new Delay(0);
+	protected double[][] size = new double[2][2];
+	protected Map map;
+	
+	public Character(String turnRightImagePath,String turnLeftImagePath,double width,double height, double speed) {
+		turnRightImage = new Image(turnRightImagePath,width,height,false,true);
+		turnLeftImage = new Image(turnLeftImagePath,width,height,false,true);
+		size[0][0] = 0;
+		size[0][1] = 0;
+		size[1][0] = width;
+		size[1][1] = height;
+		body = new ImageView(turnRightImage);
+		setSpeed(speed);
+	}
+	
+	public void walking(int direction) {
+		walk = speed*direction;
+	}
+	
+	public void move() {
+		moveX();
+		moveY();
+	}
+	
+	public void moveX() {
+		dx += ax;
+		wallCheck();
+		toX(x + dx);
+	}
+	
+	public void moveY() {
+		dy += ay;
+		if(dy > maxFallSpeed && fallSpeedLimit) {
+			dy = maxFallSpeed;
+		}
+		topCheck();
+		landingCheck();
+		toY(y + dy);
+	}
+	
+	public void toX(double x) {
+		this.x = x;
+		body.setLayoutX(x - x);
+	}
+	
+	public void toY(double y) {
+		this.ay = y;
+		body.setLayoutY(y - map.getViewY());
+	}
+	
+	public void setMovement() {
+		if(unstable.isAlive() || inAir) {
+			ax = (walk - dx)*unstableFriction;
+		}else {
+			ax = (walk - dx)*friction;
+		}
+		ay = map.getGravity();
+	}
+	
+	protected void wallCheck() {
+		if(x + dx < size[0][0]) {
+			dx = -x;
+		}else if(x + dx > map.getWidth() - size[1][0]) {
+			dx = map.getWidth() - size[1][0] - x;
+		}
+	}
+	
+	protected void topCheck() {
+		if(body.getLayoutY() + dy < size[0][1]) {
+			dy = -body.getLayoutY();
+		}
+	}
+	
+	
+	protected void landingCheck() {
+		if(body.getLayoutY() + dy > map.getHeight() - size[1][1]) {
+			dy = map.getHeight() - size[1][1] - body.getLayoutY();
+			inAir = false;
+		}
+	}
+	
+	public void turn(boolean turnLeft) {
+		if(turnLeft && !this.turnLeft) {
+			body.setImage(turnLeftImage);
+			this.turnLeft = true;
+		}else if(!turnLeft && this.turnLeft) {
+			body.setImage(turnRightImage);
+			this.turnLeft = false;
+		}
+	}
+	
+	public void makeUnstable(long time) {
+		unstable.interrupt();
+		unstable = new Delay(time);
+	}
+
+	public ImageView getBody() {
+		return body;
+	}
+
+	public double getAx() {
+		return ax;
+	}
+
+	public void setAx(double ax) {
+		this.ax = ax;
+	}
+
+	public double getAy() {
+		return ay;
+	}
+
+	public void setAy(double ay) {
+		this.ay = ay;
+	}
+
+	public double getDx() {
+		return dx;
+	}
+
+	public void setDx(double dx) {
+		this.dx = dx;
+	}
+
+	public double getDy() {
+		return dy;
+	}
+
+	public void setDy(double dy) {
+		this.dy = dy;
+	}
+
+	public void setFallSpeedLimit(boolean fallSpeedLimit) {
+		this.fallSpeedLimit = fallSpeedLimit;
+	}
+
+	public double getFriction() {
+		return friction;
+	}
+
+	public void setFriction(double friction) {
+		this.friction = friction > 1 ? 1 : (friction < 0 ? 0 : friction);
+	}
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed < 0 ? 0 : speed;
+	}
+
+	public boolean isInAir() {
+		return inAir;
+	}
+
+	public void setInAir(boolean inAir) {
+		this.inAir = inAir;
+	}
+
+	public Map getMap() {
+		return map;
+	}
+
+	public void setMap(Map map) {
+		this.map = map;
+	}
+
+	public double[][] getSize() {
+		return size;
+	}
+
+	public Delay getUnstable() {
+		return unstable;
+	}
+
+	public void setUnstable(Delay unstable) {
+		this.unstable = unstable;
+	}
+	
+}

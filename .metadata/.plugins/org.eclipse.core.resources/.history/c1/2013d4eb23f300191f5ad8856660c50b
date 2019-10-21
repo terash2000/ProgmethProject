@@ -1,0 +1,68 @@
+package object;
+
+import application.Main;
+import character.Hero;
+
+import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public class Map {
+	
+	protected WorldMap worldMap;
+	protected Image backgroundImage;
+	protected ImageView background;
+	protected double width, height, viewX, viewY;
+	
+	private double gravity = 1;
+	
+	public void addBackground(String backgroundImagePath, double width, double height) {
+		backgroundImage = new Image(backgroundImagePath, width, height, false, true);
+		this.width = width;
+		this.height = height;
+		background = new ImageView(backgroundImage);
+	}
+	
+	public Group setCerrentMap(Hero hero, double x, double y) {
+		Group group = new Group(background, hero.getBody());
+		hero.setX(x);
+		hero.setY(y);
+		hero.move();
+		hero.setMap(this);
+		return group;
+	}
+	
+	public void changeView(Hero hero) {
+		double x = hero.getX();
+		double y = hero.getY();
+		viewX = x < Main.getSceneWidth()/2 ? 0 : (x > width-Main.getSceneWidth()/2 ? width-Main.getSceneWidth() : x-Main.getSceneWidth()/2);
+		viewY = y < Main.getSceneHeight()/2 ? 0 : (y > height-Main.getSceneHeight()/2 ? height-Main.getSceneHeight() : y-Main.getSceneHeight()/2);
+		background.setLayoutX(-viewX);
+		background.setLayoutY(-viewY);
+	}
+
+	public double getGravity() {
+		return gravity;
+	}
+
+	public void setWorldMap(WorldMap worldMap) {
+		this.worldMap = worldMap;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public double getViewX() {
+		return viewX;
+	}
+
+	public double getViewY() {
+		return viewY;
+	}
+
+}

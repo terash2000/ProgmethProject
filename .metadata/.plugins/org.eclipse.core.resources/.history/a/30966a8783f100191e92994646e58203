@@ -1,0 +1,17 @@
+package object;
+
+import javafx.scene.*;
+
+public class Background {
+	
+	private Scene scene;
+	
+	public Background(Group group, int w, int h) {
+		scene = new Scene(group, w, h);
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
+
+}

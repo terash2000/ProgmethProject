@@ -1,0 +1,187 @@
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
+import javafx.scene.*;
+import javafx.scene.input.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
+
+public class main extends Application {
+	
+  private static final int w = 800;
+  private static final int h = 600;
+  private double ax = 0;
+  private double ay = 0;
+  private double dx = 0;
+  private double dy = 0;
+  private double g = 1;
+  private double speed = 1;
+  private double dive = 2;
+  private double friction = 0.1;
+  private double airFriction = 0.01;
+  private double jumpPower = 15;
+  private boolean inAir = false;
+  private boolean charge = false;
+  private double doubleJumpPower = 10;
+  private boolean doubleJumped = false;
+  private boolean doubleJumpCharge = false;
+  private long airChargeTime = 200;
+  private boolean jump = false;
+  private boolean right = false;
+  private boolean down = false;
+  private boolean left = false;
+
+  public static void main(String[] args) { 
+	  launch(args); 
+  }
+  
+  @Override 
+  public void start(Stage stage) throws Exception {
+	  
+	final Circle circle = new Circle(200, 400, 30, Color.GREY);
+    final Group group = new Group(circle);
+    final Scene scene = new Scene(group, w, h, Color.CORNSILK);
+    
+    addKey(scene);
+    addController(circle);
+    stage.setScene(scene);
+    stage.show();
+  }
+  
+  public void addKey(Scene scene) {
+	  scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+	       @Override 
+	       public void handle(KeyEvent event) {
+	         switch (event.getCode()) {
+	           case SPACE:    
+	        	   jump = true;
+	        	   break;
+	           case S:  
+	        	   down = true; 
+	        	   break;
+	           case D: 
+	        	   right = true; 
+	        	   break;
+	           case A:  
+	        	   left = true; 
+	        	   break;
+	           default:	   
+	        	   break;
+	         }
+	       }
+	     });
+	    
+	    scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+	        @Override 
+	        public void handle(KeyEvent event) {
+	        	switch (event.getCode()) {
+	            case SPACE:    
+	         	   jump = false;
+	         	   break;
+	            case S:  
+		         	   down = false; 
+		         	   break;
+	            case D: 
+	         	   right = false; 
+	         	   break;
+	            case A:  
+	         	   left = false; 
+	         	   break;
+	            default:	   
+	         	   break;
+	          }
+	        }
+	    });
+  }
+  
+  public void addController(Circle circle) {  
+	    AnimationTimer timer = new AnimationTimer() {
+	        @Override
+	        public void handle(long now) {
+	        	ax = -dx*friction;
+	        	ay = g - dy*airFriction;
+	        	if (jump) {
+	        		jumping();
+	        	}else {
+	        		charge = false;
+	        		doubleJumpCharge = false;
+	        	}
+	        	if (down) {
+	            	if(inAir) {
+	            		ay += dive;
+	            	}
+	            }
+	            if (right) {
+	            	ax += speed;
+	            }
+	            if (left) {
+	            	ax -= speed;
+	            }
+	            dx += ax;
+	            dy += ay;
+	            
+	            if(circle.getCenterX() + dx > w-30) {
+	            	dx = w - circle.getCenterX() - 30;
+	            }else if(circle.getCenterX() + dx < 30) {
+	            	dx = -circle.getCenterX() + 30;;
+	            }
+	            if(circle.getCenterY() + dy > h-30) {
+	            	dy = h - circle.getCenterY() - 30;
+	            	inAir = false;
+	            	doubleJumped = false;
+	            }else if(circle.getCenterY() + dy < 30) {
+	            	dy = -circle.getCenterY() + 30;
+	            }
+	            circle.setCenterX(circle.getCenterX() + dx);
+	            circle.setCenterY(circle.getCenterY() + dy);
+	        }
+	    };
+	    timer.start();
+  }
+  
+  public void jumping() {
+	  if(!inAir) {
+		   dy = -jumpPower;
+		   inAir = true;
+		   charge = true;
+		   delay(new EventHandler<WorkerStateEvent>() {
+	            @Override
+	            public void handle(WorkerStateEvent event) {
+	                charge = false;
+	            }
+	       }, airChargeTime);
+	   }else if(charge){
+ 		   dy = -jumpPower;
+ 	   }else if(dy>0 && !doubleJumped) {
+ 		  dy = -doubleJumpPower;
+ 		  doubleJumped = true;
+ 		 doubleJumpCharge = true;
+ 		   delay(new EventHandler<WorkerStateEvent>() {
+ 	            @Override
+ 	            public void handle(WorkerStateEvent event) {
+ 	            	doubleJumpCharge = false;
+ 	            }
+ 	       }, airChargeTime);
+ 	   }else if(doubleJumpCharge) {
+  		  dy = -doubleJumpPower;
+  	   }
+  }
+  
+  public void delay(EventHandler<WorkerStateEvent> event, long time) {
+	  Task<Void> sleeper = new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+              try {
+                  Thread.sleep(time);
+              } catch (InterruptedException e) {
+              }
+              return null;
+          }
+      };
+      sleeper.setOnSucceeded(event);
+      new Thread(sleeper).start();
+  }
+}

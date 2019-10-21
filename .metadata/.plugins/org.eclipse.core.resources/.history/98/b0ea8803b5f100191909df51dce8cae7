@@ -1,0 +1,36 @@
+package application;
+
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
+
+public class Delay {
+	
+	private boolean hold;
+	
+	public Delay(EventHandler<WorkerStateEvent> event, long time) {
+		Task<Void> sleeper = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				try {
+					hold = true;
+					Thread.sleep(time);
+					hold = false;
+				} catch (InterruptedException e) {
+					
+				}
+				return null;
+			}
+		};
+		new Thread(sleeper).start();
+	}
+
+	public boolean isHold() {
+		return hold;
+	}
+
+	public void setRunning(boolean running) {
+		this.running = running;
+	}
+	
+}

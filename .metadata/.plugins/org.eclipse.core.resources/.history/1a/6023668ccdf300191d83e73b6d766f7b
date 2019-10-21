@@ -1,0 +1,11 @@
+package object;
+
+public class Platform {
+	
+	protected double[][] position = new double[2][2];
+	
+	public Platform() {
+		
+	}
+	
+}

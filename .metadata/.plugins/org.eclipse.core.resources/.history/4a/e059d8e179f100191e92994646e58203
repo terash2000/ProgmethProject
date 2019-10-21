@@ -1,0 +1,15 @@
+package application;
+
+public class delay {
+	
+	private boolean running;
+
+	public boolean isRunning() {
+		return running;
+	}
+
+	public void setRunning(boolean running) {
+		this.running = running;
+	}
+	
+}

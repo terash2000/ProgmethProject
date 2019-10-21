@@ -1,0 +1,25 @@
+package application;
+
+public class Delay extends Thread {
+	
+	private boolean hold;
+	
+	public void run(long time) {
+		try {
+			hold = true;
+			Thread.sleep(time);
+			hold = false;
+		}catch(InterruptedException e) {
+			hold = false;
+		}
+	}
+
+	public boolean isHold() {
+		return hold;
+	}
+
+	public void setHold(boolean hold) {
+		this.hold = hold;
+	}
+	
+}

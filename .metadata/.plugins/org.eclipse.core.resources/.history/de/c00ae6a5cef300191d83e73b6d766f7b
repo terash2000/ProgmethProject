@@ -1,0 +1,17 @@
+package object;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public class Platform {
+	
+	protected ImageView body;
+	protected double[][] position = new double[2][2];
+	
+	public Platform(String ImagePath, double x, double y) {
+		body = new ImageView(new Image(ImagePath));
+		position[0][0] = x;
+		position[0][1] = y;
+	}
+	
+}

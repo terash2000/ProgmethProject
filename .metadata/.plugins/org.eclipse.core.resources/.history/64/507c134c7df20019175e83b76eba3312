@@ -1,0 +1,97 @@
+package application;
+
+import javafx.animation.AnimationTimer;
+import javafx.scene.*; 
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
+
+import character.Hero;
+
+public class Controller {
+	
+	private static AnimationTimer timer;
+	private static boolean left, right, down, jump, dash, turnLeft;
+	
+	public static void addTimer(Hero hero) {
+		timer = new AnimationTimer() {
+			@Override
+			public void handle(long now) {
+				hero.turn(turnLeft);
+				hero.addFriction();
+				if (left) {
+					hero.walk(-1);
+				}
+				if (right) {
+					hero.walk(1);
+				}
+				if (down) {
+					hero.dive();
+				}
+				if (jump) {
+					hero.jumping();
+				}else {
+					hero.stopJump();
+				}
+				if (dash) {
+					hero.dash();
+				}
+				hero.move();
+			}
+		};
+		timer.start();
+	}
+	
+	public static void setKey(Scene scene) {
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override 
+			public void handle(KeyEvent event) {
+				switch (event.getCode()) {
+				case A:  
+					left = true;
+					turnLeft = true;
+					break;
+				case D: 
+					right = true;
+					turnLeft = false;
+					break;
+				case S:  
+					down = true;
+					break;
+				case SPACE:    
+					jump = true;
+					break;
+				case SHIFT:
+					dash = true;
+					break;
+				default:	   
+					break;
+				}
+			}
+		});
+		scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+		    @Override 
+			public void handle(KeyEvent event) {
+				switch (event.getCode()) {
+				case A:  
+					left = false; 
+					break;
+				case D: 
+					right = false; 
+					break;
+				case S:  
+					down = false; 
+					break;
+				case SPACE:    
+					jump = false;
+					break;
+				case SHIFT:
+					dash = false;
+					break;
+				default:	   
+					break;
+				}
+			}
+		});
+	}
+
+}
