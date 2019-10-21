@@ -1,9 +1,0 @@
-package object;
-
-import character.MoveableCharacter;;
-
-public interface Platform {
-	
-	public void checkTop(MoveableCharacter character);
-
-}
