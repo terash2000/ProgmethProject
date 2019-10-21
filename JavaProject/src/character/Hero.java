@@ -5,15 +5,13 @@ import application.Delay;
 public class Hero extends MoveableCharacter {
 	
 	private double divePower = 1.5;
-	private double jumpPower = 15;
-	private double doubleJumpPower = 12;
-	private long maxJumpTime = 180;
-	private long minJumpTime = 30;
+	private double jumpPower = 16;
+	private double doubleJumpPower = 14;
+	private long jumpTime = 180;
 	private double dashPower = 20;
 	private long dashTime = 150;
 	private long dashCooldownTime = 450;
-	private Delay maxJump = new Delay(0);
-	private Delay minJump = new Delay(0);
+	private Delay jump = new Delay(0);
 	private Delay dashing = new Delay(0);
 	private Delay dashCooldown = new Delay(0);
 	private boolean doubleJumped = true;
@@ -24,7 +22,9 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void setMovement(int direction) {
-		if(unstable.isAlive() || inAir) {
+		if(unstable.isAlive()) {
+			ax = (speed*direction - dx)*unstableFriction;
+		}else if(inAir && dx <= speed) {
 			ax = (speed*direction - dx)*unstableFriction;
 		}else {
 			ax = (speed*direction - dx)*friction;
@@ -39,36 +39,33 @@ public class Hero extends MoveableCharacter {
 	
 	public void jumping() {
 		if(!inAir) {
-			inAir = true;
-			jump(jumpPower, maxJumpTime);
+			jump(jumpPower);
 		}
-		if(maxJump.isAlive()) {
-			dy = maxJump.getData();
+		if(jump.isAlive()) {
+			dy = jump.getData();
 		}else if(doubleJumpable) {
 			doubleJumpable = false;
 			doubleJumped = true;
-			jump(doubleJumpPower, maxJumpTime);
+			jump(doubleJumpPower);
 		}
 	}
 	
-	public void jump(double power, long maxTime) {
+	public void jump(double power) {
 		dashing.interrupt();
-		maxJump = new Delay(maxTime, -power);
-		minJump = new Delay(minJumpTime, -power);
+		jump = new Delay(jumpTime, -power);
+		dy = jump.getData();
 	}
 	
 	public void stopJump() {
-		maxJump.interrupt();
-		if(minJump.isAlive()) {
-			dy = minJump.getData();
-		}else if(!doubleJumped) {
+		jump.interrupt();
+		if(inAir && !doubleJumped) {
 			doubleJumpable = true;
 		}
 	}
 	
 	public void dash() {
 		if(dashable && !dashCooldown.isAlive()) {
-			dx = dashPower;
+			dx = turnLeft ? -dashPower : dashPower;
 			dy = 0;
 			ay = 0;
 			dashing = new Delay(dashTime, turnLeft ? -dashPower : dashPower);

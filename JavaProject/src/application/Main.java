@@ -31,12 +31,18 @@ public class Main extends Application {
 	
 	public static WorldMap createWorld() {
 		WorldMap worldMap = new WorldMap();
-		Map StarterMap = new Map(2560,1440);
-		StarterMap.addBackground("file:image/Map/Eclipse_Sky.jpg",1920,1080);
-		StarterMap.addBackground("file:image/Map/Kiln_of_the_First_Flame.png",2560,1440);
-		StarterMap.addPlatform(new  SinglePlatform("file:image/Platform/Platform.png",1000,1150,290,125));
-		worldMap.addMap("Starter Map", StarterMap);
+		createStarterMap(worldMap);
 		return worldMap;
+	}
+	
+	public static void createStarterMap(WorldMap worldMap) {
+		Map map = new Map(2560,1440);
+		map.addBackground("file:image/Map/Eclipse_Sky.jpg",1920,1080);
+		map.addBackground("file:image/Map/Kiln_of_the_First_Flame.png",2080,1240);
+		map.addPlatform(new  SinglePlatform("file:image/Platform/Platform.png",700,670,174,75));
+		map.addPlatform(new  SinglePlatform("file:image/Platform/Platform.png",1000,1130,174,75));
+		map.addPlatform(new  SinglePlatform("file:image/Platform/Platform.png",1200,770,174,75));
+		worldMap.addMap("Starter Map", map);
 	}
 
 	public static double getSceneWidth() {

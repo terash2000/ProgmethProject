@@ -59,41 +59,69 @@ public abstract class MoveableCharacter {
 		if(dy > maxFallSpeed && fallSpeedLimit) {
 			dy = maxFallSpeed;
 		}
-		if(dy < 0) {
-			topCheck();
+		if(dy < 0 && !topCheck()) {
+			inAir = true;
 		}else if(dy > 0) {
-			landingCheck();
+			if(landingCheck()) {
+				landing();
+			}else {
+				inAir = true;
+			}
 		}
 		y += dy;
 	}
 	
-	protected void leftWallCheck() {
+	protected boolean leftWallCheck() {
+		for(Platform i:map.getPlatformList()) {
+			if(i.checkRight(this)) {
+				return true;
+			}
+		}
 		if(x + dx < 0) {
 			dx = -x;
+			return true;
 		}
+		return false;
 	}
 	
-	protected void rightWallCheck() {
+	protected boolean rightWallCheck() {
+		for(Platform i:map.getPlatformList()) {
+			if(i.checkLeft(this)) {
+				return true;
+			}
+		}
 		if(x + dx > map.getWidth() - size[0]) {
 			dx = map.getWidth() - size[0] - x;
+			return true;
 		}
+		return false;
 	}
 	
-	protected void topCheck() {
+	protected boolean topCheck() {
+		for(Platform i:map.getPlatformList()) {
+			if(i.checkBottom(this)) {
+				return true;
+			}
+		}
 		if(y + dy < 0) {
 			dy = -y;
+			return true;
 		}
+		return false;
 	}
 	
 	
-	protected void landingCheck() {
+	protected boolean landingCheck() {
+		for(Platform i:map.getPlatformList()) {
+			if(i.checkTop(this)) {
+				return true;
+			}
+		}
 		if(y + dy > map.getHeight() - size[1]) {
 			dy = map.getHeight() - size[1] - y;
-			landing();
+			return true;
 		}
-		for(Platform i:map.getPlatformList()) {
-			i.checkTop(this);
-		}
+		return false;
 	}
 	
 	public void landing() {
