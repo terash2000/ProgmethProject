@@ -1,24 +1,80 @@
 package character;
 
 import application.Delay;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;;
 
 public class Hero extends MoveableCharacter {
 	
 	private double divePower = 1.5;
 	private double jumpPower = 16;
 	private double doubleJumpPower = 14;
+	private double dashPower = 25;
+	private double unstableFriction = 0.1;
 	private long jumpTime = 180;
-	private double dashPower = 20;
 	private long dashTime = 150;
 	private long dashCooldownTime = 450;
+	private long recoverTime = 1000;
 	private Delay jump = new Delay(0);
-	private Delay dashing = new Delay(0);
+	private Delay dash = new Delay(0);
 	private Delay dashCooldown = new Delay(0);
+	private Delay unstable = new Delay(0);
 	private boolean doubleJumped = true;
 	private boolean doubleJumpable, dashable;
 	
 	public Hero() {
-		super("file:image/Character/Hero/heroTurnRight.png","file:image/Character/Hero/heroTurnLeft.png",80,100,8);
+		super("file:image/Character/hero.png",80,100);
+		body.getChildren().add(new ImageView(new Image("file:image/Character/dash.png",200,100,false,true)));
+		body.getChildren().get(1).setVisible(false);
+		speed = 8;
+	}
+	
+	protected void artCheck() {
+		if(dashCheck()) {
+			changeArt("dash");
+		}else {
+			jumpCheck();
+			changeArt("normal");
+		}
+	}
+	
+	protected void changeArt(String art) {
+		if(art == "normal") {
+			body.getChildren().get(cerrentArt).setVisible(false);
+			body.getChildren().get(0).setVisible(true);
+			cerrentArt = 0;
+		}else if(art == "dash") {
+			body.getChildren().get(cerrentArt).setVisible(false);
+			body.getChildren().get(1).setLayoutX(turnLeft ? 0 : -120);
+			body.getChildren().get(1).setVisible(true);
+			cerrentArt = 1;
+		}
+	}
+	
+	public void die() {
+		
+	}
+	
+	public void attacked(double damage, double knockbackX, double knockbackY) {
+		makeImmune(recoverTime);
+		makeUnstable(recoverTime/2);
+		dash.interrupt();
+		super.attacked(damage, knockbackX, knockbackY);
+	}
+	
+	public void changeView() {
+		map.changeView(this);
+		body.setLayoutX(x - map.getViewX());
+		body.setLayoutY(y - map.getViewY());
+	}
+	
+	public void landing() {
+		inAir = false;
+		doubleJumped = false;
+		doubleJumpable = false;
+		if(!dashCooldown.isAlive()) {
+			dashable = true;
+		}
 	}
 	
 	public void setMovement(int direction) {
@@ -29,7 +85,7 @@ public class Hero extends MoveableCharacter {
 		}else {
 			ax = (speed*direction - dx)*friction;
 		}
-		ay = map.getGravity();
+		ay = gravity;
 	}
 	
 	public void diving() {
@@ -39,10 +95,8 @@ public class Hero extends MoveableCharacter {
 	
 	public void jumping() {
 		if(!inAir) {
+			dashable = true;
 			jump(jumpPower);
-		}
-		if(jump.isAlive()) {
-			dy = jump.getData();
 		}else if(doubleJumpable) {
 			doubleJumpable = false;
 			doubleJumped = true;
@@ -51,7 +105,7 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void jump(double power) {
-		dashing.interrupt();
+		dash.interrupt();
 		jump = new Delay(jumpTime, -power);
 		dy = jump.getData();
 	}
@@ -63,40 +117,44 @@ public class Hero extends MoveableCharacter {
 		}
 	}
 	
+	public boolean jumpCheck() {
+		if(jump.isAlive()) {
+			dy = jump.getData();
+			return true;
+		}
+		return false;
+	}
+	
 	public void dash() {
 		if(dashable && !dashCooldown.isAlive()) {
 			dx = turnLeft ? -dashPower : dashPower;
 			dy = 0;
 			ay = 0;
-			dashing = new Delay(dashTime, turnLeft ? -dashPower : dashPower);
+			dash = new Delay(dashTime, turnLeft ? -dashPower : dashPower);
 			dashCooldown = new Delay(dashCooldownTime);
 			dashable = false;
 			makeUnstable(dashCooldownTime);
 		}
 	}
 	
-	private void dashCheck() {
-		if(dashing.isAlive()) {
-			dx = dashing.getData();
+	private boolean dashCheck() {
+		if(dash.isAlive() && immune.isAlive()) {
+			dx = dash.getData();
 			dy = 0;
 			ay = 0;
+			return true;
 		}
+		return false;
 	}
 	
-	public void move() {
-		dashCheck();
-		moveY();
-		moveX();
-		map.changeView(this);
-		body.setLayoutX(x - map.getViewX());
-		body.setLayoutY(y - map.getViewY());
+	public void makeImmune(long time) {
+		immune.interrupt();
+		immune = new Delay(time);
 	}
 	
-	public void landing() {
-		inAir = false;
-		doubleJumped = false;
-		doubleJumpable = false;
-		dashable = true;
+	public void makeUnstable(long time) {
+		unstable.interrupt();
+		unstable = new Delay(time);
 	}
 
 	public double getDivePower() {

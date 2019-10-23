@@ -2,6 +2,7 @@ package object;
 
 import application.Main;
 import character.Hero;
+import character.Enemy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +12,12 @@ import javafx.scene.image.ImageView;
 
 public class Map {
 	
+	protected Group group;
 	protected WorldMap worldMap;
 	protected List<ImageView> background = new ArrayList<ImageView>();
 	protected List<Platform> platformList = new ArrayList<Platform>();
+	protected List<Enemy> enemyList = new ArrayList<Enemy>(); 
 	protected double width, height, viewX, viewY;
-	
-	private double gravity = 1;
 	
 	public Map(double width, double height) {
 		this.width = width;
@@ -29,16 +30,31 @@ public class Map {
 	}
 	
 	public void addPlatform(Platform platform) {
+		platform.setMap(this);
 		platformList.add(platform);
 	}
 	
+	public void addEnemy(Enemy enemy) {
+		enemy.setMap(this);
+		enemyList.add(enemy);
+	}
+	
 	public Group setCerrentMap(Hero hero, double x, double y) {
-		Group group = new Group();
+		group = new Group();
 		group.getChildren().addAll(background);
+		
+		for(Platform i:platformList) {
+			group.getChildren().add(i.getBody());
+		}
+		
 		group.getChildren().add(hero.getBody());
 		setHeroLocation(hero, x, y);
-		setPlatform(group);
 		hero.setMap(this);
+		
+		for(Enemy i:enemyList) {
+			group.getChildren().add(i.getBody());
+			i.setTarget(hero);
+		}
 		return group;
 	}
 	
@@ -48,12 +64,6 @@ public class Map {
 		changeView(hero);
 		hero.getBody().setLayoutX(x - viewX);
 		hero.getBody().setLayoutX(y - viewY);
-	}
-	
-	public void setPlatform(Group group) {
-		for(Platform i:platformList) {
-			group.getChildren().add(i.getBody());
-		}
 	}
 	
 	public void changeView(Hero hero) {
@@ -68,13 +78,15 @@ public class Map {
 			i.setLayoutY(-viewY*(i.getImage().getHeight()-Main.getSceneHeight())/(height-Main.getSceneHeight()));
 		}
 		for(Platform i:platformList) {
-			i.getBody().setLayoutX(i.getPosition()[0][0] - viewX);
-			i.getBody().setLayoutY(i.getPosition()[0][1] - viewY);
+			i.changeView();
+		}
+		for(Enemy i:enemyList) {
+			i.changeView();
 		}
 	}
 
-	public double getGravity() {
-		return gravity;
+	public List<Enemy> getEnemyList() {
+		return enemyList;
 	}
 
 	public List<Platform> getPlatformList() {

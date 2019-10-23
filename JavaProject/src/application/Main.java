@@ -1,6 +1,6 @@
 package application;
 
-import character.Hero;
+import character.*;
 import object.*;
 
 import javafx.application.Application;
@@ -39,9 +39,14 @@ public class Main extends Application {
 		Map map = new Map(2560,1440);
 		map.addBackground("file:image/Map/Eclipse_Sky.jpg",1920,1080);
 		map.addBackground("file:image/Map/Kiln_of_the_First_Flame.png",2080,1240);
-		map.addPlatform(new  SinglePlatform("file:image/Platform/Platform.png",700,670,174,75));
-		map.addPlatform(new  SinglePlatform("file:image/Platform/Platform.png",1000,1130,174,75));
-		map.addPlatform(new  SinglePlatform("file:image/Platform/Platform.png",1200,770,174,75));
+		map.addPlatform(new  Platform("file:image/Platform/Platform1.png",700,670,174,75));
+		map.addPlatform(new  Platform("file:image/Platform/Platform1.png",1000,880,174,75));
+		map.addPlatform(new  Platform("file:image/Platform/Platform1.png",1200,570,174,75));
+		map.addPlatform(new  Platform("file:image/Platform/Platform2.png",600,420,79,47));
+		map.addPlatform(new  Platform("file:image/Platform/PlatformFloor2.jpg",0,1261,2560,218,true,false));
+		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",0,0,200,1370,false,true));
+		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",2360,0,200,1370,false,true,true,false));
+		map.addEnemy(new Glimback(1500,1000));
 		worldMap.addMap("Starter Map", map);
 	}
 

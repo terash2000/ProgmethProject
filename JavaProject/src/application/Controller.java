@@ -1,6 +1,7 @@
 package application;
 
 import character.Hero;
+import character.Enemy;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 public class Controller {
 	
 	private static AnimationTimer timer;
-	private static boolean left, right, down, jump, dash, turnLeft;
+	private static boolean left, right, down, jump, dash;
 	private static int direction;
 	private static Stage cerrentStage;
 	
@@ -24,13 +25,18 @@ public class Controller {
 				}else {
 					Main.setSceneHeight(cerrentStage.getHeight() - 30);
 				}
-				hero.turn(turnLeft);
 				direction = 0;
 				if (left) {
 					direction += -1;
+					if(!right) {
+						hero.turn(true);
+					}
 				}
 				if (right) {
 					direction += 1;
+					if(!left) {
+						hero.turn(false);
+					}
 				}
 				hero.setMovement(direction);
 				if (down) {
@@ -47,6 +53,9 @@ public class Controller {
 					hero.dash();
 				}
 				hero.move();
+				for(Enemy i:hero.getMap().getEnemyList()) {
+					i.action();
+				}
 			}
 		};
 		timer.start();
@@ -60,11 +69,9 @@ public class Controller {
 				switch (event.getCode()) {
 				case LEFT:  
 					left = true;
-					turnLeft = true;
 					break;
 				case RIGHT: 
 					right = true;
-					turnLeft = false;
 					break;
 				case DOWN:  
 					down = true;
@@ -85,7 +92,7 @@ public class Controller {
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {
 				case LEFT:  
-					left = false; 
+					left = false;
 					break;
 				case RIGHT: 
 					right = false; 
