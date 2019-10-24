@@ -10,11 +10,15 @@ public abstract class MoveableCharacter extends Moveable {
 	protected boolean turnLeft;
 	protected Delay immune = new Delay(0);
 	
-	public MoveableCharacter(String imagePath, double width, double height) {
-		super(imagePath, width, height);
+	public MoveableCharacter(String imagePath, double x, double y, double width, double height) {
+		super(imagePath, x, y, width, height);
 	}
 	
 	public abstract void die();
+	
+	protected void artCheck() {
+		turn();
+	}
 	
 	protected void moveY() {
 		dy += ay;
@@ -43,18 +47,24 @@ public abstract class MoveableCharacter extends Moveable {
 		}
 	}
 	
-	public void turn(boolean turnLeft) {
+	public void turn() {
 		if(turnLeft) {
 			body.setScaleX(-1);
-			this.turnLeft = true;
 		}else {
 			body.setScaleX(1);
-			this.turnLeft = false;
 		}
 	}
 	
 	public void landing() {
 		inAir = false;
+	}
+
+	public boolean isTurnLeft() {
+		return turnLeft;
+	}
+
+	public void setTurnLeft(boolean turnLeft) {
+		this.turnLeft = turnLeft;
 	}
 	
 }

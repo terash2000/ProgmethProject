@@ -29,13 +29,13 @@ public class Controller {
 				if (left) {
 					direction += -1;
 					if(!right) {
-						hero.turn(true);
+						hero.setTurnLeft(true);
 					}
 				}
 				if (right) {
 					direction += 1;
 					if(!left) {
-						hero.turn(false);
+						hero.setTurnLeft(false);
 					}
 				}
 				hero.setMovement(direction);

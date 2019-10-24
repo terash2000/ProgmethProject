@@ -5,26 +5,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import character.Moveable;
 
-public class Platform {
-	
-	protected Group body;
-	protected double[][] position = new double[2][2];
-	protected Map map;
+public class Platform extends gameObject {
 	
 	public Platform(String ImagePath, double x, double y, double width, double height) {
-		position[0][0] = x;
-		position[0][1] = y;
-		position[1][0] = x + width;
-		position[1][1] = y + height - 10;
+		super(ImagePath, x, y, width, height);
 		body = new Group(new ImageView(new Image(ImagePath, width, height, false, true)));
+		size[1] -= 10;
 	}
 	
 	public Platform(String ImagePath, double x, double y, double width, double height,
 			boolean multiX, boolean multiY) {
-		position[0][0] = x;
-		position[0][1] = y;
-		position[1][0] = x + width;
-		position[1][1] = y + height - 10;
+		super(ImagePath, x, y, width, height);
 		body = new Group();
 		Image image = new Image(ImagePath);
 		if(!image.isError()) {
@@ -53,68 +44,52 @@ public class Platform {
 	}
 	
 	public void changeView() {
-		body.setLayoutX(position[0][0] - map.getViewX());
-		body.setLayoutY(position[0][1] - map.getViewY());
+		body.setLayoutX(x - map.getViewX());
+		body.setLayoutY(y - map.getViewY());
 	}
 	
 	public boolean checkTop(Moveable character) {
-		if(character.getX() + character.getSize()[0] > position[0][0] && 
-				character.getX() < position[1][0] && 
-				character.getY() + character.getSize()[1] <= position[0][1] && 
-				character.getY() + character.getSize()[1] + character.getDy() >= position[0][1]) {
-			character.setDy(position[0][1] - character.getY() - character.getSize()[1]);
+		if(character.getX() + character.getSize()[0] > x && 
+				character.getX() < x+size[0] && 
+				character.getY() + character.getSize()[1] <= y && 
+				character.getY() + character.getSize()[1] + character.getDy() >= y) {
+			character.setDy(y - character.getY() - character.getSize()[1]);
 			return true;
 		}
 		return false;
 	}
 	
 	public boolean checkBottom(Moveable character) {
-		if(character.getX() + character.getSize()[0] > position[0][0] && 
-				character.getX() < position[1][0] && 
-				character.getY() >= position[1][1] && 
-				character.getY() + character.getDy() < position[1][1]) {
-			character.setDy(position[1][1] - character.getY());
+		if(character.getX() + character.getSize()[0] > x && 
+				character.getX() < x+size[0] && 
+				character.getY() >= y+size[1] && 
+				character.getY() + character.getDy() < y+size[1]) {
+			character.setDy(y+size[1] - character.getY());
 			return true;
 		}
 		return false;
 	}
 	
 	public boolean checkLeft(Moveable character) {
-		if(character.getY() + character.getSize()[1] > position[0][1] && 
-				character.getY() < position[1][1] && 
-				character.getX() + character.getSize()[0] <= position[0][0] && 
-				character.getX() + character.getSize()[0] + character.getDx() > position[0][0]) {
-			character.setDx(position[0][0] - character.getX() - character.getSize()[0]);
+		if(character.getY() + character.getSize()[1] > y && 
+				character.getY() < y+size[1] && 
+				character.getX() + character.getSize()[0] <= x && 
+				character.getX() + character.getSize()[0] + character.getDx() > x) {
+			character.setDx(x - character.getX() - character.getSize()[0]);
 			return true;
 		}
 		return false;
 	}
 	
 	public boolean checkRight(Moveable character) {
-		if(character.getY() + character.getSize()[1] > position[0][1] && 
-				character.getY() < position[1][1] && 
-				character.getX() >= position[0][0] && 
-				character.getX() + character.getDx() < position[1][0]) {
-			character.setDx(position[1][0] - character.getX());
+		if(character.getY() + character.getSize()[1] > y && 
+				character.getY() < y+size[1] && 
+				character.getX() >= x+size[0] && 
+				character.getX() + character.getDx() < x+size[0]) {
+			character.setDx(x+size[0] - character.getX());
 			return true;
 		}
 		return false;
 	}
 	
-	public double[][] getPosition() {
-		return position;
-	}
-
-	public Group getBody() {
-		return body;
-	}
-
-	public Map getMap() {
-		return map;
-	}
-
-	public void setMap(Map map) {
-		this.map = map;
-	}
-
 }

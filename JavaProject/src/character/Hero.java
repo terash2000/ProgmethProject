@@ -23,13 +23,14 @@ public class Hero extends MoveableCharacter {
 	private boolean doubleJumpable, dashable;
 	
 	public Hero() {
-		super("file:image/Character/hero.png",80,100);
+		super("file:image/Character/hero.png", 0, 0, 80, 100);
 		body.getChildren().add(new ImageView(new Image("file:image/Character/dash.png",200,100,false,true)));
 		body.getChildren().get(1).setVisible(false);
 		speed = 8;
 	}
 	
 	protected void artCheck() {
+		turn();
 		if(dashCheck()) {
 			changeArt("dash");
 		}else {
@@ -138,7 +139,7 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	private boolean dashCheck() {
-		if(dash.isAlive() && immune.isAlive()) {
+		if(dash.isAlive()) {
 			dx = dash.getData();
 			dy = 0;
 			ay = 0;

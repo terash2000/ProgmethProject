@@ -1,38 +1,25 @@
 package character;
 
-import object.Map;
+import object.gameObject;
 import object.Platform;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.Group;
-
-public abstract class Moveable {
+public abstract class Moveable extends gameObject {
 	
-	protected Image image;
-	protected Group body;
 	protected double ax, ay, dx, dy;
-	protected double x = 0;
-	protected double y = 0;
 	protected double gravity = 1;
 	protected double friction = 0.2;
 	protected double speed = 1;
 	protected double maxFallSpeed = 25;
 	protected boolean fallSpeedLimit = true;
-	protected double[] size = new double[2];
 	protected int cerrentArt;
-	protected Map map;
 	
 	protected abstract void artCheck();
 	
-	protected abstract void changeArt(String art);
+	protected void changeArt(String art) {
+	}
 	
-	public Moveable(String imagePath, double width, double height) {
-		image = new Image(imagePath,width,height,false,true);
-		size[0] = width;
-		size[1] = height;
-		body = new Group(new ImageView(image));
-		setSpeed(speed);
+	public Moveable(String imagePath, double x, double y, double width, double height) {
+		super(imagePath, x, y, width, height);
 	}
 	
 	public void move() {
@@ -40,11 +27,6 @@ public abstract class Moveable {
 		moveY();
 		moveX();
 		changeView();
-	}
-	
-	public void changeView() {
-		body.setLayoutX(x - map.getViewX());
-		body.setLayoutY(y - map.getViewY());
 	}
 	
 	protected void moveX() {
@@ -123,10 +105,6 @@ public abstract class Moveable {
 		return false;
 	}
 
-	public Group getBody() {
-		return body;
-	}
-
 	public double getAx() {
 		return ax;
 	}
@@ -159,22 +137,6 @@ public abstract class Moveable {
 		this.dy = dy;
 	}
 
-	public double getX() {
-		return x;
-	}
-
-	public void setX(double x) {
-		this.x = x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	public void setY(double y) {
-		this.y = y;
-	}
-
 	public void setFallSpeedLimit(boolean fallSpeedLimit) {
 		this.fallSpeedLimit = fallSpeedLimit;
 	}
@@ -201,18 +163,6 @@ public abstract class Moveable {
 
 	public void setSpeed(double speed) {
 		this.speed = speed < 0 ? 0 : speed;
-	}
-
-	public Map getMap() {
-		return map;
-	}
-
-	public void setMap(Map map) {
-		this.map = map;
-	}
-
-	public double[] getSize() {
-		return size;
 	}
 	
 }

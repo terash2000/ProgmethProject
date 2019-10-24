@@ -8,14 +8,6 @@ public class Glimback extends MoveableEnemy {
 		friction = 0.05;
 	}
 	
-	protected void artCheck() {
-		
-	}
-	
-	protected void changeArt(String art) {
-		
-	}
-	
 	public void die() {
 		
 	}
