@@ -11,11 +11,15 @@ public abstract class gameObject {
 	protected double[] size = new double[2];
 	protected Map map;
 	
-	public gameObject(String imagePath, double x, double y, double width, double height) {
+	public gameObject(double x, double y, double width, double height) {
 		this.x = x;
 		this.y = y;
 		size[0] = width;
 		size[1] = height;
+	}
+	
+	public gameObject(String imagePath, double x, double y, double width, double height) {
+		this(x, y, width, height);
 		body = new Group(new ImageView(new Image(imagePath,width,height,false,true)));
 	}
 	

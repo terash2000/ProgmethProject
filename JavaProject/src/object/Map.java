@@ -6,13 +6,11 @@ import character.Enemy;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Map {
 	
-	protected Group group;
 	protected WorldMap worldMap;
 	protected List<ImageView> background = new ArrayList<ImageView>();
 	protected List<Platform> platformList = new ArrayList<Platform>();
@@ -39,31 +37,29 @@ public class Map {
 		enemyList.add(enemy);
 	}
 	
-	public Group setCerrentMap(Hero hero, double x, double y) {
-		group = new Group();
-		group.getChildren().addAll(background);
+	public void setCerrentMap(Hero hero, double x, double y) {
+		Main.getGame().getChildren().clear();
+		Main.getGame().getChildren().addAll(background);
 		
 		for(Platform i:platformList) {
-			group.getChildren().add(i.getBody());
+			Main.getGame().getChildren().add(i.getBody());
 		}
 		
-		group.getChildren().add(hero.getBody());
+		Main.getGame().getChildren().add(hero.getBody());
 		setHeroLocation(hero, x, y);
 		hero.setMap(this);
 		
 		for(Enemy i:enemyList) {
-			group.getChildren().add(i.getBody());
+			i.spawn();
 			i.setTarget(hero);
 		}
-		return group;
 	}
 	
 	public void setHeroLocation(Hero hero, double x, double y) {
+		hero.reset();
 		hero.setX(x);
 		hero.setY(y);
 		changeView(hero);
-		hero.getBody().setLayoutX(x - viewX);
-		hero.getBody().setLayoutX(y - viewY);
 	}
 	
 	public void changeView(Hero hero) {

@@ -1,5 +1,7 @@
 package character;
 
+import menu.HpBar;
+
 import application.Delay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;;
@@ -21,22 +23,27 @@ public class Hero extends MoveableCharacter {
 	private Delay unstable = new Delay(0);
 	private boolean doubleJumped = true;
 	private boolean doubleJumpable, dashable;
+	private HpBar hpBar;
 	
 	public Hero() {
 		super("file:image/Character/hero.png", 0, 0, 80, 100);
 		body.getChildren().add(new ImageView(new Image("file:image/Character/dash.png",200,100,false,true)));
 		body.getChildren().get(1).setVisible(false);
 		speed = 8;
+		maxHp = 100;
+		hp = 100;
+		hpBar = new HpBar(maxHp);
 	}
 	
 	protected void artCheck() {
-		turn();
 		if(dashCheck()) {
 			changeArt("dash");
 		}else {
 			jumpCheck();
 			changeArt("normal");
 		}
+		turn();
+		hpBar.update(hp);
 	}
 	
 	protected void changeArt(String art) {
@@ -76,6 +83,17 @@ public class Hero extends MoveableCharacter {
 		if(!dashCooldown.isAlive()) {
 			dashable = true;
 		}
+	}
+	
+	public void reset() {
+		super.reset();
+		unstable.interrupt();
+		jump.interrupt();
+		dash.interrupt();
+		dashCooldown.interrupt();
+		doubleJumped = true;
+		doubleJumpable = false;
+		dashable = false;
 	}
 	
 	public void setMovement(int direction) {
@@ -141,6 +159,7 @@ public class Hero extends MoveableCharacter {
 	private boolean dashCheck() {
 		if(dash.isAlive()) {
 			dx = dash.getData();
+			turnLeft = dash.getData() < 0 ? true : false;
 			dy = 0;
 			ay = 0;
 			return true;
@@ -174,6 +193,10 @@ public class Hero extends MoveableCharacter {
 		this.jumpPower = jumpPower < 0 ? 0 : jumpPower;
 	}
 
+	public Delay getJump() {
+		return jump;
+	}
+
 	public double getDoubleJumpPower() {
 		return doubleJumpPower;
 	}
@@ -197,4 +220,13 @@ public class Hero extends MoveableCharacter {
 	public void setDashCooldownTime(long dashCooldownTime) {
 		this.dashCooldownTime = dashCooldownTime < 0 ? 0 : dashCooldownTime;
 	}
+
+	public Delay getDash() {
+		return dash;
+	}
+
+	public Delay getUnstable() {
+		return unstable;
+	}
+
 }

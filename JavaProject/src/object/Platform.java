@@ -10,12 +10,13 @@ public class Platform extends gameObject {
 	public Platform(String ImagePath, double x, double y, double width, double height) {
 		super(ImagePath, x, y, width, height);
 		body = new Group(new ImageView(new Image(ImagePath, width, height, false, true)));
-		size[1] -= 10;
+		size[1] -= 15;
 	}
 	
 	public Platform(String ImagePath, double x, double y, double width, double height,
 			boolean multiX, boolean multiY) {
-		super(ImagePath, x, y, width, height);
+		super(x, y, width, height);
+		size[1] -= 15;
 		body = new Group();
 		Image image = new Image(ImagePath);
 		if(!image.isError()) {
@@ -41,11 +42,6 @@ public class Platform extends gameObject {
 		if(flipY) {
 			body.setScaleY(-1);
 		}
-	}
-	
-	public void changeView() {
-		body.setLayoutX(x - map.getViewX());
-		body.setLayoutY(y - map.getViewY());
 	}
 	
 	public boolean checkTop(Moveable character) {

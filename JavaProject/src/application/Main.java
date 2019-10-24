@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	private static double sceneWidth, sceneHeight;
+	private static Group game = new Group();
+	private static Group HpBar = new Group();
 
 	public static void main(String[] args) { 
 		launch(args); 
@@ -18,8 +20,10 @@ public class Main extends Application {
 	public void start(Stage stage) throws Exception {
 		Hero hero = new Hero();
 		WorldMap worldMap = createWorld();
-		Group group = worldMap.getMapList().get("Starter Map").setCerrentMap(hero,500,100);;
-		Scene scene = new Scene(group, 1000, 600);
+		worldMap.getMapList().get("Starter Map").setCerrentMap(hero,500,100);
+		Scene scene = new Scene(new Group(game, HpBar), 1000, 600);
+		HpBar.setLayoutX(50);
+		HpBar.setLayoutY(50);
 		stage.setScene(scene);
 		Controller.setKey(stage);
 		Controller.addTimer(hero);
@@ -48,6 +52,14 @@ public class Main extends Application {
 		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",2360,0,200,1370,false,true,true,false));
 		map.addEnemy(new Glimback(1500,1000));
 		worldMap.addMap("Starter Map", map);
+	}
+
+	public static Group getGame() {
+		return game;
+	}
+
+	public static void setHpBar(Group hpBar) {
+		HpBar = hpBar;
 	}
 
 	public static double getSceneWidth() {

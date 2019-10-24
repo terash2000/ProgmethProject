@@ -4,9 +4,8 @@ import application.Delay;
 
 public abstract class MoveableCharacter extends Moveable {
 	
-	protected double hp;
-	protected double attackDamage;
-	protected boolean inAir = true;
+	protected double maxHp, hp, attackDamage;
+	protected boolean inAir;
 	protected boolean turnLeft;
 	protected Delay immune = new Delay(0);
 	
@@ -38,6 +37,11 @@ public abstract class MoveableCharacter extends Moveable {
 		y += dy;
 	}
 	
+	public void reset() {
+		dx = 0;
+		dy = 0;
+	}
+	
 	public void attacked(double damage, double knockbackX, double knockbackY) {
 		dx = knockbackX;
 		dy = -knockbackY;
@@ -57,6 +61,14 @@ public abstract class MoveableCharacter extends Moveable {
 	
 	public void landing() {
 		inAir = false;
+	}
+	
+	public double getHp() {
+		return hp;
+	}
+
+	public void setHp(double hp) {
+		this.hp = hp;
 	}
 
 	public boolean isTurnLeft() {
