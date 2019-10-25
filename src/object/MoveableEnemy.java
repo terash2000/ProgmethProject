@@ -4,7 +4,6 @@ import application.Main;
 
 public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	
-	private Hero target;
 	private double[] spawnLocation = new double[2];
 	
 	public MoveableEnemy(String imagePath,double width,double height,double x, double y) {
@@ -24,38 +23,30 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	public void action() {
 		setMovement();
 		move();
-		if(!target.immune.isAlive()) {
-			hitCheck(target);
+		if(!Main.hero.immune.isAlive()) {
+			hitCheck();
 		}
 	}
 	
-	public boolean hitCheck(Hero hero) {
-		if(hero.getX() <= x + size[0] && 
-				hero.getX() + hero.getSize()[0] >= x &&
-				hero.getY() <= y + size[1] && 
-				hero.getY() + hero.getSize()[1] >= y ) {
-			hit(hero);
+	public boolean hitCheck() {
+		if(Main.hero.getX() <= x + size[0] && 
+			Main.hero.getX() + Main.hero.getSize()[0] >= x &&
+			Main.hero.getY() <= y + size[1] && 
+			Main.hero.getY() + Main.hero.getSize()[1] >= y ) {
+			hit();
 			return true;
 		}
 		return false;
 	}
 	
-	public void hit(Hero hero) {
-		hero.attacked(attackDamage, target.getX()+target.getSize()[0]/2 < x+size[0]/2 ? -30 : 30, 15);
+	public void hit() {
+		Main.hero.attacked(attackDamage, Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -30 : 30, 15);
 	}
 	
 	public void setMovement() {
-		ax = (speed*(target.getX()+target.getSize()[0]/2 < x+size[0]/2 ? -1 : 1) - dx)*friction;
+		ax = (speed*(Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -1 : 1) - dx)*friction;
 		ay = gravity;
-		turnLeft = target.getX()+target.getSize()[0]/2 < x+size[0]/2;
-	}
-
-	public Hero getTarget() {
-		return target;
-	}
-
-	public void setTarget(Hero target) {
-		this.target = target;
+		turnLeft = Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2;
 	}
 	
 }

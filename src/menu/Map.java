@@ -29,16 +29,15 @@ public class Map {
 	}
 	
 	public void addPlatform(Platform platform) {
-		platform.setMap(this);
 		platformList.add(platform);
 	}
 	
 	public void addEnemy(Enemy enemy) {
-		enemy.setMap(this);
 		enemyList.add(enemy);
 	}
 	
 	public void setCerrentMap(Hero hero, double x, double y) {
+		Main.worldMap.setCerrentMap(this);
 		Main.getGame().getChildren().clear();
 		Main.getGame().getChildren().addAll(background);
 		
@@ -48,11 +47,9 @@ public class Map {
 		
 		Main.getGame().getChildren().add(hero.getBody());
 		setHeroLocation(hero, x, y);
-		hero.setMap(this);
 		
 		for(Enemy i:enemyList) {
 			i.spawn();
-			i.setTarget(hero);
 		}
 	}
 	

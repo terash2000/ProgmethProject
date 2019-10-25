@@ -3,66 +3,67 @@ package application;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import object.Enemy;
-import object.Hero;
 
 public class Controller {
 	
-	private static AnimationTimer timer;
+	private static AnimationTimer gameLoop;
 	private static boolean left, right, down, jump, dash;
 	private static int direction;
-	private static Stage cerrentStage;
 	
-	public static void addTimer(Hero hero) {
-		timer = new AnimationTimer() {
+	public static void startTimer() {
+		gameLoop = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				Main.setSceneWidth(cerrentStage.getWidth());
-				if(cerrentStage.isFullScreen()) {
-					Main.setSceneHeight(cerrentStage.getHeight());
+				Main.setSceneWidth(Main.cerrentStage.getWidth());
+				if(Main.cerrentStage.isFullScreen()) {
+					Main.setSceneHeight(Main.cerrentStage.getHeight());
 				}else {
-					Main.setSceneHeight(cerrentStage.getHeight() - 30);
+					Main.setSceneHeight(Main.cerrentStage.getHeight() - 30);
 				}
+				
 				direction = 0;
 				if (left) {
 					direction += -1;
 					if(!right) {
-						hero.setTurnLeft(true);
+						Main.hero.setTurnLeft(true);
 					}
 				}
 				if (right) {
 					direction += 1;
 					if(!left) {
-						hero.setTurnLeft(false);
+						Main.hero.setTurnLeft(false);
 					}
 				}
-				hero.setMovement(direction);
+				Main.hero.setMovement(direction);
 				if (down) {
-					hero.diving();
+					Main.hero.diving();
 				}else {
-					hero.setFallSpeedLimit(true);
+					Main.hero.setFallSpeedLimit(true);
 				}
 				if (jump) {
-					hero.jumping();
+					Main.hero.jumping();
 				}else {
-					hero.stopJump();
+					Main.hero.stopJump();
 				}
 				if (dash) {
-					hero.dash();
+					Main.hero.dash();
 				}
-				hero.move();
-				for(Enemy i:hero.getMap().getEnemyList()) {
+				Main.hero.move();
+				for(Enemy i:Main.worldMap.getCerrentMap().getEnemyList()) {
 					i.action();
 				}
 			}
 		};
-		timer.start();
+		gameLoop.start();
 	}
 	
-	public static void setKey(Stage stage) {
-		cerrentStage = stage;
-		stage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+	public static void moveHero(){
+		
+	}
+	
+	public static void setKey() {
+		Main.cerrentStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override 
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {
@@ -86,7 +87,7 @@ public class Controller {
 				}
 			}
 		});
-		stage.getScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
+		Main.cerrentStage.getScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
 		    @Override 
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {

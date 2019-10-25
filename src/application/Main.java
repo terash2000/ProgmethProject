@@ -11,9 +11,12 @@ import javafx.scene.*;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+	public static Stage cerrentStage;
 	private static double sceneWidth, sceneHeight;
 	private static Group game = new Group();
 	private static Group HpBar = new Group();
+	public static WorldMap worldMap;
+	public static Hero hero;
 
 	public static void main(String[] args) { 
 		launch(args); 
@@ -21,25 +24,25 @@ public class Main extends Application {
   
 	@Override 
 	public void start(Stage stage) throws Exception {
-		Hero hero = new Hero();
-		WorldMap worldMap = createWorld();
+		this.cerrentStage = stage;
+		hero = new Hero();
+		createWorld();
 		worldMap.getMapList().get("Starter Map").setCerrentMap(hero,500,100);
 		Scene scene = new Scene(new Group(game, HpBar), 1000, 600);
 		HpBar.setLayoutX(50);
 		HpBar.setLayoutY(50);
 		stage.setScene(scene);
-		Controller.setKey(stage);
-		Controller.addTimer(hero);
+		Controller.setKey();
 		stage.setTitle("MyGame");
 		stage.show();
 		stage.setFullScreenExitHint("");
 		stage.setFullScreen(true);
+		Controller.startTimer();
 	}
 	
-	public static WorldMap createWorld() {
-		WorldMap worldMap = new WorldMap();
+	public static void createWorld() {
+		worldMap = new WorldMap();
 		createStarterMap(worldMap);
-		return worldMap;
 	}
 	
 	public static void createStarterMap(WorldMap worldMap) {

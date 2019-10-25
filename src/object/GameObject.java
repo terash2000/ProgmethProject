@@ -1,5 +1,6 @@
 package object;
 
+import application.Main;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,7 +11,6 @@ public abstract class GameObject {
 	protected Group body;
 	protected double x, y;
 	protected double[] size = new double[2];
-	protected Map map;
 	
 	public GameObject(double x, double y, double width, double height) {
 		this.x = x;
@@ -25,8 +25,8 @@ public abstract class GameObject {
 	}
 	
 	public void changeView() {
-		body.setLayoutX(x - map.getViewX());
-		body.setLayoutY(y - map.getViewY());
+		body.setLayoutX(x - Main.worldMap.getCerrentMap().getViewX());
+		body.setLayoutY(y - Main.worldMap.getCerrentMap().getViewY());
 	}
 
 	public Group getBody() {
@@ -52,15 +52,5 @@ public abstract class GameObject {
 	public double[] getSize() {
 		return size;
 	}
-
-	public Map getMap() {
-		return map;
-	}
-
-	public void setMap(Map map) {
-		this.map = map;
-	}
-	
-	
 
 }

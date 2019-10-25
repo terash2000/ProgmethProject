@@ -3,6 +3,7 @@ package object;
 import menu.HpBar;
 
 import application.Delay;
+import application.Main;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;;
 
@@ -60,7 +61,7 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void die() {
-		map.setCerrentMap(this, 1000, 200);
+		Main.worldMap.getCerrentMap().setCerrentMap(this, 1000, 200);
 		hp = maxHp;
 	}
 	
@@ -72,9 +73,9 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void changeView() {
-		map.changeView(this);
-		body.setLayoutX(x - map.getViewX());
-		body.setLayoutY(y - map.getViewY());
+		Main.worldMap.getCerrentMap().changeView(this);
+		body.setLayoutX(x - Main.worldMap.getCerrentMap().getViewX());
+		body.setLayoutY(y - Main.worldMap.getCerrentMap().getViewY());
 	}
 	
 	public void landing() {

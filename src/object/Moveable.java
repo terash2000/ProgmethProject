@@ -1,5 +1,7 @@
 package object;
 
+import application.Main;
+
 public abstract class Moveable extends GameObject {
 	
 	protected double ax, ay, dx, dy;
@@ -50,7 +52,7 @@ public abstract class Moveable extends GameObject {
 	}
 	
 	protected boolean leftWallCheck() {
-		for(Platform i:map.getPlatformList()) {
+		for(Platform i:Main.worldMap.getCerrentMap().getPlatformList()) {
 			if(i.checkRight(this)) {
 				return true;
 			}
@@ -63,20 +65,20 @@ public abstract class Moveable extends GameObject {
 	}
 	
 	protected boolean rightWallCheck() {
-		for(Platform i:map.getPlatformList()) {
+		for(Platform i:Main.worldMap.getCerrentMap().getPlatformList()) {
 			if(i.checkLeft(this)) {
 				return true;
 			}
 		}
-		if(x + dx > map.getWidth() - size[0]) {
-			dx = map.getWidth() - size[0] - x;
+		if(x + dx > Main.worldMap.getCerrentMap().getWidth() - size[0]) {
+			dx = Main.worldMap.getCerrentMap().getWidth() - size[0] - x;
 			return true;
 		}
 		return false;
 	}
 	
 	protected boolean topCheck() {
-		for(Platform i:map.getPlatformList()) {
+		for(Platform i:Main.worldMap.getCerrentMap().getPlatformList()) {
 			if(i.checkBottom(this)) {
 				return true;
 			}
@@ -90,13 +92,13 @@ public abstract class Moveable extends GameObject {
 	
 	
 	protected boolean landingCheck() {
-		for(Platform i:map.getPlatformList()) {
+		for(Platform i:Main.worldMap.getCerrentMap().getPlatformList()) {
 			if(i.checkTop(this)) {
 				return true;
 			}
 		}
-		if(y + dy > map.getHeight() - size[1]) {
-			dy = map.getHeight() - size[1] - y;
+		if(y + dy > Main.worldMap.getCerrentMap().getHeight() - size[1]) {
+			dy = Main.worldMap.getCerrentMap().getHeight() - size[1] - y;
 			return true;
 		}
 		return false;
