@@ -3,22 +3,23 @@ package object;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import menu.Map;
 
-public abstract class gameObject {
+public abstract class GameObject {
 	
 	protected Group body;
 	protected double x, y;
 	protected double[] size = new double[2];
 	protected Map map;
 	
-	public gameObject(double x, double y, double width, double height) {
+	public GameObject(double x, double y, double width, double height) {
 		this.x = x;
 		this.y = y;
 		size[0] = width;
 		size[1] = height;
 	}
 	
-	public gameObject(String imagePath, double x, double y, double width, double height) {
+	public GameObject(String imagePath, double x, double y, double width, double height) {
 		this(x, y, width, height);
 		body = new Group(new ImageView(new Image(imagePath,width,height,false,true)));
 	}

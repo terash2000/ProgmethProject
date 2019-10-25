@@ -1,13 +1,14 @@
-package object;
+package menu;
 
 import application.Main;
-import character.Hero;
-import character.Enemy;
 
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import object.Enemy;
+import object.Hero;
+import object.Platform;
 
 public class Map {
 	

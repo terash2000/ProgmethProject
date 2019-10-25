@@ -1,7 +1,7 @@
-package character;
+package object;
 
 import javafx.scene.Group;
-import object.Map;
+import menu.Map;
 
 public interface Enemy {
 	

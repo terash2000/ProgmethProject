@@ -1,4 +1,4 @@
-package character;
+package object;
 
 import menu.HpBar;
 
@@ -60,7 +60,8 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void die() {
-		
+		map.setCerrentMap(this, 1000, 200);
+		hp = maxHp;
 	}
 	
 	public void attacked(double damage, double knockbackX, double knockbackY) {

@@ -3,9 +3,8 @@ package object;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import character.Moveable;
 
-public class Platform extends gameObject {
+public class Platform extends GameObject {
 	
 	public Platform(String ImagePath, double x, double y, double width, double height) {
 		super(ImagePath, x, y, width, height);

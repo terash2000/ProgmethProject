@@ -1,9 +1,6 @@
-package character;
+package object;
 
-import object.gameObject;
-import object.Platform;
-
-public abstract class Moveable extends gameObject {
+public abstract class Moveable extends GameObject {
 	
 	protected double ax, ay, dx, dy;
 	protected double gravity = 1;

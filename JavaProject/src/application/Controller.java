@@ -1,12 +1,11 @@
 package application;
 
-import character.Hero;
-import character.Enemy;
-
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import object.Enemy;
+import object.Hero;
 
 public class Controller {
 	

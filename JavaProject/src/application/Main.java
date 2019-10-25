@@ -1,7 +1,10 @@
 package application;
 
-import character.*;
-import object.*;
+import menu.Map;
+import menu.WorldMap;
+import monster.Glimback;
+import object.Hero;
+import object.Platform;
 
 import javafx.application.Application;
 import javafx.scene.*;
