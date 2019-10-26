@@ -1,6 +1,5 @@
 package object;
 
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -8,15 +7,11 @@ public class Platform extends GameObject {
 	
 	public Platform(String ImagePath, double x, double y, double width, double height) {
 		super(ImagePath, x, y, width, height);
-		body = new Group(new ImageView(new Image(ImagePath, width, height, false, true)));
-		size[1] -= 15;
 	}
 	
 	public Platform(String ImagePath, double x, double y, double width, double height,
 			boolean multiX, boolean multiY) {
 		super(x, y, width, height);
-		size[1] -= 15;
-		body = new Group();
 		Image image = new Image(ImagePath);
 		if(!image.isError()) {
 			int nX = multiX ? (int)(width/image.getWidth() + 0.5) : 1;

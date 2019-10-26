@@ -4,20 +4,20 @@ import java.util.HashMap;
 
 public class WorldMap {
 	
-	private HashMap<String, Map> mapList = new HashMap<String, Map>();
+	private HashMap<MapName, Map> mapList = new HashMap<MapName, Map>();
 	private Map cerrentMap;
 	
-	public void addMap(String name, Map map) {
+	public void addMap(MapName name, Map map) {
 		mapList.put(name, map);
 		map.setWorldMap(this);
-	}
-
-	public HashMap<String, Map> getMapList() {
-		return mapList;
 	}
 	
 	public void goTo() {
 		
+	}
+	
+	public HashMap<MapName, Map> getMapList() {
+		return mapList;
 	}
 
 	public Map getCerrentMap() {

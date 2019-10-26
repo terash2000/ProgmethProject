@@ -9,14 +9,22 @@ public abstract class MoveableCharacter extends Moveable {
 	protected boolean turnLeft;
 	protected Delay immune = new Delay(0);
 	
-	public MoveableCharacter(String imagePath, double x, double y, double width, double height) {
-		super(imagePath, x, y, width, height);
+	public MoveableCharacter(double x, double y, double width, double height) {
+		super(x, y, width, height);
 	}
 	
 	public abstract void die();
 	
 	protected void artCheck() {
 		turn();
+	}
+	
+	protected void changeArt(String art) {
+	}
+	
+	public void move() {
+		artCheck();
+		super.move();
 	}
 	
 	protected void moveY() {

@@ -1,7 +1,7 @@
 package object;
 
 import menu.HpBar;
-
+import menu.MapName;
 import application.Delay;
 import application.Main;
 import javafx.scene.image.Image;
@@ -27,9 +27,12 @@ public class Hero extends MoveableCharacter {
 	private HpBar hpBar;
 	
 	public Hero() {
-		super("file:image/Character/hero.png", 0, 0, 80, 100);
+		super(0, 0, 80, 85);
+		body.getChildren().add(new ImageView(new Image("file:image/Character/hero.png",80,100,false,true)));
+		body.getChildren().get(0).setLayoutY(-15);
 		body.getChildren().add(new ImageView(new Image("file:image/Character/dash.png",200,100,false,true)));
 		body.getChildren().get(1).setVisible(false);
+		body.getChildren().get(1).setLayoutY(-15);
 		speed = 8;
 		maxHp = 100;
 		hp = 100;
@@ -48,20 +51,23 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	protected void changeArt(String art) {
-		if(art == "normal") {
+		switch(art) {
+		case "normal":
 			body.getChildren().get(cerrentArt).setVisible(false);
 			body.getChildren().get(0).setVisible(true);
 			cerrentArt = 0;
-		}else if(art == "dash") {
+			break;
+		case "dash":
 			body.getChildren().get(cerrentArt).setVisible(false);
 			body.getChildren().get(1).setLayoutX(turnLeft ? 0 : -120);
 			body.getChildren().get(1).setVisible(true);
 			cerrentArt = 1;
+			break;
 		}
 	}
 	
 	public void die() {
-		Main.worldMap.getCerrentMap().setCerrentMap(this, 1000, 200);
+		Main.worldMap.getMapList().get(MapName.Starter).setAsCerrentMap(1000, 200);
 		hp = maxHp;
 	}
 	
@@ -73,7 +79,7 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void changeView() {
-		Main.worldMap.getCerrentMap().changeView(this);
+		Main.worldMap.getCerrentMap().changeView();
 		body.setLayoutX(x - Main.worldMap.getCerrentMap().getViewX());
 		body.setLayoutY(y - Main.worldMap.getCerrentMap().getViewY());
 	}

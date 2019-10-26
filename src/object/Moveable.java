@@ -12,17 +12,11 @@ public abstract class Moveable extends GameObject {
 	protected boolean fallSpeedLimit = true;
 	protected int cerrentArt;
 	
-	protected abstract void artCheck();
-	
-	protected void changeArt(String art) {
-	}
-	
-	public Moveable(String imagePath, double x, double y, double width, double height) {
-		super(imagePath, x, y, width, height);
+	public Moveable(double x, double y, double width, double height) {
+		super(x, y, width, height);
 	}
 	
 	public void move() {
-		artCheck();
 		moveY();
 		moveX();
 		changeView();

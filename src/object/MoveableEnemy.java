@@ -6,15 +6,15 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	
 	private double[] spawnLocation = new double[2];
 	
-	public MoveableEnemy(String imagePath,double width,double height,double x, double y) {
-		super(imagePath, x, y, width, height);
+	public MoveableEnemy(double width,double height,double x, double y) {
+		super(x, y, width, height);
 		spawnLocation[0] = x;
 		spawnLocation[1] = y;
 	}
 	
 	public void spawn() {
 		reset();
-		Main.getGame().getChildren().add(body);
+		Main.game.getChildren().add(body);
 		x = spawnLocation[0];
 		y = spawnLocation[1];
 		fallSpeedLimit = true;

@@ -21,45 +21,11 @@ public class Controller {
 				}else {
 					Main.setSceneHeight(Main.cerrentStage.getHeight() - 30);
 				}
-				
-				direction = 0;
-				if (left) {
-					direction += -1;
-					if(!right) {
-						Main.hero.setTurnLeft(true);
-					}
-				}
-				if (right) {
-					direction += 1;
-					if(!left) {
-						Main.hero.setTurnLeft(false);
-					}
-				}
-				Main.hero.setMovement(direction);
-				if (down) {
-					Main.hero.diving();
-				}else {
-					Main.hero.setFallSpeedLimit(true);
-				}
-				if (jump) {
-					Main.hero.jumping();
-				}else {
-					Main.hero.stopJump();
-				}
-				if (dash) {
-					Main.hero.dash();
-				}
-				Main.hero.move();
-				for(Enemy i:Main.worldMap.getCerrentMap().getEnemyList()) {
-					i.action();
-				}
+				updateHero();
+				updateEnemy();
 			}
 		};
 		gameLoop.start();
-	}
-	
-	public static void moveHero(){
-		
 	}
 	
 	public static void setKey() {
@@ -111,6 +77,43 @@ public class Controller {
 				}
 			}
 		});
+	}
+	
+	private static void updateHero(){
+		direction = 0;
+		if (left) {
+			direction += -1;
+			if(!right) {
+				Main.hero.setTurnLeft(true);
+			}
+		}
+		if (right) {
+			direction += 1;
+			if(!left) {
+				Main.hero.setTurnLeft(false);
+			}
+		}
+		Main.hero.setMovement(direction);
+		if (down) {
+			Main.hero.diving();
+		}else {
+			Main.hero.setFallSpeedLimit(true);
+		}
+		if (jump) {
+			Main.hero.jumping();
+		}else {
+			Main.hero.stopJump();
+		}
+		if (dash) {
+			Main.hero.dash();
+		}
+		Main.hero.move();
+	}
+	
+	private static void updateEnemy(){
+		for(Enemy i:Main.worldMap.getCerrentMap().getEnemyList()) {
+			i.action();
+		}
 	}
 
 }

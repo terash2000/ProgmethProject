@@ -21,7 +21,7 @@ public class HpBar {
 		yellowBar = new Rectangle(maxHp*3, 20, Color.LIGHTYELLOW);
 		bar = new Rectangle(maxHp*3, 20, Color.RED);
 		body = new Group(border, yellowBar, bar);
-		Main.setHpBar(body);
+		Main.HpBar = body;
 	}
 	
 	public void update(double hp) {

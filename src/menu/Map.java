@@ -7,7 +7,6 @@ import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import object.Enemy;
-import object.Hero;
 import object.Platform;
 
 public class Map {
@@ -15,6 +14,7 @@ public class Map {
 	protected WorldMap worldMap;
 	protected List<ImageView> background = new ArrayList<ImageView>();
 	protected List<Platform> platformList = new ArrayList<Platform>();
+	protected List<Enemy> defaultEnemyList = new ArrayList<Enemy>(); 
 	protected List<Enemy> enemyList = new ArrayList<Enemy>(); 
 	protected double width, height, viewX, viewY;
 	
@@ -33,36 +33,39 @@ public class Map {
 	}
 	
 	public void addEnemy(Enemy enemy) {
-		enemyList.add(enemy);
+		defaultEnemyList.add(enemy);
 	}
 	
-	public void setCerrentMap(Hero hero, double x, double y) {
+	public void setAsCerrentMap(double x, double y) {
 		Main.worldMap.setCerrentMap(this);
-		Main.getGame().getChildren().clear();
-		Main.getGame().getChildren().addAll(background);
+		Main.game.getChildren().clear();
+		Main.game.getChildren().addAll(background);
 		
 		for(Platform i:platformList) {
-			Main.getGame().getChildren().add(i.getBody());
+			Main.game.getChildren().add(i.getBody());
 		}
 		
-		Main.getGame().getChildren().add(hero.getBody());
-		setHeroLocation(hero, x, y);
-		
-		for(Enemy i:enemyList) {
+		enemyList.clear();
+		for(Enemy i:defaultEnemyList) {
+			enemyList.add(i);
 			i.spawn();
 		}
+		
+		Main.game.getChildren().add(Main.hero.getBody());
+		setHeroLocation(x, y);
+		
 	}
 	
-	public void setHeroLocation(Hero hero, double x, double y) {
-		hero.reset();
-		hero.setX(x);
-		hero.setY(y);
-		changeView(hero);
+	public void setHeroLocation(double x, double y) {
+		Main.hero.reset();
+		Main.hero.setX(x);
+		Main.hero.setY(y);
+		changeView();
 	}
 	
-	public void changeView(Hero hero) {
-		double x = hero.getX() + hero.getSize()[0]/2;
-		double y = hero.getY() + hero.getSize()[1]/2;
+	public void changeView() {
+		double x = Main.hero.getX() + Main.hero.getSize()[0]/2;
+		double y = Main.hero.getY() + Main.hero.getSize()[1]/2;
 		viewX = x < Main.getSceneWidth()/2 ? 0 : 
 			(x > width-Main.getSceneWidth()/2 ? width-Main.getSceneWidth() : x-Main.getSceneWidth()/2);
 		viewY = y < Main.getSceneHeight()/2 ? 0 : 

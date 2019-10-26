@@ -4,11 +4,10 @@ import application.Main;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import menu.Map;
 
 public abstract class GameObject {
 	
-	protected Group body;
+	protected Group body = new Group();
 	protected double x, y;
 	protected double[] size = new double[2];
 	
@@ -21,7 +20,7 @@ public abstract class GameObject {
 	
 	public GameObject(String imagePath, double x, double y, double width, double height) {
 		this(x, y, width, height);
-		body = new Group(new ImageView(new Image(imagePath,width,height,false,true)));
+		body.getChildren().add(new ImageView(new Image(imagePath,width,height,false,true)));
 	}
 	
 	public void changeView() {
