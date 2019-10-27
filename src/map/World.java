@@ -1,59 +1,44 @@
-package menu;
+package map;
 
 import application.Main;
-
-import java.util.ArrayList;
-import java.util.List;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import object.Actionable;
 import object.Enemy;
 import object.Platform;
 
-public class Map {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javafx.scene.image.ImageView;
+public class World {
 	
-	protected WorldMap worldMap;
-	protected List<ImageView> background = new ArrayList<ImageView>();
-	protected List<Platform> platformList = new ArrayList<Platform>();
-	protected List<Enemy> defaultEnemyList = new ArrayList<Enemy>(); 
-	protected List<Enemy> enemyList = new ArrayList<Enemy>(); 
-	protected double width, height, viewX, viewY;
+	private HashMap<MapName, Map> mapList = new HashMap<MapName, Map>();
+	private Map cerrentMap;
+	private List<Platform> platformList = new ArrayList<Platform>();
+	private List<Actionable> objectList = new ArrayList<Actionable>();
+	private double width, height, viewX, viewY;
 	
-	public Map(double width, double height) {
-		this.width = width;
-		this.height = height;
+	public void addMap(MapName name, Map map) {
+		mapList.put(name, map);
 	}
 	
-	public void addBackground(String backgroundImagePath, double width, double height) {
-		Image backgroundImage = new Image(backgroundImagePath, width, height, false, true);
-		background.add(new ImageView(backgroundImage));
-	}
-	
-	public void addPlatform(Platform platform) {
-		platformList.add(platform);
-	}
-	
-	public void addEnemy(Enemy enemy) {
-		defaultEnemyList.add(enemy);
-	}
-	
-	public void setAsCerrentMap(double x, double y) {
-		Main.worldMap.setCerrentMap(this);
+	public void setCerrentMap(MapName name, double x, double y) {
+		cerrentMap = mapList.get(name);
+		width = cerrentMap.getWidth();
+		height = cerrentMap.getHeight();
 		Main.game.getChildren().clear();
-		Main.game.getChildren().addAll(background);
-		
-		for(Platform i:platformList) {
+		Main.game.getChildren().addAll(cerrentMap.getBackground());
+		platformList.clear();
+		for(Platform i:cerrentMap.getPlatformList()) {
+			platformList.add(i);
 			Main.game.getChildren().add(i.getBody());
 		}
-		
-		enemyList.clear();
-		for(Enemy i:defaultEnemyList) {
-			enemyList.add(i);
+		objectList.clear();
+		for(Enemy i:cerrentMap.getEnemyList()) {
+			objectList.add(i);
 			i.spawn();
 		}
-		
 		Main.game.getChildren().add(Main.hero.getBody());
 		setHeroLocation(x, y);
-		
 	}
 	
 	public void setHeroLocation(double x, double y) {
@@ -70,28 +55,32 @@ public class Map {
 			(x > width-Main.getSceneWidth()/2 ? width-Main.getSceneWidth() : x-Main.getSceneWidth()/2);
 		viewY = y < Main.getSceneHeight()/2 ? 0 : 
 			(y > height-Main.getSceneHeight()/2 ? height-Main.getSceneHeight() : y-Main.getSceneHeight()/2);
-		for(ImageView i:background) {
+		for(ImageView i:cerrentMap.getBackground()) {
 			i.setLayoutX(-viewX*(i.getImage().getWidth()-Main.getSceneWidth())/(width-Main.getSceneWidth()));
 			i.setLayoutY(-viewY*(i.getImage().getHeight()-Main.getSceneHeight())/(height-Main.getSceneHeight()));
 		}
 		for(Platform i:platformList) {
 			i.changeView();
 		}
-		for(Enemy i:enemyList) {
+		for(Actionable i:objectList) {
 			i.changeView();
 		}
 	}
+	
+	public HashMap<MapName, Map> getMapList() {
+		return mapList;
+	}
 
-	public List<Enemy> getEnemyList() {
-		return enemyList;
+	public Map getCerrentMap() {
+		return cerrentMap;
+	}
+	
+	public List<Actionable> getObjectList() {
+		return objectList;
 	}
 
 	public List<Platform> getPlatformList() {
 		return platformList;
-	}
-
-	public void setWorldMap(WorldMap worldMap) {
-		this.worldMap = worldMap;
 	}
 
 	public double getWidth() {
@@ -102,9 +91,11 @@ public class Map {
 		return height;
 	}
 
+
 	public double getViewX() {
 		return viewX;
 	}
+
 
 	public double getViewY() {
 		return viewY;

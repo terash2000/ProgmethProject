@@ -3,7 +3,7 @@ package application;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import object.Enemy;
+import object.Actionable;;
 
 public class Controller {
 	
@@ -22,7 +22,7 @@ public class Controller {
 					Main.setSceneHeight(Main.cerrentStage.getHeight() - 30);
 				}
 				updateHero();
-				updateEnemy();
+				updateObject();
 			}
 		};
 		gameLoop.start();
@@ -110,8 +110,8 @@ public class Controller {
 		Main.hero.move();
 	}
 	
-	private static void updateEnemy(){
-		for(Enemy i:Main.worldMap.getCerrentMap().getEnemyList()) {
+	private static void updateObject(){
+		for(Actionable i:Main.worldMap.getObjectList()) {
 			i.action();
 		}
 	}

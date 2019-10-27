@@ -1,11 +1,11 @@
 package object;
 
 import menu.HpBar;
-import menu.MapName;
 import application.Delay;
 import application.Main;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;;
+import javafx.scene.image.ImageView;
+import map.MapName;;
 
 public class Hero extends MoveableCharacter {
 	
@@ -67,7 +67,7 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void die() {
-		Main.worldMap.getMapList().get(MapName.Starter).setAsCerrentMap(1000, 200);
+		Main.worldMap.setCerrentMap(MapName.Starter, 500, 100);
 		hp = maxHp;
 	}
 	
@@ -79,9 +79,9 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void changeView() {
-		Main.worldMap.getCerrentMap().changeView();
-		body.setLayoutX(x - Main.worldMap.getCerrentMap().getViewX());
-		body.setLayoutY(y - Main.worldMap.getCerrentMap().getViewY());
+		Main.worldMap.changeView();
+		body.setLayoutX(x - Main.worldMap.getViewX());
+		body.setLayoutY(y - Main.worldMap.getViewY());
 	}
 	
 	public void landing() {
@@ -99,9 +99,45 @@ public class Hero extends MoveableCharacter {
 		jump.interrupt();
 		dash.interrupt();
 		dashCooldown.interrupt();
+		dashCooldown = new Delay(100);
 		doubleJumped = true;
 		doubleJumpable = false;
 		dashable = false;
+	}
+	
+	protected boolean leftWallCheck() {
+		if(x + dx < 0 && Main.worldMap.getCerrentMap().getLeftMap() != null) {
+			Main.worldMap.getCerrentMap().getLeftMap().travel();
+			return false;
+		}
+		return super.leftWallCheck();
+	}
+	
+	protected boolean rightWallCheck() {
+		if(x + dx > Main.worldMap.getCerrentMap().getWidth() - size[0]
+			&& Main.worldMap.getCerrentMap().getRightMap() != null) {
+			Main.worldMap.getCerrentMap().getRightMap().travel();
+			return false;
+		}
+		return super.rightWallCheck();
+	}
+	
+	protected boolean topCheck() {
+		if(y + dy < 0 && Main.worldMap.getCerrentMap().getUpperMap() != null) {
+			Main.worldMap.getCerrentMap().getUpperMap().travel();
+			return false;
+		}
+		return super.topCheck();
+	}
+	
+	
+	protected boolean landingCheck() {
+		if(y + dy > Main.worldMap.getCerrentMap().getHeight() - size[1] &&
+			Main.worldMap.getCerrentMap().getLowerMap() != null) {
+			Main.worldMap.getCerrentMap().getLowerMap().travel();
+			return false;
+		}
+		return super.landingCheck();
 	}
 	
 	public void setMovement(int direction) {

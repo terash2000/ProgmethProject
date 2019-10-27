@@ -23,24 +23,9 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	public void action() {
 		setMovement();
 		move();
-		if(!Main.hero.immune.isAlive()) {
-			hitCheck();
+		if(!Main.hero.immune.isAlive() && Main.hero.hitCheck(x, x+size[0], y, y+size[1])) {
+			Main.hero.attacked(attackDamage, Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -30 : 30, 15);
 		}
-	}
-	
-	public boolean hitCheck() {
-		if(Main.hero.getX() <= x + size[0] && 
-			Main.hero.getX() + Main.hero.getSize()[0] >= x &&
-			Main.hero.getY() <= y + size[1] && 
-			Main.hero.getY() + Main.hero.getSize()[1] >= y ) {
-			hit();
-			return true;
-		}
-		return false;
-	}
-	
-	public void hit() {
-		Main.hero.attacked(attackDamage, Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -30 : 30, 15);
 	}
 	
 	public void setMovement() {

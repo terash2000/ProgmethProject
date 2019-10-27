@@ -2,7 +2,7 @@ package object;
 
 import application.Main;
 
-public abstract class Moveable extends GameObject {
+public abstract class MoveableObject extends GameObject {
 	
 	protected double ax, ay, dx, dy;
 	protected double gravity = 1;
@@ -12,7 +12,7 @@ public abstract class Moveable extends GameObject {
 	protected boolean fallSpeedLimit = true;
 	protected int cerrentArt;
 	
-	public Moveable(double x, double y, double width, double height) {
+	public MoveableObject(double x, double y, double width, double height) {
 		super(x, y, width, height);
 	}
 	

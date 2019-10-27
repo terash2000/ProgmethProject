@@ -2,7 +2,7 @@ package object;
 
 import application.Delay;
 
-public abstract class MoveableCharacter extends Moveable {
+public abstract class MoveableCharacter extends MoveableObject implements Destroyable {
 	
 	protected double maxHp, hp, attackDamage;
 	protected boolean inAir;
@@ -12,8 +12,6 @@ public abstract class MoveableCharacter extends Moveable {
 	public MoveableCharacter(double x, double y, double width, double height) {
 		super(x, y, width, height);
 	}
-	
-	public abstract void die();
 	
 	protected void artCheck() {
 		turn();
@@ -45,9 +43,14 @@ public abstract class MoveableCharacter extends Moveable {
 		y += dy;
 	}
 	
-	public void reset() {
-		dx = 0;
-		dy = 0;
+	public boolean hitCheck(double x0, double x1, double y0, double y1) {
+		if(x <= x1 && 
+			x + size[0] >= x0 &&
+			y <= y1 && 
+			y + size[1] >= y0 ) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void attacked(double damage, double knockbackX, double knockbackY) {
@@ -57,6 +60,12 @@ public abstract class MoveableCharacter extends Moveable {
 		if(hp == 0) {
 			die();
 		}
+	}
+	
+	public void reset() {
+		dx = 0;
+		dy = 0;
+		immune.interrupt();
 	}
 	
 	public void turn() {

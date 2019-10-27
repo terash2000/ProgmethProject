@@ -38,7 +38,7 @@ public class Platform extends GameObject {
 		}
 	}
 	
-	public boolean checkTop(Moveable character) {
+	public boolean checkTop(MoveableObject character) {
 		if(character.getX() + character.getSize()[0] > x && 
 				character.getX() < x+size[0] && 
 				character.getY() + character.getSize()[1] <= y && 
@@ -49,7 +49,7 @@ public class Platform extends GameObject {
 		return false;
 	}
 	
-	public boolean checkBottom(Moveable character) {
+	public boolean checkBottom(MoveableObject character) {
 		if(character.getX() + character.getSize()[0] > x && 
 				character.getX() < x+size[0] && 
 				character.getY() >= y+size[1] && 
@@ -60,7 +60,7 @@ public class Platform extends GameObject {
 		return false;
 	}
 	
-	public boolean checkLeft(Moveable character) {
+	public boolean checkLeft(MoveableObject character) {
 		if(character.getY() + character.getSize()[1] > y && 
 				character.getY() < y+size[1] && 
 				character.getX() + character.getSize()[0] <= x && 
@@ -71,7 +71,7 @@ public class Platform extends GameObject {
 		return false;
 	}
 	
-	public boolean checkRight(Moveable character) {
+	public boolean checkRight(MoveableObject character) {
 		if(character.getY() + character.getSize()[1] > y && 
 				character.getY() < y+size[1] && 
 				character.getX() >= x+size[0] && 

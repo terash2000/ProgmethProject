@@ -1,4 +1,4 @@
-package menu;
+package map;
 
 public enum MapName {
 	Starter,
