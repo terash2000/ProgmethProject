@@ -57,7 +57,6 @@ public class Main extends Application {
 		map.addPlatform(new  Platform("file:image/Platform/PlatformFloor1.jpg",0,1260,2560,218,true,false));
 		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",0,0,200,1370,false,true));
 		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",2360,0,200,1120,false,true,true,false));
-		map.addEnemy(new Glimback(1500,1080));
 		worldMap.addMap(MapName.Starter, map);
 	}
 	

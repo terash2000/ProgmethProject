@@ -29,8 +29,8 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	}
 	
 	public void setMovement() {
-		ax = (speed*(Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -1 : 1) - dx)*friction;
-		ay = gravity;
+		dx += (speed*(Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -1 : 1) - dx)*friction;
+		dy += gravity;
 		turnLeft = Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2;
 	}
 	

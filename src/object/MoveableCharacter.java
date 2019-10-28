@@ -13,20 +13,15 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 		super(x, y, width, height);
 	}
 	
-	protected void artCheck() {
-		turn();
-	}
-	
 	protected void changeArt(String art) {
 	}
 	
 	public void move() {
-		artCheck();
+		turn();
 		super.move();
 	}
 	
 	protected void moveY() {
-		dy += ay;
 		if(dy > maxFallSpeed && fallSpeedLimit) {
 			dy = maxFallSpeed;
 		}
@@ -57,9 +52,6 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 		dx = knockbackX;
 		dy = -knockbackY;
 		hp = damage > hp ? 0 : hp - damage;
-		if(hp == 0) {
-			die();
-		}
 	}
 	
 	public void reset() {

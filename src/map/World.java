@@ -3,6 +3,7 @@ package map;
 import application.Main;
 import object.Actionable;
 import object.Enemy;
+import object.GameObject;
 import object.Platform;
 
 import java.util.ArrayList;
@@ -14,11 +15,19 @@ public class World {
 	private HashMap<MapName, Map> mapList = new HashMap<MapName, Map>();
 	private Map cerrentMap;
 	private List<Platform> platformList = new ArrayList<Platform>();
-	private List<Actionable> objectList = new ArrayList<Actionable>();
+	private List<Actionable> actionableList = new ArrayList<Actionable>();
 	private double width, height, viewX, viewY;
 	
 	public void addMap(MapName name, Map map) {
 		mapList.put(name, map);
+	}
+	
+	public void addObject(GameObject object) {
+		if(object instanceof Actionable) {
+			Actionable actionable = (Actionable) object;
+			actionableList.add(actionable);
+		}
+		Main.game.getChildren().add(object.getBody());
 	}
 	
 	public void setCerrentMap(MapName name, double x, double y) {
@@ -32,9 +41,9 @@ public class World {
 			platformList.add(i);
 			Main.game.getChildren().add(i.getBody());
 		}
-		objectList.clear();
+		actionableList.clear();
 		for(Enemy i:cerrentMap.getEnemyList()) {
-			objectList.add(i);
+			actionableList.add(i);
 			i.spawn();
 		}
 		Main.game.getChildren().add(Main.hero.getBody());
@@ -62,7 +71,7 @@ public class World {
 		for(Platform i:platformList) {
 			i.changeView();
 		}
-		for(Actionable i:objectList) {
+		for(Actionable i:actionableList) {
 			i.changeView();
 		}
 	}
@@ -76,7 +85,7 @@ public class World {
 	}
 	
 	public List<Actionable> getObjectList() {
-		return objectList;
+		return actionableList;
 	}
 
 	public List<Platform> getPlatformList() {

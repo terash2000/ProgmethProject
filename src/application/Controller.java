@@ -1,14 +1,16 @@
 package application;
 
+import object.Actionable;
+
+import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import object.Actionable;;
 
 public class Controller {
 	
 	private static AnimationTimer gameLoop;
-	private static boolean left, right, down, jump, dash;
+	private static boolean left, right, up, down, jump, attack, dash;
 	private static int direction;
 	
 	public static void startTimer() {
@@ -39,11 +41,17 @@ public class Controller {
 				case RIGHT: 
 					right = true;
 					break;
+				case UP:
+					up = true;
+					break;
 				case DOWN:  
 					down = true;
 					break;
 				case A:    
 					jump = true;
+					break;
+				case S:
+					attack = true;
 					break;
 				case D:
 					dash = true;
@@ -63,11 +71,17 @@ public class Controller {
 				case RIGHT: 
 					right = false; 
 					break;
+				case UP:
+					up = false;
+					break;
 				case DOWN:  
 					down = false; 
 					break;
 				case A:    
 					jump = false;
+					break;
+				case S:
+					attack = false;
 					break;
 				case D:
 					dash = false;
@@ -93,12 +107,7 @@ public class Controller {
 				Main.hero.setTurnLeft(false);
 			}
 		}
-		Main.hero.setMovement(direction);
-		if (down) {
-			Main.hero.diving();
-		}else {
-			Main.hero.setFallSpeedLimit(true);
-		}
+		Main.hero.walk(direction);
 		if (jump) {
 			Main.hero.jumping();
 		}else {
@@ -107,11 +116,20 @@ public class Controller {
 		if (dash) {
 			Main.hero.dash();
 		}
+		if(attack) {
+			if(down && !up) {
+				Main.hero.downwardSlash();
+			}else if(up && !down){
+				Main.hero.upperSlash();
+			}else {
+				Main.hero.frontAttack();
+			}
+		}
 		Main.hero.move();
 	}
 	
 	private static void updateObject(){
-		for(Actionable i:Main.worldMap.getObjectList()) {
+		for(Actionable i:new ArrayList<Actionable>(Main.worldMap.getObjectList())) {
 			i.action();
 		}
 	}

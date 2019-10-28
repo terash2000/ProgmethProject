@@ -4,13 +4,12 @@ import application.Main;
 
 public abstract class MoveableObject extends GameObject {
 	
-	protected double ax, ay, dx, dy;
+	protected double dx, dy;
 	protected double gravity = 1;
 	protected double friction = 0.2;
 	protected double speed;
 	protected double maxFallSpeed = 25;
 	protected boolean fallSpeedLimit = true;
-	protected int cerrentArt;
 	
 	public MoveableObject(double x, double y, double width, double height) {
 		super(x, y, width, height);
@@ -23,7 +22,6 @@ public abstract class MoveableObject extends GameObject {
 	}
 	
 	protected void moveX() {
-		dx += ax;
 		if(dx < 0) {
 			leftWallCheck();
 		}else if(dx > 0) {
@@ -33,7 +31,6 @@ public abstract class MoveableObject extends GameObject {
 	}
 	
 	protected void moveY() {
-		dy += ay;
 		if(dy > maxFallSpeed && fallSpeedLimit) {
 			dy = maxFallSpeed;
 		}
@@ -96,22 +93,6 @@ public abstract class MoveableObject extends GameObject {
 			return true;
 		}
 		return false;
-	}
-
-	public double getAx() {
-		return ax;
-	}
-
-	public void setAx(double ax) {
-		this.ax = ax;
-	}
-
-	public double getAy() {
-		return ay;
-	}
-
-	public void setAy(double ay) {
-		this.ay = ay;
 	}
 
 	public double getDx() {

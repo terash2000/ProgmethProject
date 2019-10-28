@@ -1,11 +1,11 @@
 package object;
 
 import menu.HpBar;
+import map.MapName;
 import application.Delay;
 import application.Main;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import map.MapName;;
 
 public class Hero extends MoveableCharacter {
 	
@@ -15,10 +15,12 @@ public class Hero extends MoveableCharacter {
 	private double dashPower = 25;
 	private double unstableFriction = 0.1;
 	private long jumpTime = 180;
+	private long attackTime = 400;
 	private long dashTime = 150;
 	private long dashCooldownTime = 450;
 	private long recoverTime = 1000;
 	private Delay jump = new Delay(0);
+	private Delay attackCooldown = new Delay(0);
 	private Delay dash = new Delay(0);
 	private Delay dashCooldown = new Delay(0);
 	private Delay unstable = new Delay(0);
@@ -39,34 +41,38 @@ public class Hero extends MoveableCharacter {
 		hpBar = new HpBar(maxHp);
 	}
 	
-	protected void artCheck() {
+	private void artCheck() {
 		if(dashCheck()) {
 			changeArt("dash");
 		}else {
 			jumpCheck();
 			changeArt("normal");
 		}
-		turn();
+	}
+	
+	public void move() {
+		artCheck();
 		hpBar.update(hp);
+		super.move();
 	}
 	
 	protected void changeArt(String art) {
+		body.getChildren().forEach((i)->{
+			i.setVisible(false);
+		});
 		switch(art) {
 		case "normal":
-			body.getChildren().get(cerrentArt).setVisible(false);
 			body.getChildren().get(0).setVisible(true);
-			cerrentArt = 0;
 			break;
 		case "dash":
-			body.getChildren().get(cerrentArt).setVisible(false);
 			body.getChildren().get(1).setLayoutX(turnLeft ? 0 : -120);
 			body.getChildren().get(1).setVisible(true);
-			cerrentArt = 1;
 			break;
 		}
 	}
 	
 	public void die() {
+		
 		Main.worldMap.setCerrentMap(MapName.Starter, 500, 100);
 		hp = maxHp;
 	}
@@ -140,20 +146,50 @@ public class Hero extends MoveableCharacter {
 		return super.landingCheck();
 	}
 	
-	public void setMovement(int direction) {
-		if(unstable.isAlive()) {
-			ax = (speed*direction - dx)*unstableFriction;
-		}else if(inAir && dx <= speed) {
-			ax = (speed*direction - dx)*unstableFriction;
-		}else {
-			ax = (speed*direction - dx)*friction;
+	public void frontAttack() {
+		if(!attackCooldown.isAlive()) {
+			dash.interrupt();
+			attackCooldown = new Delay(attackTime);
+			Main.worldMap.addObject(new Effect("file:image/Character/attacking.png"
+				, 30, x+dx+(turnLeft?-120:0), y+dy-30, 200, 100, turnLeft, false));
 		}
-		ay = gravity;
 	}
 	
-	public void diving() {
-		ay += divePower;
-		fallSpeedLimit = false;
+	public void upperSlash() {
+		if(!attackCooldown.isAlive()) {
+			dash.interrupt();
+			attackCooldown = new Delay(attackTime);
+			Effect effect = new Effect("file:image/Character/attacking.png"
+				, 20, x+dx+(turnLeft ? -50 : -70), y+dy-75, 200, 100, turnLeft, false);
+			effect.getBody().setRotate(turnLeft ? 90 : 270);
+			Main.worldMap.addObject(effect);
+		}
+	}
+	
+	public void downwardSlash() {
+		if(!attackCooldown.isAlive()) {
+			if(inAir) {
+				dash.interrupt();
+				attackCooldown = new Delay(attackTime);
+				Effect effect = new Effect("file:image/Character/attacking.png"
+					, 20, x+dx+(turnLeft ? -70 : -50), y+dy+70, 200, 100, turnLeft, false);
+				effect.getBody().setRotate(turnLeft ? 270 : 90);
+				Main.worldMap.addObject(effect);
+			}else {
+				frontAttack();
+			}
+		}
+	}
+	
+	public void walk(int direction) {
+		if(unstable.isAlive()) {
+			dx += (speed*direction - dx)*unstableFriction;
+		}else if(inAir && dx <= speed) {
+			dx += (speed*direction - dx)*unstableFriction;
+		}else {
+			dx += (speed*direction - dx)*friction;
+		}
+		dy += gravity;
 	}
 	
 	public void jumping() {
@@ -180,7 +216,7 @@ public class Hero extends MoveableCharacter {
 		}
 	}
 	
-	public boolean jumpCheck() {
+	private boolean jumpCheck() {
 		if(jump.isAlive()) {
 			dy = jump.getData();
 			return true;
@@ -192,7 +228,6 @@ public class Hero extends MoveableCharacter {
 		if(dashable && !dashCooldown.isAlive()) {
 			dx = turnLeft ? -dashPower : dashPower;
 			dy = 0;
-			ay = 0;
 			dash = new Delay(dashTime, turnLeft ? -dashPower : dashPower);
 			dashCooldown = new Delay(dashCooldownTime);
 			dashable = false;
@@ -205,7 +240,6 @@ public class Hero extends MoveableCharacter {
 			dx = dash.getData();
 			turnLeft = dash.getData() < 0 ? true : false;
 			dy = 0;
-			ay = 0;
 			return true;
 		}
 		return false;
