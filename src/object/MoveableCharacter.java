@@ -38,34 +38,38 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 		y += dy;
 	}
 	
-	public boolean hitCheck(double x0, double x1, double y0, double y1) {
-		if(x <= x1 && 
-			x + size[0] >= x0 &&
-			y <= y1 && 
-			y + size[1] >= y0 ) {
+	public boolean hitCheck(double x, double y, double width, double height) {
+		if(this.x <= x+width && 
+			this.x + size[0] >= x &&
+			this.y <= y+height && 
+			this.y + size[1] >= y ) {
 			return true;
 		}
 		return false;
 	}
 	
 	public void attacked(double damage, double knockbackX, double knockbackY) {
-		dx = knockbackX;
-		dy = -knockbackY;
+		if(knockbackX != 0) {
+			dx = knockbackX;
+		}
+		if(knockbackY != 0) {
+			dy = -knockbackY;
+		}
 		hp = damage > hp ? 0 : hp - damage;
+		if(hp == 0) {
+			die();
+		}
 	}
 	
 	public void reset() {
 		dx = 0;
 		dy = 0;
+		turnLeft = false;
 		immune.interrupt();
 	}
 	
 	public void turn() {
-		if(turnLeft) {
-			body.setScaleX(-1);
-		}else {
-			body.setScaleX(1);
-		}
+		body.setScaleX(turnLeft ? -1 : 1);
 	}
 	
 	public void landing() {

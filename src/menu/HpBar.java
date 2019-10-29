@@ -33,9 +33,7 @@ public class HpBar {
 		}
 		bar.setWidth(hp*3);
 		yellowBar.setWidth(yellowHp*3);
-		if(hp == 0) {
-			Main.hero.die();
-		}
+		
 	}
 
 	public Group getBody() {

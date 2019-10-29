@@ -1,6 +1,6 @@
 package application;
 
-import monster.Glimback;
+import monster.*;
 import object.Hero;
 import object.Platform;
 import map.*;
@@ -56,7 +56,10 @@ public class Main extends Application {
 		map.addPlatform(new  Platform("file:image/Platform/Platform2.png",600,420,79,47));
 		map.addPlatform(new  Platform("file:image/Platform/PlatformFloor1.jpg",0,1260,2560,218,true,false));
 		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",0,0,200,1370,false,true));
-		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",2360,0,200,1120,false,true,true,false));
+		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",2360,0,200,1020,false,true,true,false));
+		map.addEnemy(new Vengefly(1500,500));
+		map.addEnemy(new Vengefly(1700,1000));
+		map.addEnemy(new Vengefly(1500,1200));
 		worldMap.addMap(MapName.Starter, map);
 	}
 	
@@ -66,11 +69,13 @@ public class Main extends Application {
 		map.addBackground("file:image/Map/Sky.jpg",1920,1080);
 		map.addBackground("file:image/Map/Castle.png",2080,1240);
 		map.addPlatform(new  Platform("file:image/Platform/Platform1.png",1000,880,174,75));
-		map.addPlatform(new  Platform("file:image/Platform/Platform2.png",1200,620,79,47));
 		map.addPlatform(new  Platform("file:image/Platform/PlatformFloor2.jpg",0,1260,2560,218,true,false));
-		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",0,0,200,1120,false,true));
+		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",0,0,200,1020,false,true));
 		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",2360,0,200,1370,false,true,true,false));
-		map.addEnemy(new Glimback(1000,1080));
+		map.addEnemy(new Vengefly(1500,1200));
+		map.addEnemy(new False_Knight(1000,1010));
+		map.addEnemy(new Glimback(1400,1080));
+		map.addEnemy(new Glimback(2000,1080));
 		worldMap.addMap(MapName.Town, map);
 	}
 

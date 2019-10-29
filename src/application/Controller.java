@@ -129,7 +129,7 @@ public class Controller {
 	}
 	
 	private static void updateObject(){
-		for(Actionable i:new ArrayList<Actionable>(Main.worldMap.getObjectList())) {
+		for(Actionable i:new ArrayList<Actionable>(Main.worldMap.getActionableList())) {
 			i.action();
 		}
 	}

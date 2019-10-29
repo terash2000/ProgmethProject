@@ -2,6 +2,7 @@ package map;
 
 import application.Main;
 import object.Actionable;
+import object.Destroyable;
 import object.Enemy;
 import object.GameObject;
 import object.Platform;
@@ -16,6 +17,7 @@ public class World {
 	private Map cerrentMap;
 	private List<Platform> platformList = new ArrayList<Platform>();
 	private List<Actionable> actionableList = new ArrayList<Actionable>();
+	private List<Destroyable> destroyableList = new ArrayList<Destroyable>();
 	private double width, height, viewX, viewY;
 	
 	public void addMap(MapName name, Map map) {
@@ -27,6 +29,10 @@ public class World {
 			Actionable actionable = (Actionable) object;
 			actionableList.add(actionable);
 		}
+		if(object instanceof Destroyable) {
+			Destroyable destroyable = (Destroyable) object;
+			destroyableList.add(destroyable);
+		}
 		Main.game.getChildren().add(object.getBody());
 	}
 	
@@ -37,13 +43,15 @@ public class World {
 		Main.game.getChildren().clear();
 		Main.game.getChildren().addAll(cerrentMap.getBackground());
 		platformList.clear();
+		actionableList.clear();
+		destroyableList.clear();
 		for(Platform i:cerrentMap.getPlatformList()) {
 			platformList.add(i);
 			Main.game.getChildren().add(i.getBody());
 		}
-		actionableList.clear();
 		for(Enemy i:cerrentMap.getEnemyList()) {
 			actionableList.add(i);
+			destroyableList.add(i);
 			i.spawn();
 		}
 		Main.game.getChildren().add(Main.hero.getBody());
@@ -84,8 +92,12 @@ public class World {
 		return cerrentMap;
 	}
 	
-	public List<Actionable> getObjectList() {
+	public List<Actionable> getActionableList() {
 		return actionableList;
+	}
+
+	public List<Destroyable> getDestroyableList() {
+		return destroyableList;
 	}
 
 	public List<Platform> getPlatformList() {

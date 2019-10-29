@@ -7,16 +7,26 @@ import object.MoveableEnemy;
 public class Glimback extends MoveableEnemy {
 	
 	public Glimback(double x, double y) {
-		super(200, 180, x, y);
+		super(x, y, 200, 180);
 		body.getChildren().add(new ImageView(new Image("file:image/Character/Glimback.png",200,200,false,true)));
 		body.getChildren().get(0).setLayoutY(-20);
-		speed = 5;
-		friction = 0.02;
+		speed = 3;
+		maxHp = 100;
 		attackDamage = 20;
 	}
 	
-	public void die() {
-		
+	public void setMovement() {
+		dx += ((turnLeft ? -speed : speed) - dx)*friction;
+		dy += gravity;
+	}
+	
+	protected void moveX() {
+		if(dx < 0 && leftWallCheck()) {
+			turnLeft = false;
+		}else if(rightWallCheck()) {
+			turnLeft = true;
+		}
+		x +=dx;
 	}
 
 }

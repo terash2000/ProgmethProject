@@ -6,7 +6,7 @@ public abstract class MoveableObject extends GameObject {
 	
 	protected double dx, dy;
 	protected double gravity = 1;
-	protected double friction = 0.2;
+	protected double friction = 0.1;
 	protected double speed;
 	protected double maxFallSpeed = 25;
 	protected boolean fallSpeedLimit = true;

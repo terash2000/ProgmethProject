@@ -2,6 +2,9 @@ package object;
 
 import menu.HpBar;
 import map.MapName;
+
+import java.util.ArrayList;
+
 import application.Delay;
 import application.Main;
 import javafx.scene.image.Image;
@@ -35,9 +38,11 @@ public class Hero extends MoveableCharacter {
 		body.getChildren().add(new ImageView(new Image("file:image/Character/dash.png",200,100,false,true)));
 		body.getChildren().get(1).setVisible(false);
 		body.getChildren().get(1).setLayoutY(-15);
+		friction = 0.2;
 		speed = 8;
 		maxHp = 100;
 		hp = 100;
+		attackDamage = 20;
 		hpBar = new HpBar(maxHp);
 	}
 	
@@ -56,6 +61,11 @@ public class Hero extends MoveableCharacter {
 		super.move();
 	}
 	
+	public void turn() {
+		super.turn();
+		body.getChildren().get(1).setLayoutX(turnLeft ? 0 : -120);
+	}
+	
 	protected void changeArt(String art) {
 		body.getChildren().forEach((i)->{
 			i.setVisible(false);
@@ -65,7 +75,6 @@ public class Hero extends MoveableCharacter {
 			body.getChildren().get(0).setVisible(true);
 			break;
 		case "dash":
-			body.getChildren().get(1).setLayoutX(turnLeft ? 0 : -120);
 			body.getChildren().get(1).setVisible(true);
 			break;
 		}
@@ -152,6 +161,16 @@ public class Hero extends MoveableCharacter {
 			attackCooldown = new Delay(attackTime);
 			Main.worldMap.addObject(new Effect("file:image/Character/attacking.png"
 				, 30, x+dx+(turnLeft?-120:0), y+dy-30, 200, 100, turnLeft, false));
+			boolean hit = false;
+			for(Destroyable i:new ArrayList<Destroyable>(Main.worldMap.getDestroyableList())) {
+				if(i.hitCheck(x+dx+(turnLeft?-120:0), y+dy-30, 200, 100)) {
+					i.attacked(attackDamage, turnLeft?-15:15, 0);
+					hit = true;
+				}
+			}
+			if(hit) {
+				dx += turnLeft?15:-15;
+			}
 		}
 	}
 	
@@ -163,6 +182,16 @@ public class Hero extends MoveableCharacter {
 				, 20, x+dx+(turnLeft ? -50 : -70), y+dy-75, 200, 100, turnLeft, false);
 			effect.getBody().setRotate(turnLeft ? 90 : 270);
 			Main.worldMap.addObject(effect);
+			boolean hit = false;
+			for(Destroyable i:new ArrayList<Destroyable>(Main.worldMap.getDestroyableList())) {
+				if(i.hitCheck(x+dx+(turnLeft?0:-20), y+dy-125, 100, 200)) {
+					i.attacked(attackDamage, 0, 15);
+					hit = true;
+				}
+			}
+			if(hit) {
+				dy += 10;
+			}
 		}
 	}
 	
@@ -172,9 +201,15 @@ public class Hero extends MoveableCharacter {
 				dash.interrupt();
 				attackCooldown = new Delay(attackTime);
 				Effect effect = new Effect("file:image/Character/attacking.png"
-					, 20, x+dx+(turnLeft ? -70 : -50), y+dy+70, 200, 100, turnLeft, false);
+					, 20, x+dx+(turnLeft ? -70 : -50), y+dy+60, 200, 100, turnLeft, false);
 				effect.getBody().setRotate(turnLeft ? 270 : 90);
 				Main.worldMap.addObject(effect);
+				for(Destroyable i:new ArrayList<Destroyable>(Main.worldMap.getDestroyableList())) {
+					if(i.hitCheck(x+dx+(turnLeft?-20:0), y+dy+10, 100, 200)) {
+						i.attacked(attackDamage, 0, -10);
+						dy = -15;
+					}
+				}
 			}else {
 				frontAttack();
 			}
