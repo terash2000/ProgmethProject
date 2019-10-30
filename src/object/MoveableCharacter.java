@@ -1,19 +1,12 @@
 package object;
 
-import application.Delay;
-
 public abstract class MoveableCharacter extends MoveableObject implements Destroyable {
 	
 	protected double maxHp, hp, attackDamage;
-	protected boolean inAir;
 	protected boolean turnLeft;
-	protected Delay immune = new Delay(0);
 	
 	public MoveableCharacter(double x, double y, double width, double height) {
 		super(x, y, width, height);
-	}
-	
-	protected void changeArt(String art) {
 	}
 	
 	public void move() {
@@ -27,13 +20,8 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 		}
 		if(dy < 0) {
 			topCheck();
-			inAir = true;
 		}else if(dy >= 0) {
-			if(landingCheck()) {
-				landing();
-			}else {
-				inAir = true;
-			}
+			landingCheck();
 		}
 		y += dy;
 	}
@@ -65,15 +53,10 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 		dx = 0;
 		dy = 0;
 		turnLeft = false;
-		immune.interrupt();
 	}
 	
 	public void turn() {
 		body.setScaleX(turnLeft ? -1 : 1);
-	}
-	
-	public void landing() {
-		inAir = false;
 	}
 	
 	public double getHp() {

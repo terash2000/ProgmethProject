@@ -14,6 +14,7 @@ public class Main extends Application {
 	public static Stage cerrentStage;
 	public static Group game = new Group();
 	public static Group HpBar = new Group();
+	public static Group inventory = new Group();
 	public static World worldMap;
 	public static Hero hero;
 
@@ -27,9 +28,10 @@ public class Main extends Application {
 		hero = new Hero();
 		createWorld();
 		worldMap.setCerrentMap(MapName.Starter, 500, 100);
-		Scene scene = new Scene(new Group(game, HpBar), 1000, 600);
+		Scene scene = new Scene(new Group(game, HpBar, inventory), 1000, 600);
 		HpBar.setLayoutX(50);
 		HpBar.setLayoutY(50);
+		
 		stage.setScene(scene);
 		Controller.setKey();
 		stage.setTitle("MyGame");
@@ -59,7 +61,7 @@ public class Main extends Application {
 		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",2360,0,200,1020,false,true,true,false));
 		map.addEnemy(new Vengefly(1500,500));
 		map.addEnemy(new Vengefly(1700,1000));
-		map.addEnemy(new Vengefly(1500,1200));
+		map.addEnemy(new Vengefly(1400,1200));
 		worldMap.addMap(MapName.Starter, map);
 	}
 	
@@ -72,7 +74,6 @@ public class Main extends Application {
 		map.addPlatform(new  Platform("file:image/Platform/PlatformFloor2.jpg",0,1260,2560,218,true,false));
 		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",0,0,200,1020,false,true));
 		map.addPlatform(new  Platform("file:image/Platform/PlatformLeft1.jpg",2360,0,200,1370,false,true,true,false));
-		map.addEnemy(new Vengefly(1500,1200));
 		map.addEnemy(new False_Knight(1000,1010));
 		map.addEnemy(new Glimback(1400,1080));
 		map.addEnemy(new Glimback(2000,1080));

@@ -32,7 +32,7 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	public void action() {
 		setMovement();
 		move();
-		if(!Main.hero.immune.isAlive() && Main.hero.hitCheck(x, y, size[0], size[1])) {
+		if(Main.hero.hitCheck(x, y, size[0], size[1])) {
 			Main.hero.attacked(attackDamage, Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -25 : 25, 15);
 		}
 	}

@@ -10,8 +10,7 @@ import javafx.scene.input.KeyEvent;
 public class Controller {
 	
 	private static AnimationTimer gameLoop;
-	private static boolean left, right, up, down, jump, attack, dash;
-	private static int direction;
+	private static boolean left, right, up, down, jump, attack, dash, pause;
 	
 	public static void startTimer() {
 		gameLoop = new AnimationTimer() {
@@ -94,29 +93,24 @@ public class Controller {
 	}
 	
 	private static void updateHero(){
-		direction = 0;
-		if (left) {
-			direction += -1;
-			if(!right) {
-				Main.hero.setTurnLeft(true);
-			}
+		if (left && !right && !pause) {
+			Main.hero.walk(-1);
+			Main.hero.setTurnLeft(true);
+		}else if (right && !left && !pause) {
+			Main.hero.walk(1);
+			Main.hero.setTurnLeft(false);
+		}else {
+			Main.hero.walk(0);
 		}
-		if (right) {
-			direction += 1;
-			if(!left) {
-				Main.hero.setTurnLeft(false);
-			}
-		}
-		Main.hero.walk(direction);
-		if (jump) {
+		if (jump && !pause) {
 			Main.hero.jumping();
 		}else {
 			Main.hero.stopJump();
 		}
-		if (dash) {
+		if (dash && !pause) {
 			Main.hero.dash();
 		}
-		if(attack) {
+		if(attack && !pause) {
 			if(down && !up) {
 				Main.hero.downwardSlash();
 			}else if(up && !down){

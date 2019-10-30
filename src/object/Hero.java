@@ -27,8 +27,9 @@ public class Hero extends MoveableCharacter {
 	private Delay dash = new Delay(0);
 	private Delay dashCooldown = new Delay(0);
 	private Delay unstable = new Delay(0);
+	protected Delay immune = new Delay(0);
 	private boolean doubleJumped = true;
-	private boolean doubleJumpable, dashable;
+	private boolean inAir, doubleJumpable, dashable;
 	private HpBar hpBar;
 	
 	public Hero() {
@@ -66,20 +67,6 @@ public class Hero extends MoveableCharacter {
 		body.getChildren().get(1).setLayoutX(turnLeft ? 0 : -120);
 	}
 	
-	protected void changeArt(String art) {
-		body.getChildren().forEach((i)->{
-			i.setVisible(false);
-		});
-		switch(art) {
-		case "normal":
-			body.getChildren().get(0).setVisible(true);
-			break;
-		case "dash":
-			body.getChildren().get(1).setVisible(true);
-			break;
-		}
-	}
-	
 	public void die() {
 		
 		Main.worldMap.setCerrentMap(MapName.Starter, 500, 100);
@@ -90,6 +77,7 @@ public class Hero extends MoveableCharacter {
 		makeImmune(recoverTime);
 		makeUnstable(recoverTime/2);
 		dash.interrupt();
+		dashable = true;
 		super.attacked(damage, knockbackX, knockbackY);
 	}
 	
@@ -99,13 +87,26 @@ public class Hero extends MoveableCharacter {
 		body.setLayoutY(y - Main.worldMap.getViewY());
 	}
 	
-	public void landing() {
-		inAir = false;
-		doubleJumped = false;
-		doubleJumpable = false;
-		if(!dashCooldown.isAlive()) {
-			dashable = true;
+	protected void moveY() {
+		if(dy > maxFallSpeed && fallSpeedLimit) {
+			dy = maxFallSpeed;
 		}
+		if(dy < 0) {
+			topCheck();
+			inAir = true;
+		}else if(dy >= 0) {
+			if(landingCheck()) {
+				inAir = false;
+				doubleJumped = false;
+				doubleJumpable = false;
+				if(!dashCooldown.isAlive()) {
+					dashable = true;
+				}
+			}else {
+				inAir = true;
+			}
+		}
+		y += dy;
 	}
 	
 	public void reset() {
@@ -113,6 +114,7 @@ public class Hero extends MoveableCharacter {
 		unstable.interrupt();
 		jump.interrupt();
 		dash.interrupt();
+		immune.interrupt();
 		dashCooldown.interrupt();
 		dashCooldown = new Delay(100);
 		doubleJumped = true;
@@ -153,6 +155,27 @@ public class Hero extends MoveableCharacter {
 			return false;
 		}
 		return super.landingCheck();
+	}
+	
+	public boolean hitCheck(double x, double y, double width, double height) {
+		if(immune.isAlive()) {
+			return false;
+		}
+		return super.hitCheck(x, y, width, height);
+	}
+	
+	private void changeArt(String art) {
+		body.getChildren().forEach((i)->{
+			i.setVisible(false);
+		});
+		switch(art) {
+		case "normal":
+			body.getChildren().get(0).setVisible(true);
+			break;
+		case "dash":
+			body.getChildren().get(1).setVisible(true);
+			break;
+		}
 	}
 	
 	public void frontAttack() {
