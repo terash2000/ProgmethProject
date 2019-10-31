@@ -19,7 +19,7 @@ public class Hero extends MoveableCharacter {
 	private double unstableFriction = 0.1;
 	private long jumpTime = 180;
 	private long attackTime = 400;
-	private long dashTime = 150;
+	private long dashTime = 120;
 	private long dashCooldownTime = 450;
 	private long recoverTime = 1000;
 	private Delay jump = new Delay(0);
@@ -68,7 +68,6 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void die() {
-		
 		Main.worldMap.setCerrentMap(MapName.Starter, 500, 100);
 		hp = maxHp;
 	}
@@ -192,7 +191,7 @@ public class Hero extends MoveableCharacter {
 				}
 			}
 			if(hit) {
-				dx += turnLeft?15:-15;
+				dx += turnLeft?10:-10;
 			}
 		}
 	}
@@ -208,12 +207,12 @@ public class Hero extends MoveableCharacter {
 			boolean hit = false;
 			for(Destroyable i:new ArrayList<Destroyable>(Main.worldMap.getDestroyableList())) {
 				if(i.hitCheck(x+dx+(turnLeft?0:-20), y+dy-125, 100, 200)) {
-					i.attacked(attackDamage, 0, 15);
+					i.attacked(attackDamage, 0, 12);
 					hit = true;
 				}
 			}
 			if(hit) {
-				dy += 10;
+				dy += 8;
 			}
 		}
 	}
@@ -229,7 +228,7 @@ public class Hero extends MoveableCharacter {
 				Main.worldMap.addObject(effect);
 				for(Destroyable i:new ArrayList<Destroyable>(Main.worldMap.getDestroyableList())) {
 					if(i.hitCheck(x+dx+(turnLeft?-20:0), y+dy+10, 100, 200)) {
-						i.attacked(attackDamage, 0, -10);
+						i.attacked(attackDamage, 0, -5);
 						dy = -15;
 					}
 				}
@@ -289,7 +288,7 @@ public class Hero extends MoveableCharacter {
 			dash = new Delay(dashTime, turnLeft ? -dashPower : dashPower);
 			dashCooldown = new Delay(dashCooldownTime);
 			dashable = false;
-			makeUnstable(dashCooldownTime);
+			makeUnstable(300);
 		}
 	}
 	

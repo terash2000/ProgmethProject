@@ -5,10 +5,11 @@ import application.Delay;
 
 public abstract class Boss extends MoveableEnemy {
 	
-	protected Delay hold = new Delay(0);
+	protected Delay hold;
 	protected String cerrentStage = "normal";
+	protected boolean inAir;
 	
-	protected abstract void changeStage(String stage);
+	protected abstract void changeStage();
 	protected abstract void changeArt(String art);
 	
 	public Boss(double x, double y, double width, double height) {
@@ -22,7 +23,35 @@ public abstract class Boss extends MoveableEnemy {
 	
 	public void reset() {
 		changeArt("normal");
+		hold = new Delay(2000);
 		super.reset();
+	}
+	
+	protected void moveY() {
+		if(dy > maxFallSpeed && fallSpeedLimit) {
+			dy = maxFallSpeed;
+		}
+		if(dy < 0) {
+			topCheck();
+		}else if(dy >= 0) {
+			if(landingCheck()) {
+				inAir = false;
+			}
+		}
+		y += dy;
+	}
+	
+	public void attacked(double damage, double knockbackX, double knockbackY) {
+		if(knockbackX != 0) {
+			dx += knockbackX;
+		}
+		if(knockbackY != 0) {
+			dy += -knockbackY;
+		}
+		hp = damage > hp ? 0 : hp - damage;
+		if(hp == 0) {
+			die();
+		}
 	}
 	
 }
