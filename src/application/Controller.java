@@ -16,11 +16,11 @@ public class Controller {
 		gameLoop = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				Main.setSceneWidth(Main.cerrentStage.getWidth());
-				if(Main.cerrentStage.isFullScreen()) {
-					Main.setSceneHeight(Main.cerrentStage.getHeight());
+				Main.setSceneWidth(Main.stage.getWidth());
+				if(Main.stage.isFullScreen()) {
+					Main.setSceneHeight(Main.stage.getHeight());
 				}else {
-					Main.setSceneHeight(Main.cerrentStage.getHeight() - 30);
+					Main.setSceneHeight(Main.stage.getHeight() - 30);
 				}
 				updateHero();
 				updateObject();
@@ -30,7 +30,7 @@ public class Controller {
 	}
 	
 	public static void setKey() {
-		Main.cerrentStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+		Main.gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override 
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {
@@ -60,7 +60,7 @@ public class Controller {
 				}
 			}
 		});
-		Main.cerrentStage.getScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
+		Main.gameScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
 		    @Override 
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {

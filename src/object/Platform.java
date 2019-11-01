@@ -13,16 +13,14 @@ public class Platform extends GameObject {
 			boolean multiX, boolean multiY) {
 		super(x, y, width, height);
 		Image image = new Image(ImagePath);
-		if(!image.isError()) {
-			int nX = multiX ? (int)(width/image.getWidth() + 0.5) : 1;
-			int nY = multiY ? (int)(height/image.getHeight() + 0.5) : 1;
-			image = new Image(ImagePath, width/nX + 1, height/nY + 1, false, true);
-			for(int i = 0; i < nX; i++) {
-				for(int j = 0; j < nY; j++) {
-					body.getChildren().add(new ImageView(image));
-					body.getChildren().get(body.getChildren().size() - 1).setLayoutX(width/nX*i);
-					body.getChildren().get(body.getChildren().size() - 1).setLayoutY(height/nY*j);
-				}
+		int nX = multiX ? (int)(width/image.getWidth() + 0.5) : 1;
+		int nY = multiY ? (int)(height/image.getHeight() + 0.5) : 1;
+		image = new Image(ImagePath, width/nX + 1, height/nY + 1, false, true);
+		for(int i = 0; i < nX; i++) {
+			for(int j = 0; j < nY; j++) {
+				body.getChildren().add(new ImageView(image));
+				body.getChildren().get(body.getChildren().size() - 1).setLayoutX(width/nX*i);
+				body.getChildren().get(body.getChildren().size() - 1).setLayoutY(height/nY*j);
 			}
 		}
 	}

@@ -9,10 +9,11 @@ public class Vengefly extends MoveableEnemy {
 	
 	public Vengefly(double x, double y) {
 		super(x, y, 130, 80);
-		body.getChildren().add(new ImageView(new Image("file:image/Character/Vengefly.png",130,80,false,true)));
+		body.getChildren().add(new ImageView(new Image(
+				ClassLoader.getSystemResource("Character/Vengefly.png").toString(), 130, 80, false, true)));
 		friction = 0.05;
 		speed = 5;
-		maxHp = 50;
+		maxHp = 40;
 		attackDamage = 20;
 	}
 	

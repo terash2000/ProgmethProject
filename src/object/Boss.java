@@ -2,13 +2,15 @@ package object;
 
 import application.Main;
 import application.Delay;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Boss extends MoveableEnemy {
 	
 	protected Delay hold;
 	protected String cerrentStage = "normal";
 	protected boolean inAir;
-	
+	protected List<String> artList = new ArrayList<String>();
 	protected abstract void changeStage();
 	protected abstract void changeArt(String art);
 	
@@ -23,7 +25,7 @@ public abstract class Boss extends MoveableEnemy {
 	
 	public void reset() {
 		changeArt("normal");
-		hold = new Delay(2000);
+		hold = new Delay(1000);
 		super.reset();
 	}
 	

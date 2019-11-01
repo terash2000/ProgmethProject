@@ -1,12 +1,12 @@
 package object;
 
+import application.Delay;
+import application.Main;
 import menu.HpBar;
 import map.MapName;
 
 import java.util.ArrayList;
-
-import application.Delay;
-import application.Main;
+import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -14,7 +14,7 @@ public class Hero extends MoveableCharacter {
 	
 	private double divePower = 1.5;
 	private double jumpPower = 16;
-	private double doubleJumpPower = 14;
+	private double doubleJumpPower = 10;
 	private double dashPower = 25;
 	private double unstableFriction = 0.1;
 	private long jumpTime = 180;
@@ -30,16 +30,21 @@ public class Hero extends MoveableCharacter {
 	protected Delay immune = new Delay(0);
 	private boolean doubleJumped = true;
 	private boolean inAir, doubleJumpable, dashable;
+	private String attackEffect = ClassLoader.getSystemResource("Character/attacking.png").toString();
+	private List<String> artList = new ArrayList<String>();
 	private HpBar hpBar;
 	
 	public Hero() {
 		super(0, 0, 80, 85);
-		body.getChildren().add(new ImageView(new Image("file:image/Character/hero.png",80,100,false,true)));
+		body.getChildren().add(new ImageView(new Image(
+				ClassLoader.getSystemResource("Character/hero.png").toString(), 80, 100, false, true)));
 		body.getChildren().get(0).setLayoutY(-15);
-		body.getChildren().add(new ImageView(new Image("file:image/Character/dash.png",200,100,false,true)));
+		artList.add("normal");
+		body.getChildren().add(new ImageView(new Image(
+				ClassLoader.getSystemResource("Character/dash.png").toString(), 200, 100, false, true)));
 		body.getChildren().get(1).setVisible(false);
 		body.getChildren().get(1).setLayoutY(-15);
-		friction = 0.2;
+		artList.add("dash");
 		speed = 8;
 		maxHp = 100;
 		hp = 100;
@@ -167,22 +172,14 @@ public class Hero extends MoveableCharacter {
 		body.getChildren().forEach((i)->{
 			i.setVisible(false);
 		});
-		switch(art) {
-		case "normal":
-			body.getChildren().get(0).setVisible(true);
-			break;
-		case "dash":
-			body.getChildren().get(1).setVisible(true);
-			break;
-		}
+		body.getChildren().get(artList.indexOf(art)).setVisible(true);
 	}
 	
 	public void frontAttack() {
 		if(!attackCooldown.isAlive()) {
 			dash.interrupt();
 			attackCooldown = new Delay(attackTime);
-			Main.worldMap.addObject(new Effect("file:image/Character/attacking.png"
-				, 30, x+dx+(turnLeft?-120:0), y+dy-30, 200, 100, turnLeft, false));
+			Main.worldMap.addObject(new Effect(attackEffect, 30, x+dx+(turnLeft?-120:0), y+dy-30, 200, 100, turnLeft, false));
 			boolean hit = false;
 			for(Destroyable i:new ArrayList<Destroyable>(Main.worldMap.getDestroyableList())) {
 				if(i.hitCheck(x+dx+(turnLeft?-120:0), y+dy-30, 200, 100)) {
@@ -200,8 +197,7 @@ public class Hero extends MoveableCharacter {
 		if(!attackCooldown.isAlive()) {
 			dash.interrupt();
 			attackCooldown = new Delay(attackTime);
-			Effect effect = new Effect("file:image/Character/attacking.png"
-				, 20, x+dx+(turnLeft ? -50 : -70), y+dy-75, 200, 100, turnLeft, false);
+			Effect effect = new Effect(attackEffect, 20, x+dx+(turnLeft ? -50 : -70), y+dy-75, 200, 100, turnLeft, false);
 			effect.getBody().setRotate(turnLeft ? 90 : 270);
 			Main.worldMap.addObject(effect);
 			boolean hit = false;
@@ -222,8 +218,7 @@ public class Hero extends MoveableCharacter {
 			if(inAir) {
 				dash.interrupt();
 				attackCooldown = new Delay(attackTime);
-				Effect effect = new Effect("file:image/Character/attacking.png"
-					, 20, x+dx+(turnLeft ? -70 : -50), y+dy+60, 200, 100, turnLeft, false);
+				Effect effect = new Effect(attackEffect, 20, x+dx+(turnLeft ? -70 : -50), y+dy+60, 200, 100, turnLeft, false);
 				effect.getBody().setRotate(turnLeft ? 270 : 90);
 				Main.worldMap.addObject(effect);
 				for(Destroyable i:new ArrayList<Destroyable>(Main.worldMap.getDestroyableList())) {

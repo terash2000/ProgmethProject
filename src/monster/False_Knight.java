@@ -10,13 +10,21 @@ public class False_Knight extends Boss {
 	
 	public False_Knight(double x, double y) {
 		super(x, y, 200, 250);
-		body.getChildren().add(new ImageView(new Image("file:image/Character/False_Knight.png",550,350,false,true)));
+		body.getChildren().add(new ImageView(new Image(
+				ClassLoader.getSystemResource("Character/False_Knight.png").toString(), 550, 350, false, true)));
 		body.getChildren().get(0).setLayoutY(-100);
-		body.getChildren().add(new ImageView(new Image("file:image/Character/False_Knight_Charge.png",500,300,false,true)));
+		artList.add("normal");
+		body.getChildren().add(new ImageView(new Image(
+				ClassLoader.getSystemResource("Character/False_Knight_Charge.png").toString(), 500, 300, false, true)));
 		body.getChildren().get(1).setLayoutY(-50);
-		body.getChildren().add(new ImageView(new Image("file:image/Character/False_Knight_Slam.png",600,250,false,true)));
-		body.getChildren().add(new ImageView(new Image("file:image/Character/False_Knight_Jumping.png",550,330,false,true)));
+		artList.add("charge");
+		body.getChildren().add(new ImageView(new Image(
+				ClassLoader.getSystemResource("Character/False_Knight_Slam.png").toString(), 600, 250, false, true)));
+		artList.add("slam");
+		body.getChildren().add(new ImageView(new Image(
+				ClassLoader.getSystemResource("Character/False_Knight_Jumping.png").toString(), 550, 330, false, true)));
 		body.getChildren().get(3).setLayoutY(-80);
+		artList.add("jump");
 		friction = 0.5;
 		maxHp = 800;
 		attackDamage = 25;
@@ -51,18 +59,18 @@ public class False_Knight extends Boss {
 			double rng = Math.random();
 			if(rng < 0.4) {
 				changeArt("charge");
-				hold = new Delay(600);
+				hold = new Delay(500);
 				break;
 			}else {
 				dy = -25;
 				inAir = true;
 				changeArt("jump");
-				double rng2 = Math.random()*2+1;
-				hold = new Delay(2000, ((Main.hero.getX()+Main.hero.getSize()[0]/2) - (x+size[0]/2))*0.01 + (turnLeft ? rng2 :-rng2));
+				double rng2 = Math.random()*4 - 1;
+				hold = new Delay(1000, ((Main.hero.getX()+Main.hero.getSize()[0]/2) - (x+size[0]/2))*0.01 + (turnLeft ? rng2 :-rng2));
 				break;
 			}
 		case "charge":
-			if(Main.hero.hitCheck(turnLeft ? x-300 : x+200, y, 250, 300)) {
+			if(Main.hero.hitCheck(turnLeft ? x-300 : x+200, y-100, 250, 400)) {
 				Main.hero.attacked(attackDamage, turnLeft ? -25 : 25, 15);
 			}
 			changeArt("slam");
@@ -70,10 +78,10 @@ public class False_Knight extends Boss {
 			break;
 		case "slam":
 			changeArt("normal");
-			hold = new Delay(1500);
+			hold = new Delay(1000);
 			break;
 		case "jump":
-			if(Main.hero.hitCheck(turnLeft ? x-300 : x+200, y, 250, 300)) {
+			if(Main.hero.hitCheck(turnLeft ? x-300 : x+200, y-100, 250, 400)) {
 				Main.hero.attacked(attackDamage, turnLeft ? -25 : 25, 15);
 			}
 			changeArt("slam");
@@ -87,20 +95,7 @@ public class False_Knight extends Boss {
 		body.getChildren().forEach((i)->{
 			i.setVisible(false);
 		});
-		switch(art) {
-		case "normal":
-			body.getChildren().get(0).setVisible(true);
-			break;
-		case "charge":
-			body.getChildren().get(1).setVisible(true);
-			break;
-		case "slam":
-			body.getChildren().get(2).setVisible(true);
-			break;
-		case "jump":
-			body.getChildren().get(3).setVisible(true);
-			break;
-		}
+		body.getChildren().get(artList.indexOf(art)).setVisible(true);
 	}
 	
 	public void turn() {

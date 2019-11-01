@@ -8,7 +8,8 @@ public class Glimback extends MoveableEnemy {
 	
 	public Glimback(double x, double y) {
 		super(x, y, 200, 180);
-		body.getChildren().add(new ImageView(new Image("file:image/Character/Glimback.png",200,200,false,true)));
+		body.getChildren().add(new ImageView(new Image(
+				ClassLoader.getSystemResource("Character/Glimback.png").toString(), 200, 200, false, true)));
 		body.getChildren().get(0).setLayoutY(-20);
 		speed = 3;
 		maxHp = 100;
