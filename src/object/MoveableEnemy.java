@@ -15,8 +15,8 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	public abstract void setMovement();
 	
 	public void die() {
-		Main.worldMap.getActionableList().remove(this);
-		Main.worldMap.getDestroyableList().remove(this);
+		Main.world.getActionableList().remove(this);
+		Main.world.getDestroyableList().remove(this);
 		Main.game.getChildren().remove(body);
 	}
 	

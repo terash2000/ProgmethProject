@@ -3,6 +3,7 @@ package monster;
 import application.Delay;
 import application.Main;
 import object.Boss;
+import object.Projectile;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -70,7 +71,11 @@ public class False_Knight extends Boss {
 				break;
 			}
 		case "charge":
-			if(Main.hero.hitCheck(turnLeft ? x-300 : x+200, y-100, 250, 400)) {
+			Projectile shockwave = new Projectile(ClassLoader.getSystemResource("Effect/shockwave.png").toString(), 
+					x+(turnLeft ? -100 : 200), y+50, 100, 200, turnLeft ? -10 : 10, 0);
+			shockwave.getBody().setScaleX(turnLeft ? -1 : 1);
+			Main.world.addObject(shockwave);
+			if(Main.hero.hitCheck(turnLeft ? x-300 : x+200, y-100, 250, 350)) {
 				Main.hero.attacked(attackDamage, turnLeft ? -25 : 25, 15);
 			}
 			changeArt("slam");
@@ -78,10 +83,10 @@ public class False_Knight extends Boss {
 			break;
 		case "slam":
 			changeArt("normal");
-			hold = new Delay(1000);
+			hold = new Delay(800);
 			break;
 		case "jump":
-			if(Main.hero.hitCheck(turnLeft ? x-300 : x+200, y-100, 250, 400)) {
+			if(Main.hero.hitCheck(turnLeft ? x-300 : x+200, y-100, 250, 350)) {
 				Main.hero.attacked(attackDamage, turnLeft ? -25 : 25, 15);
 			}
 			changeArt("slam");

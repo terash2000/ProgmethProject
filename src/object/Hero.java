@@ -30,7 +30,7 @@ public class Hero extends MoveableCharacter {
 	protected Delay immune = new Delay(0);
 	private boolean doubleJumped = true;
 	private boolean inAir, doubleJumpable, dashable;
-	private String attackEffect = ClassLoader.getSystemResource("Character/attacking.png").toString();
+	private String attackEffect = ClassLoader.getSystemResource("Effect/attacking.png").toString();
 	private List<String> artList = new ArrayList<String>();
 	private HpBar hpBar;
 	
@@ -73,7 +73,7 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void die() {
-		Main.worldMap.setCerrentMap(MapName.Starter, 500, 100);
+		Main.world.setCerrentMap(MapName.Starter, 500, 100);
 		hp = maxHp;
 	}
 	
@@ -86,9 +86,9 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void changeView() {
-		Main.worldMap.changeView();
-		body.setLayoutX(x - Main.worldMap.getViewX());
-		body.setLayoutY(y - Main.worldMap.getViewY());
+		Main.world.changeView();
+		body.setLayoutX(x - Main.world.getViewX());
+		body.setLayoutY(y - Main.world.getViewY());
 	}
 	
 	protected void moveY() {
@@ -127,25 +127,25 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	protected boolean leftWallCheck() {
-		if(x + dx < 0 && Main.worldMap.getCerrentMap().getLeftMap() != null) {
-			Main.worldMap.getCerrentMap().getLeftMap().travel();
+		if(x + dx < 0 && Main.world.getCerrentMap().getLeftMap() != null) {
+			Main.world.getCerrentMap().getLeftMap().travel();
 			return false;
 		}
 		return super.leftWallCheck();
 	}
 	
 	protected boolean rightWallCheck() {
-		if(x + dx > Main.worldMap.getCerrentMap().getWidth() - size[0]
-			&& Main.worldMap.getCerrentMap().getRightMap() != null) {
-			Main.worldMap.getCerrentMap().getRightMap().travel();
+		if(x + dx > Main.world.getCerrentMap().getWidth() - size[0]
+			&& Main.world.getCerrentMap().getRightMap() != null) {
+			Main.world.getCerrentMap().getRightMap().travel();
 			return false;
 		}
 		return super.rightWallCheck();
 	}
 	
 	protected boolean topCheck() {
-		if(y + dy < 0 && Main.worldMap.getCerrentMap().getUpperMap() != null) {
-			Main.worldMap.getCerrentMap().getUpperMap().travel();
+		if(y + dy < 0 && Main.world.getCerrentMap().getUpperMap() != null) {
+			Main.world.getCerrentMap().getUpperMap().travel();
 			return false;
 		}
 		return super.topCheck();
@@ -153,9 +153,9 @@ public class Hero extends MoveableCharacter {
 	
 	
 	protected boolean landingCheck() {
-		if(y + dy > Main.worldMap.getCerrentMap().getHeight() - size[1] &&
-			Main.worldMap.getCerrentMap().getLowerMap() != null) {
-			Main.worldMap.getCerrentMap().getLowerMap().travel();
+		if(y + dy > Main.world.getCerrentMap().getHeight() - size[1] &&
+			Main.world.getCerrentMap().getLowerMap() != null) {
+			Main.world.getCerrentMap().getLowerMap().travel();
 			return false;
 		}
 		return super.landingCheck();
@@ -179,9 +179,10 @@ public class Hero extends MoveableCharacter {
 		if(!attackCooldown.isAlive()) {
 			dash.interrupt();
 			attackCooldown = new Delay(attackTime);
-			Main.worldMap.addObject(new Effect(attackEffect, 30, x+dx+(turnLeft?-120:0), y+dy-30, 200, 100, turnLeft, false));
+			Main.world.addObject(
+					new Effect(attackEffect, 30, x+dx+(turnLeft?-120:0), y+dy-30, 200, 100, turnLeft, false));
 			boolean hit = false;
-			for(Destroyable i:new ArrayList<Destroyable>(Main.worldMap.getDestroyableList())) {
+			for(Destroyable i:new ArrayList<Destroyable>(Main.world.getDestroyableList())) {
 				if(i.hitCheck(x+dx+(turnLeft?-120:0), y+dy-30, 200, 100)) {
 					i.attacked(attackDamage, turnLeft?-15:15, 0);
 					hit = true;
@@ -199,9 +200,9 @@ public class Hero extends MoveableCharacter {
 			attackCooldown = new Delay(attackTime);
 			Effect effect = new Effect(attackEffect, 20, x+dx+(turnLeft ? -50 : -70), y+dy-75, 200, 100, turnLeft, false);
 			effect.getBody().setRotate(turnLeft ? 90 : 270);
-			Main.worldMap.addObject(effect);
+			Main.world.addObject(effect);
 			boolean hit = false;
-			for(Destroyable i:new ArrayList<Destroyable>(Main.worldMap.getDestroyableList())) {
+			for(Destroyable i:new ArrayList<Destroyable>(Main.world.getDestroyableList())) {
 				if(i.hitCheck(x+dx+(turnLeft?0:-20), y+dy-125, 100, 200)) {
 					i.attacked(attackDamage, 0, 12);
 					hit = true;
@@ -220,8 +221,8 @@ public class Hero extends MoveableCharacter {
 				attackCooldown = new Delay(attackTime);
 				Effect effect = new Effect(attackEffect, 20, x+dx+(turnLeft ? -70 : -50), y+dy+60, 200, 100, turnLeft, false);
 				effect.getBody().setRotate(turnLeft ? 270 : 90);
-				Main.worldMap.addObject(effect);
-				for(Destroyable i:new ArrayList<Destroyable>(Main.worldMap.getDestroyableList())) {
+				Main.world.addObject(effect);
+				for(Destroyable i:new ArrayList<Destroyable>(Main.world.getDestroyableList())) {
 					if(i.hitCheck(x+dx+(turnLeft?-20:0), y+dy+10, 100, 200)) {
 						i.attacked(attackDamage, 0, -5);
 						dy = -15;

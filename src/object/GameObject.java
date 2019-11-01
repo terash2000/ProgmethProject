@@ -24,8 +24,8 @@ public abstract class GameObject {
 	}
 	
 	public void changeView() {
-		body.setLayoutX(x - Main.worldMap.getViewX());
-		body.setLayoutY(y - Main.worldMap.getViewY());
+		body.setLayoutX(x - Main.world.getViewX());
+		body.setLayoutY(y - Main.world.getViewY());
 	}
 
 	public Group getBody() {

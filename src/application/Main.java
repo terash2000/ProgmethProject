@@ -16,7 +16,7 @@ public class Main extends Application {
 	public static Group game = new Group();
 	public static Group HpBar = new Group();
 	public static Group inventory = new Group();
-	public static World worldMap;
+	public static World world;
 	public static Hero hero;
 
 	public static void main(String[] args) { 
@@ -28,7 +28,7 @@ public class Main extends Application {
 		stage = primaryStage;
 		hero = new Hero();
 		createWorld();
-		worldMap.setCerrentMap(MapName.Starter, 500, 100);
+		world.setCerrentMap(MapName.Starter, 500, 100);
 		gameScene = new Scene(new Group(game, HpBar, inventory), 1000, 600);
 		HpBar.setLayoutX(50);
 		HpBar.setLayoutY(50);
@@ -44,7 +44,7 @@ public class Main extends Application {
 	}
 	
 	public static void createWorld() {
-		worldMap = new World();
+		world = new World();
 		createStarterMap();
 		createTownMap();
 	}
@@ -74,7 +74,7 @@ public class Main extends Application {
 		map.addEnemy(new Vengefly(1500, 500));
 		map.addEnemy(new Vengefly(1700, 1000));
 		map.addEnemy(new Vengefly(1400, 1200));
-		worldMap.addMap(MapName.Starter, map);
+		world.addMap(MapName.Starter, map);
 	}
 	
 	public static void createTownMap() {
@@ -91,7 +91,7 @@ public class Main extends Application {
 		map.addPlatform(new  Platform(
 				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 2360, 0, 200, 1370, false, true, true, false));
 		map.addEnemy(new False_Knight(1000, 1010));
-		worldMap.addMap(MapName.Town, map);
+		world.addMap(MapName.Town, map);
 	}
 
 	public static double getSceneWidth() {

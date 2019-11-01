@@ -24,7 +24,7 @@ public class Effect extends GameObject implements Actionable {
 	
 	public void action() {
 		if(!delay.isAlive()) {
-			Main.worldMap.getActionableList().remove(this);
+			Main.world.getActionableList().remove(this);
 			Main.game.getChildren().remove(body);
 		}
 	}

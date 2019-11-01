@@ -15,6 +15,10 @@ public abstract class MoveableObject extends GameObject {
 		super(x, y, width, height);
 	}
 	
+	public MoveableObject(String imagePath, double x, double y, double width, double height) {
+		super(imagePath, x, y, width, height);
+	}
+	
 	public void move() {
 		moveY();
 		moveX();
@@ -43,7 +47,7 @@ public abstract class MoveableObject extends GameObject {
 	}
 	
 	protected boolean leftWallCheck() {
-		for(Platform i:Main.worldMap.getCerrentMap().getPlatformList()) {
+		for(Platform i:Main.world.getCerrentMap().getPlatformList()) {
 			if(i.checkRight(this)) {
 				return true;
 			}
@@ -56,20 +60,20 @@ public abstract class MoveableObject extends GameObject {
 	}
 	
 	protected boolean rightWallCheck() {
-		for(Platform i:Main.worldMap.getCerrentMap().getPlatformList()) {
+		for(Platform i:Main.world.getCerrentMap().getPlatformList()) {
 			if(i.checkLeft(this)) {
 				return true;
 			}
 		}
-		if(x + dx > Main.worldMap.getCerrentMap().getWidth() - size[0]) {
-			dx = Main.worldMap.getCerrentMap().getWidth() - size[0] - x;
+		if(x + dx > Main.world.getCerrentMap().getWidth() - size[0]) {
+			dx = Main.world.getCerrentMap().getWidth() - size[0] - x;
 			return true;
 		}
 		return false;
 	}
 	
 	protected boolean topCheck() {
-		for(Platform i:Main.worldMap.getCerrentMap().getPlatformList()) {
+		for(Platform i:Main.world.getCerrentMap().getPlatformList()) {
 			if(i.checkBottom(this)) {
 				return true;
 			}
@@ -83,13 +87,13 @@ public abstract class MoveableObject extends GameObject {
 	
 	
 	protected boolean landingCheck() {
-		for(Platform i:Main.worldMap.getCerrentMap().getPlatformList()) {
+		for(Platform i:Main.world.getCerrentMap().getPlatformList()) {
 			if(i.checkTop(this)) {
 				return true;
 			}
 		}
-		if(y + dy > Main.worldMap.getCerrentMap().getHeight() - size[1]) {
-			dy = Main.worldMap.getCerrentMap().getHeight() - size[1] - y;
+		if(y + dy > Main.world.getCerrentMap().getHeight() - size[1]) {
+			dy = Main.world.getCerrentMap().getHeight() - size[1] - y;
 			return true;
 		}
 		return false;

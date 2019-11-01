@@ -19,7 +19,7 @@ public abstract class Boss extends MoveableEnemy {
 	}
 	
 	public void die() {
-		Main.worldMap.getCerrentMap().getEnemyList().remove(this);
+		Main.world.getCerrentMap().getEnemyList().remove(this);
 		super.die();
 	}
 	

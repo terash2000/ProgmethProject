@@ -34,6 +34,7 @@ public class World {
 			destroyableList.add(destroyable);
 		}
 		Main.game.getChildren().add(object.getBody());
+		object.changeView();
 	}
 	
 	public void setCerrentMap(MapName name, double x, double y) {

@@ -14,6 +14,6 @@ public class Gate {
 	}
 	
 	public void travel() {
-		Main.worldMap.setCerrentMap(mapName, toX, toY);
+		Main.world.setCerrentMap(mapName, toX, toY);
 	}
 }
