@@ -117,7 +117,7 @@ public class False_Knight extends Boss {
 			changeArt("leap");
 			break;
 		case "leap":
-			if(Main.hero.hitCheck(turnLeft ? x-300 : x+200, y-100, 250, 350)) {
+			if(Main.hero.hitCheck(turnLeft ? x-300 : x+200, y-150, 250, 400)) {
 				Main.hero.attacked(attackDamage, turnLeft ? -25 : 25, 15);
 			}
 			changeArt("slam");
