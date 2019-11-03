@@ -1,6 +1,7 @@
 package map;
 
 import application.Main;
+import application.Sound;
 import object.Actionable;
 import object.Destroyable;
 import object.Enemy;
@@ -18,6 +19,7 @@ public class World {
 	private List<Platform> platformList = new ArrayList<Platform>();
 	private List<Actionable> actionableList = new ArrayList<Actionable>();
 	private List<Destroyable> destroyableList = new ArrayList<Destroyable>();
+	private boolean bossFight;
 	private double width, height, viewX, viewY;
 	
 	public void addMap(MapName name, Map map) {
@@ -57,6 +59,7 @@ public class World {
 		}
 		Main.game.getChildren().add(Main.hero.getBody());
 		setHeroLocation(x, y);
+		Sound.changeBackgroundMusic(cerrentMap.getMusic());
 	}
 	
 	public void setHeroLocation(double x, double y) {
@@ -83,6 +86,19 @@ public class World {
 		for(Actionable i:actionableList) {
 			i.changeView();
 		}
+	}
+	
+	public boolean isBossFight() {
+		return bossFight;
+	}
+
+	public void setBossFight(boolean bossFight) {
+		this.bossFight = bossFight;
+	}
+
+	public void exitBossFight() {
+		setBossFight(false);
+		Sound.changeBackgroundMusic(cerrentMap.getMusic());
 	}
 	
 	public HashMap<MapName, Map> getMapList() {

@@ -73,6 +73,9 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void die() {
+		if(Main.world.isBossFight()) {
+			Main.world.exitBossFight();
+		}
 		Main.world.setCerrentMap(MapName.Starter, 500, 100);
 		hp = maxHp;
 	}
@@ -114,7 +117,8 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void reset() {
-		super.reset();
+		dx = 0;
+		dy = 0;
 		unstable.interrupt();
 		jump.interrupt();
 		dash.interrupt();
@@ -127,7 +131,8 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	protected boolean leftWallCheck() {
-		if(x + dx < 0 && Main.world.getCerrentMap().getLeftMap() != null) {
+		if(x + dx < 0 && Main.world.getCerrentMap().getLeftMap() != null
+				&& !Main.world.isBossFight()) {
 			Main.world.getCerrentMap().getLeftMap().travel();
 			return false;
 		}
@@ -136,7 +141,8 @@ public class Hero extends MoveableCharacter {
 	
 	protected boolean rightWallCheck() {
 		if(x + dx > Main.world.getCerrentMap().getWidth() - size[0]
-			&& Main.world.getCerrentMap().getRightMap() != null) {
+				&& Main.world.getCerrentMap().getRightMap() != null
+				&& !Main.world.isBossFight()) {
 			Main.world.getCerrentMap().getRightMap().travel();
 			return false;
 		}
@@ -144,7 +150,8 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	protected boolean topCheck() {
-		if(y + dy < 0 && Main.world.getCerrentMap().getUpperMap() != null) {
+		if(y + dy < 0 && Main.world.getCerrentMap().getUpperMap() != null
+				&& !Main.world.isBossFight()) {
 			Main.world.getCerrentMap().getUpperMap().travel();
 			return false;
 		}
@@ -153,8 +160,9 @@ public class Hero extends MoveableCharacter {
 	
 	
 	protected boolean landingCheck() {
-		if(y + dy > Main.world.getCerrentMap().getHeight() - size[1] &&
-			Main.world.getCerrentMap().getLowerMap() != null) {
+		if(y + dy > Main.world.getCerrentMap().getHeight() - size[1] 
+				&& Main.world.getCerrentMap().getLowerMap() != null
+				&& !Main.world.isBossFight()) {
 			Main.world.getCerrentMap().getLowerMap().travel();
 			return false;
 		}

@@ -1,5 +1,7 @@
 package map;
 
+import application.Music;
+
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.image.Image;
@@ -14,6 +16,7 @@ public class Map {
 	private List<Enemy> enemyList = new ArrayList<Enemy>();
 	private double width, height;
 	private Gate leftMap, rightMap, upperMap, lowerMap;
+	private Music music;
 	
 	public Map(double width, double height) {
 		this.width = width;
@@ -51,6 +54,14 @@ public class Map {
 
 	public void setLeftMap(Gate leftMap) {
 		this.leftMap = leftMap;
+	}
+
+	public Music getMusic() {
+		return music;
+	}
+
+	public void setMusic(Music music) {
+		this.music = music;
 	}
 
 	public Gate getRightMap() {

@@ -12,7 +12,7 @@ public class Controller {
 	private static AnimationTimer gameLoop;
 	private static boolean left, right, up, down, jump, attack, dash, pause;
 	
-	public static void startTimer() {
+	public static void startGameLoop() {
 		gameLoop = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
