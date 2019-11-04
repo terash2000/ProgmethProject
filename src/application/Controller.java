@@ -95,10 +95,10 @@ public class Controller {
 	private static void updateHero(){
 		if (left && !right && !pause) {
 			Main.hero.walk(-1);
-			Main.hero.setTurnLeft(true);
+			Main.hero.turn(true);
 		}else if (right && !left && !pause) {
 			Main.hero.walk(1);
-			Main.hero.setTurnLeft(false);
+			Main.hero.turn(false);
 		}else {
 			Main.hero.walk(0);
 		}

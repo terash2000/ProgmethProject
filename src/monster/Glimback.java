@@ -23,11 +23,9 @@ public class Glimback extends MoveableEnemy {
 	
 	protected void moveX() {
 		if(dx < 0 && leftWallCheck()) {
-			turnLeft = false;
-			turn();
+			turn(false);
 		}else if(rightWallCheck()) {
-			turnLeft = true;
-			turn();
+			turn(true);
 		}
 		x +=dx;
 	}

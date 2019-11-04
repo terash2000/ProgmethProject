@@ -46,11 +46,11 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 	public void reset() {
 		dx = 0;
 		dy = 0;
-		turnLeft = false;
-		turn();
+		turn(false);
 	}
 	
-	public void turn() {
+	public void turn(boolean turnLeft) {
+		this.turnLeft = turnLeft;
 		body.setScaleX(turnLeft ? -1 : 1);
 	}
 	

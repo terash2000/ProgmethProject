@@ -57,8 +57,7 @@ public class False_Knight extends Boss {
 			}
 			break;
 		case "normal":
-			turnLeft = Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2;
-			turn();
+			turn(Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2);
 			if(!hold.isAlive()) {
 				changeStage();
 			}
@@ -133,13 +132,13 @@ public class False_Knight extends Boss {
 		}
 	}
 	
-	public void turn() {
+	public void turn(boolean turnLeft) {
+		super.turn(turnLeft);
 		body.getChildren().get(0).setLayoutX(turnLeft ? -125 : -225);
 		body.getChildren().get(1).setLayoutX(turnLeft ? -30 : -270);
 		body.getChildren().get(2).setLayoutX(turnLeft ? -400 : 0);
 		body.getChildren().get(3).setLayoutX(turnLeft ? -70 : -280);
 		body.getChildren().get(4).setLayoutX(turnLeft ? -100 : -160);
-		super.turn();
 	}
 
 }

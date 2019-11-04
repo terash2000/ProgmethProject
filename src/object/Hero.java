@@ -62,12 +62,11 @@ public class Hero extends MoveableCharacter {
 	public void move() {
 		artCheck();
 		hpBar.update(hp);
-		turn();
 		super.move();
 	}
 	
-	public void turn() {
-		super.turn();
+	public void turn(boolean turnLeft) {
+		super.turn(turnLeft);
 		body.getChildren().get(1).setLayoutX(turnLeft ? 0 : -120);
 	}
 	
@@ -291,7 +290,7 @@ public class Hero extends MoveableCharacter {
 	private boolean dashCheck() {
 		if(dash.isAlive()) {
 			dx = dash.getData();
-			turnLeft = dash.getData() < 0 ? true : false;
+			turn(dash.getData() < 0);
 			dy = 0;
 			return true;
 		}

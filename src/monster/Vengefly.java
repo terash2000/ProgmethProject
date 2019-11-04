@@ -37,8 +37,7 @@ public class Vengefly extends MoveableEnemy {
 		case "normal":
 			dx += ((turnLeft ? -speed : speed) - dx)*friction;
 			dy += ((Main.hero.getY()+Main.hero.getSize()[1]/2 < y+size[1]/2 ? -speed : speed) - dy)*friction;
-			turnLeft = Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2;
-			turn();
+			turn(Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2);
 			break;
 		}
 	}
