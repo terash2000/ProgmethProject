@@ -13,11 +13,6 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 		super(x, y, width, height);
 	}
 	
-	public void move() {
-		turn();
-		super.move();
-	}
-	
 	public boolean hitCheck(double x, double y, double width, double height) {
 		if(this.x <= x+width && 
 			this.x + size[0] >= x &&

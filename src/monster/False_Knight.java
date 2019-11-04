@@ -58,6 +58,7 @@ public class False_Knight extends Boss {
 			break;
 		case "normal":
 			turnLeft = Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2;
+			turn();
 			if(!hold.isAlive()) {
 				changeStage();
 			}
@@ -87,6 +88,7 @@ public class False_Knight extends Boss {
 		case "idle":
 			inAir = true;
 			changeArt("jump");
+			turn();
 			hold = new Delay(1200);
 			break;
 		case "normal":

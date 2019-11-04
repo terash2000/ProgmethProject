@@ -62,6 +62,7 @@ public class Hero extends MoveableCharacter {
 	public void move() {
 		artCheck();
 		hpBar.update(hp);
+		turn();
 		super.move();
 	}
 	
