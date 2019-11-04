@@ -47,6 +47,7 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 		dx = 0;
 		dy = 0;
 		turnLeft = false;
+		turn();
 	}
 	
 	public void turn() {

@@ -88,7 +88,6 @@ public class False_Knight extends Boss {
 		case "idle":
 			inAir = true;
 			changeArt("jump");
-			turn();
 			hold = new Delay(1200);
 			break;
 		case "normal":
