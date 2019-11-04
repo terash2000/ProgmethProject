@@ -1,9 +1,13 @@
 package object;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class MoveableCharacter extends MoveableObject implements Destroyable {
 	
 	protected double maxHp, hp, attackDamage;
-	protected boolean turnLeft;
+	protected boolean turnLeft, inAir;
+	protected List<String> artList = new ArrayList<String>();
 	
 	public MoveableCharacter(double x, double y, double width, double height) {
 		super(x, y, width, height);
@@ -12,18 +16,6 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 	public void move() {
 		turn();
 		super.move();
-	}
-	
-	protected void moveY() {
-		if(dy > maxFallSpeed && fallSpeedLimit) {
-			dy = maxFallSpeed;
-		}
-		if(dy < 0) {
-			topCheck();
-		}else if(dy >= 0) {
-			landingCheck();
-		}
-		y += dy;
 	}
 	
 	public boolean hitCheck(double x, double y, double width, double height) {
@@ -47,6 +39,13 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 		if(hp == 0) {
 			die();
 		}
+	}
+	
+	protected void changeArt(String art) {
+		body.getChildren().forEach((i)->{
+			i.setVisible(false);
+		});
+		body.getChildren().get(artList.indexOf(art)).setVisible(true);
 	}
 	
 	public void reset() {

@@ -6,7 +6,6 @@ import menu.HpBar;
 import map.MapName;
 
 import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -29,9 +28,8 @@ public class Hero extends MoveableCharacter {
 	private Delay unstable = new Delay(0);
 	protected Delay immune = new Delay(0);
 	private boolean doubleJumped = true;
-	private boolean inAir, doubleJumpable, dashable;
+	private boolean doubleJumpable, dashable;
 	private String attackEffect = ClassLoader.getSystemResource("Effect/attacking.png").toString();
-	private List<String> artList = new ArrayList<String>();
 	private HpBar hpBar;
 	
 	public Hero() {
@@ -174,13 +172,6 @@ public class Hero extends MoveableCharacter {
 			return false;
 		}
 		return super.hitCheck(x, y, width, height);
-	}
-	
-	private void changeArt(String art) {
-		body.getChildren().forEach((i)->{
-			i.setVisible(false);
-		});
-		body.getChildren().get(artList.indexOf(art)).setVisible(true);
 	}
 	
 	public void frontAttack() {

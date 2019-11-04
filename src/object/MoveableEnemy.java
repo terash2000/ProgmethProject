@@ -1,10 +1,13 @@
 package object;
 
+import application.Delay;
 import application.Main;
 
 public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	
 	private double[] spawnLocation = new double[2];
+	protected String cerrentStage;
+	protected Delay hold;
 	
 	public MoveableEnemy(double x, double y, double width, double height) {
 		super(x, y, width, height);
@@ -13,6 +16,27 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	}
 	
 	public abstract void setMovement();
+	
+	protected void changeArt(String art) {
+		cerrentStage = art;
+		super.changeArt(art);
+	}
+	
+	protected void moveY() {
+		if(dy > maxFallSpeed && fallSpeedLimit) {
+			dy = maxFallSpeed;
+		}
+		if(dy < 0) {
+			topCheck();
+		}else if(dy >= 0) {
+			if(landingCheck()) {
+				inAir = false;
+			}else {
+				inAir = true;
+			}
+		}
+		y += dy;
+	}
 	
 	public void die() {
 		Main.world.getActionableList().remove(this);

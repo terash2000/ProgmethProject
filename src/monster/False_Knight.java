@@ -33,9 +33,15 @@ public class False_Knight extends Boss {
 		body.getChildren().get(4).setLayoutY(-275);
 		artList.add("leap");
 		friction = 0.5;
-		maxHp = 800;
+		maxHp = 1000;
 		attackDamage = 25;
 		bossTheme = Music.Guren_no_Yumiya;
+	}
+	
+	public void reset() {
+		speed = 0;
+		cerrentStage = "idle";
+		super.reset();
 	}
 	
 	public void setMovement() {	
@@ -76,7 +82,7 @@ public class False_Knight extends Boss {
 		}
 	}
 	
-	protected void changeStage() {
+	private void changeStage() {
 		switch(cerrentStage) {
 		case "idle":
 			inAir = true;
@@ -126,14 +132,6 @@ public class False_Knight extends Boss {
 		}
 	}
 	
-	protected void changeArt(String art) {
-		cerrentStage = art;
-		body.getChildren().forEach((i)->{
-			i.setVisible(false);
-		});
-		body.getChildren().get(artList.indexOf(art)).setVisible(true);
-	}
-	
 	public void turn() {
 		body.getChildren().get(0).setLayoutX(turnLeft ? -125 : -225);
 		body.getChildren().get(1).setLayoutX(turnLeft ? -30 : -270);
@@ -141,11 +139,6 @@ public class False_Knight extends Boss {
 		body.getChildren().get(3).setLayoutX(turnLeft ? -70 : -280);
 		body.getChildren().get(4).setLayoutX(turnLeft ? -100 : -160);
 		super.turn();
-	}
-	
-	public void reset() {
-		speed = 0;
-		super.reset();
 	}
 
 }
