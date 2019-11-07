@@ -15,6 +15,7 @@ public class Map {
 	private List<Platform> platformList = new ArrayList<Platform>();
 	private List<Enemy> enemyList = new ArrayList<Enemy>();
 	private double width, height;
+	private boolean darkArea;
 	private Gate leftMap, rightMap, upperMap, lowerMap;
 	private Music music;
 	
@@ -38,6 +39,14 @@ public class Map {
 
 	public List<ImageView> getBackground() {
 		return background;
+	}
+
+	public boolean isDarkArea() {
+		return darkArea;
+	}
+
+	public void setDarkArea(boolean darkArea) {
+		this.darkArea = darkArea;
 	}
 
 	public List<Platform> getPlatformList() {

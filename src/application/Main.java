@@ -29,14 +29,13 @@ public class Main extends Application {
 		stage.setTitle("MyGame");
 		stage.show();
 		stage.setFullScreenExitHint("");
-		
 		newGame();
 	}
 	
 	public static void newGame() {
 		hero = new Hero();
 		createWorld();
-		world.setCerrentMap(MapName.Starter, 500, 100);
+		world.setCerrentMap(MapName.Starter, 500, 1175);
 		gameScene = new Scene(new Group(game, HpBar, inventory), 1000, 600);
 		HpBar.setLayoutX(50);
 		HpBar.setLayoutY(50);
@@ -44,19 +43,21 @@ public class Main extends Application {
 		
 		stage.setScene(gameScene);
 		stage.setFullScreen(true);
-		Controller.setKey();
+		Controller.setGameKey();
 		Controller.startGameLoop();
 	}
 	
 	public static void createWorld() {
 		world = new World();
 		createStarterMap();
+		createFalseKnightRoom();
 		createTownMap();
+		createCaveMap();
 	}
 	
 	public static void createStarterMap() {
 		Map map = new Map(2560,1440);
-		map.setRightMap(new Gate(MapName.Town, 20, 1015));
+		map.setRightMap(new Gate(MapName.False_Knight_room, 20, 1015));
 		map.addBackground(
 				ClassLoader.getSystemResource("Background/Eclipse_Sky.jpg").toString(), 1920, 1080);
 		map.addBackground(
@@ -66,7 +67,7 @@ public class Main extends Application {
 		map.addPlatform(new  Platform(
 				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 1000, 880, 174, 75));
 		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 1200, 570, 174, 75));
+				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 1500, 570, 174, 75));
 		map.addPlatform(new  Platform(
 				ClassLoader.getSystemResource("Platform/Platform2.png").toString(), 500, 420, 79, 47));
 		map.addPlatform(new  Platform(
@@ -75,16 +76,17 @@ public class Main extends Application {
 				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 0, 0, 200, 1370, false, true));
 		map.addPlatform(new  Platform(
 				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 2410, 0, 200, 1020, false, true, true, true));
-		map.addEnemy(new Glimback(1000, 1080));
-		map.addEnemy(new Vengefly(1500, 500));
-		map.addEnemy(new Vengefly(1700, 1000));
+		map.addEnemy(new Vengefly(400, 200));
+		map.addEnemy(new Vengefly(1900, 600));
+		map.addEnemy(new Vengefly(1700, 900));
 		map.setMusic(Music.Friend_shitai);
 		world.addMap(MapName.Starter, map);
 	}
 	
-	public static void createTownMap() {
+	public static void createFalseKnightRoom() {
 		Map map = new Map(2240,1260);
 		map.setLeftMap(new Gate(MapName.Starter, 2460, 1175));
+		map.setRightMap(new Gate(MapName.Town, 20, 1175));
 		map.addBackground(
 				ClassLoader.getSystemResource("Background/Sky.jpg").toString(), 1920, 1080);
 		map.addBackground(
@@ -92,12 +94,71 @@ public class Main extends Application {
 		map.addPlatform(new  Platform(
 				ClassLoader.getSystemResource("Platform/PlatformFloor2.jpg").toString(), 0, 1100, 2240, 218, true, false));
 		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft2.png").toString(), 0, 0, 100, 900, false, true, false, true));
+				ClassLoader.getSystemResource("Platform/PlatformLeft2.png").toString(), 0, 0, 100, 900, false, true));
 		map.addPlatform(new  Platform(
 				ClassLoader.getSystemResource("Platform/PlatformLeft2.png").toString(), 2140, 0, 100, 900, false, true, true, false));
 		map.addEnemy(new False_Knight(800, -1000));
 		map.setMusic(Music.Friend_shitai);
+		world.addMap(MapName.False_Knight_room, map);
+	}
+	
+	public static void createTownMap() {
+		Map map = new Map(2560,1440);
+		map.setLeftMap(new Gate(MapName.False_Knight_room, 2140, 1015));
+		map.setLowerMap(new Gate(MapName.Cave, 250, 0));
+		map.addBackground(
+				ClassLoader.getSystemResource("Background/Cloud.jpg").toString(), 1920, 1080);
+		map.addBackground(
+				ClassLoader.getSystemResource("Background/Archdragon_Peak.png").toString(), 2080, 1240);
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/PlatformFloor1.jpg").toString(), 0, 1260, 2160, 218, true, false));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), -50, 0, 200, 1020, false, true, false, true));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 2360, 0, 200, 1440, false, true, true, false));
+		map.setMusic(Music.Friend_shitai);
 		world.addMap(MapName.Town, map);
+	}
+	
+	public static void createCaveMap() {
+		Map map = new Map(1800,2400);
+		map.setUpperMap(new Gate(MapName.Town, 2220, 1440));
+		map.addBackground(
+				ClassLoader.getSystemResource("Background/Cave.jpg").toString(), 1500, 2000);
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 800, 1900, 174, 75));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 1300, 1600, 174, 75));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 1000, 880, 174, 75));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 600, 1100, 174, 75));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 700, 500, 174, 75));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/Platform2.png").toString(), 1000, 1400, 79, 47));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/Platform2.png").toString(), 1300, 700, 79, 47));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/Platform2.png").toString(), 400, 1800, 79, 47));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/PlatformFloor1.jpg").toString(), 0, 2200, 1800, 218, true, false));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/PlatformFloor1.jpg").toString(), 400, -100, 1800, 218, true, false, true, true));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 0, 0, 200, 1400, false, true, false, true));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 0, 1600, 200, 730, false, true));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 180, 400, 250, 500, false, true));
+		map.addPlatform(new  Platform(
+				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 1600, 0, 200, 2330, false, true, true, false));
+		map.addEnemy(new Vengefly(1100, 1600));
+		map.addEnemy(new Vengefly(1300, 1000));
+		map.addEnemy(new Glimback(1300, 2020));
+		map.setMusic(Music.Friend_shitai);
+		map.setDarkArea(true);
+		world.addMap(MapName.Cave, map);
 	}
 
 	public static double getSceneWidth() {

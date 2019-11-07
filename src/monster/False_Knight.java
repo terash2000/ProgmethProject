@@ -33,7 +33,7 @@ public class False_Knight extends Boss {
 		body.getChildren().get(4).setLayoutY(-275);
 		artList.add("leap");
 		friction = 0.5;
-		maxHp = 1000;
+		maxHp = 9;
 		attackDamage = 25;
 		bossTheme = Music.Guren_no_Yumiya;
 	}

@@ -8,6 +8,11 @@ import map.MapName;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.Circle;
 
 public class Hero extends MoveableCharacter {
 	
@@ -31,6 +36,7 @@ public class Hero extends MoveableCharacter {
 	private boolean doubleJumpable, dashable;
 	private String attackEffect = ClassLoader.getSystemResource("Effect/attacking.png").toString();
 	private HpBar hpBar;
+	private Circle light;
 	
 	public Hero() {
 		super(0, 0, 80, 85);
@@ -40,7 +46,7 @@ public class Hero extends MoveableCharacter {
 		artList.add("normal");
 		body.getChildren().add(new ImageView(new Image(
 				ClassLoader.getSystemResource("Character/dash.png").toString(), 200, 100, false, true)));
-		body.getChildren().get(1).setVisible(false);
+		body.getChildren().get(0).setVisible(false);
 		body.getChildren().get(1).setLayoutY(-15);
 		artList.add("dash");
 		speed = 8;
@@ -48,6 +54,10 @@ public class Hero extends MoveableCharacter {
 		hp = 100;
 		attackDamage = 20;
 		hpBar = new HpBar(maxHp);
+		light = new Circle(0, 0, 400);
+		light.setFill(new RadialGradient(0, 0, 0, 0, 400, false, 
+				CycleMethod.NO_CYCLE, new Stop(0, Color.WHITE), new Stop(1, Color.TRANSPARENT)));
+		light.setOpacity(0.5);
 	}
 	
 	private void artCheck() {
@@ -74,7 +84,7 @@ public class Hero extends MoveableCharacter {
 		if(Main.world.isBossFight()) {
 			Main.world.exitBossFight();
 		}
-		Main.world.setCerrentMap(MapName.Starter, 500, 100);
+		Main.world.setCerrentMap(MapName.Starter, 500, 1175);
 		hp = maxHp;
 	}
 	
@@ -90,6 +100,8 @@ public class Hero extends MoveableCharacter {
 		Main.world.changeView();
 		body.setLayoutX(x - Main.world.getViewX());
 		body.setLayoutY(y - Main.world.getViewY());
+		light.setLayoutX(x + 40 - Main.world.getViewX());
+		light.setLayoutY(y + 42 - Main.world.getViewY());
 	}
 	
 	protected void moveY() {
@@ -151,6 +163,7 @@ public class Hero extends MoveableCharacter {
 		if(y + dy < 0 && Main.world.getCerrentMap().getUpperMap() != null
 				&& !Main.world.isBossFight()) {
 			Main.world.getCerrentMap().getUpperMap().travel();
+			dy = -28;
 			return false;
 		}
 		return super.topCheck();
@@ -357,6 +370,10 @@ public class Hero extends MoveableCharacter {
 
 	public Delay getUnstable() {
 		return unstable;
+	}
+
+	public Circle getLight() {
+		return light;
 	}
 
 }

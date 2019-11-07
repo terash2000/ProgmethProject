@@ -29,7 +29,7 @@ public class Controller {
 		gameLoop.start();
 	}
 	
-	public static void setKey() {
+	public static void setGameKey() {
 		Main.gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override 
 			public void handle(KeyEvent event) {
@@ -54,6 +54,15 @@ public class Controller {
 					break;
 				case D:
 					dash = true;
+					break;
+				case I:
+					if(pause) {
+						pause = false;
+						//close Inventory
+					}else {
+						pause = true;
+						//open Inventory
+					}
 					break;
 				default:	   
 					break;

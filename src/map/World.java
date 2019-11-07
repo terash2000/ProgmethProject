@@ -48,16 +48,19 @@ public class World {
 		platformList.clear();
 		actionableList.clear();
 		destroyableList.clear();
-		for(Platform i:cerrentMap.getPlatformList()) {
-			platformList.add(i);
-			Main.game.getChildren().add(i.getBody());
+		if(cerrentMap.isDarkArea()) {
+			Main.game.getChildren().add(Main.hero.getLight());
 		}
+		Main.game.getChildren().add(Main.hero.getBody());
 		for(Enemy i:cerrentMap.getEnemyList()) {
 			actionableList.add(i);
 			destroyableList.add(i);
 			i.spawn();
 		}
-		Main.game.getChildren().add(Main.hero.getBody());
+		for(Platform i:cerrentMap.getPlatformList()) {
+			platformList.add(i);
+			Main.game.getChildren().add(i.getBody());
+		}
 		setHeroLocation(x, y);
 		Sound.changeBackgroundMusic(cerrentMap.getMusic());
 	}
@@ -66,7 +69,7 @@ public class World {
 		Main.hero.reset();
 		Main.hero.setX(x);
 		Main.hero.setY(y);
-		changeView();
+		Main.hero.changeView();
 	}
 	
 	public void changeView() {

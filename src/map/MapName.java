@@ -2,5 +2,7 @@ package map;
 
 public enum MapName {
 	Starter,
-	Town;
+	False_Knight_room,
+	Town,
+	Cave;
 }
