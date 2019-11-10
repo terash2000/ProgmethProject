@@ -1,20 +1,21 @@
 package application;
 
+import javafx.application.Application;
+import javafx.scene.*;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import map.*;
 import monster.*;
 import object.Hero;
 import object.Platform;
-import map.*;
-
-import javafx.application.Application;
-import javafx.scene.*;
-import javafx.stage.Stage;
+import object.PlatformType;
 
 public class Main extends Application {
 	private static double sceneWidth, sceneHeight;
 	public static Stage stage;
 	public static Scene gameScene;
 	public static Group game = new Group();
-	public static Group HpBar = new Group();
+	public static StackPane HpBar = new StackPane();
 	public static Group inventory = new Group();
 	public static World world;
 	public static Hero hero;
@@ -62,20 +63,13 @@ public class Main extends Application {
 				ClassLoader.getSystemResource("Background/Eclipse_Sky.jpg").toString(), 1920, 1080);
 		map.addBackground(
 				ClassLoader.getSystemResource("Background/Kiln_of_the_First_Flame.png").toString(), 2080, 1240);
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 700, 670, 174, 75));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 1000, 880, 174, 75));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 1500, 570, 174, 75));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform2.png").toString(), 500, 420, 79, 47));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformFloor1.jpg").toString(), 0, 1260, 2560, 218, true, false));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 0, 0, 200, 1370, false, true));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 2410, 0, 200, 1020, false, true, true, true));
+		map.addPlatform(new  Platform(PlatformType.Platform1, 700, 670));
+		map.addPlatform(new  Platform(PlatformType.Platform1, 1000, 880));
+		map.addPlatform(new  Platform(PlatformType.Platform1, 1500, 570));
+		map.addPlatform(new  Platform(PlatformType.Platform2, 500, 420));
+		map.addPlatform(new  Platform(PlatformType.FloorPlatform1, 0, 1260, 2560, 218));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform1, 0, 0, 200, 1370));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform1, 2410, 0, 200, 1020, true, true));
 		map.addEnemy(new Vengefly(400, 200));
 		map.addEnemy(new Vengefly(1900, 600));
 		map.addEnemy(new Vengefly(1700, 900));
@@ -91,12 +85,9 @@ public class Main extends Application {
 				ClassLoader.getSystemResource("Background/Sky.jpg").toString(), 1920, 1080);
 		map.addBackground(
 				ClassLoader.getSystemResource("Background/Castle.png").toString(), 2080, 1240);
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformFloor2.jpg").toString(), 0, 1100, 2240, 218, true, false));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft2.png").toString(), 0, 0, 100, 900, false, true));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft2.png").toString(), 2140, 0, 100, 900, false, true, true, false));
+		map.addPlatform(new  Platform(PlatformType.FloorPlatform2, 0, 1100, 2240, 218));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform2, 0, 0, 100, 900));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform2, 2140, 0, 100, 900, true, false));
 		map.addEnemy(new False_Knight(800, -1000));
 		map.setMusic(Music.Friend_shitai);
 		world.addMap(MapName.False_Knight_room, map);
@@ -110,12 +101,9 @@ public class Main extends Application {
 				ClassLoader.getSystemResource("Background/Cloud.jpg").toString(), 1920, 1080);
 		map.addBackground(
 				ClassLoader.getSystemResource("Background/Archdragon_Peak.png").toString(), 2080, 1240);
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformFloor1.jpg").toString(), 0, 1260, 2160, 218, true, false));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), -50, 0, 200, 1020, false, true, false, true));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 2360, 0, 200, 1440, false, true, true, false));
+		map.addPlatform(new  Platform(PlatformType.FloorPlatform1, 0, 1260, 2160, 218));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform1, -50, 0, 200, 1020, false, true));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform1, 2360, 0, 200, 1440, true, false));
 		map.setMusic(Music.Friend_shitai);
 		world.addMap(MapName.Town, map);
 	}
@@ -125,34 +113,20 @@ public class Main extends Application {
 		map.setUpperMap(new Gate(MapName.Town, 2220, 1440));
 		map.addBackground(
 				ClassLoader.getSystemResource("Background/Cave.jpg").toString(), 1500, 2000);
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 800, 1900, 174, 75));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 1300, 1600, 174, 75));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 1000, 880, 174, 75));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 600, 1100, 174, 75));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform1.png").toString(), 700, 500, 174, 75));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform2.png").toString(), 1000, 1400, 79, 47));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform2.png").toString(), 1300, 700, 79, 47));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/Platform2.png").toString(), 400, 1800, 79, 47));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformFloor1.jpg").toString(), 0, 2200, 1800, 218, true, false));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformFloor1.jpg").toString(), 400, -100, 1800, 218, true, false, true, true));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 0, 0, 200, 1400, false, true, false, true));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 0, 1600, 200, 730, false, true));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 180, 400, 250, 500, false, true));
-		map.addPlatform(new  Platform(
-				ClassLoader.getSystemResource("Platform/PlatformLeft1.jpg").toString(), 1600, 0, 200, 2330, false, true, true, false));
+		map.addPlatform(new  Platform(PlatformType.Platform1, 800, 1900));
+		map.addPlatform(new  Platform(PlatformType.Platform1, 1300, 1600));
+		map.addPlatform(new  Platform(PlatformType.Platform1, 1000, 880));
+		map.addPlatform(new  Platform(PlatformType.Platform1, 600, 1100));
+		map.addPlatform(new  Platform(PlatformType.Platform1, 700, 500));
+		map.addPlatform(new  Platform(PlatformType.Platform2, 1000, 1400));
+		map.addPlatform(new  Platform(PlatformType.Platform2, 1300, 700));
+		map.addPlatform(new  Platform(PlatformType.Platform2, 400, 1800));
+		map.addPlatform(new  Platform(PlatformType.FloorPlatform1, 0, 2200, 1800, 218));
+		map.addPlatform(new  Platform(PlatformType.FloorPlatform1, 400, -100, 1800, 218, true, true));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform1, 0, 0, 200, 1400, false, true));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform1, 0, 1600, 200, 730));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform1, 180, 400, 250, 500));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform1, 1600, 0, 200, 2330, true, false));
 		map.addEnemy(new Vengefly(1100, 1600));
 		map.addEnemy(new Vengefly(1300, 1000));
 		map.addEnemy(new Glimback(1300, 2020));

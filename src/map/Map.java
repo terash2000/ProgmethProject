@@ -1,11 +1,10 @@
 package map;
 
-import application.Music;
-
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import application.Music;
 import object.Enemy;
 import object.Platform;
 

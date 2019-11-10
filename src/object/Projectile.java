@@ -28,29 +28,46 @@ public class Projectile extends MoveableObject implements Actionable {
 	}
 	
 	protected void moveX() {
-		if(dx < 0 && leftWallCheck()) {
-			remove();
-		}else if(dx > 0 && rightWallCheck()) {
-			remove();
+		if(dx < 0) {
+			try {
+				leftWallCheck();
+				x +=dx;
+			} catch(HitWallException e) {
+				remove();
+			}
+		}else if(dx > 0) {
+			try {
+				rightWallCheck();
+				x +=dx;
+			} catch(HitWallException e) {
+				remove();
+			}
 		}
-		x +=dx;
 	}
 	
 	protected void moveY() {
 		if(dy > maxFallSpeed && fallSpeedLimit) {
 			dy = maxFallSpeed;
 		}
-		if(dy < 0 && topCheck()) {
-			remove();
-		}else if(dy > 0 && landingCheck()) {
-			remove();
+		if(dy < 0) {
+			try {
+				topCheck();
+			} catch(HitWallException e) {
+				remove();
+			}
+		}else if(dy > 0) {
+			try {
+				landingCheck();
+			} catch(HitWallException e) {
+				remove();
+			}
 		}
 		y += dy;
 	}
 	
 	private void remove() {
 		Main.world.getActionableList().remove(this);
-		Main.game.getChildren().remove(body);
+		Main.game.getChildren().remove(this);
 	}
 
 }

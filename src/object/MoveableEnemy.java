@@ -27,12 +27,19 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 			dy = maxFallSpeed;
 		}
 		if(dy < 0) {
-			topCheck();
-		}else if(dy >= 0) {
-			if(landingCheck()) {
-				inAir = false;
-			}else {
+			try {
+				topCheck();
 				inAir = true;
+			} catch(HitWallException exception) {
+				dy = exception.distance;
+			}
+		}else if(dy >= 0) {
+			try {
+				landingCheck();
+				inAir = true;
+			} catch(HitWallException exception) {
+				dy = exception.distance;
+				inAir = false;
 			}
 		}
 		y += dy;
@@ -41,13 +48,13 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	public void die() {
 		Main.world.getActionableList().remove(this);
 		Main.world.getDestroyableList().remove(this);
-		Main.game.getChildren().remove(body);
+		Main.game.getChildren().remove(this);
 	}
 	
 	public void spawn() {
 		reset();
 		hp = maxHp;
-		Main.game.getChildren().add(body);
+		Main.game.getChildren().add(this);
 		x = spawnLocation[0];
 		y = spawnLocation[1];
 		fallSpeedLimit = true;

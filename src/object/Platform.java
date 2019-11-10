@@ -5,8 +5,34 @@ import javafx.scene.image.ImageView;
 
 public class Platform extends GameObject {
 	
-	public Platform(String ImagePath, double x, double y, double width, double height) {
-		super(ImagePath, x, y, width, height);
+	public Platform(PlatformType platformType, double x, double y) {
+		super(platformType.getPath(), x, y, platformType.getWidth(), platformType.getHeight());
+	}
+	
+	public Platform(PlatformType platformType, double x, double y, double width, double height) {
+		super(x, y, width, height);
+		Image image = new Image(platformType.getPath());
+		int nX = platformType.multiX() ? (int)(width/image.getWidth() + 0.5) : 1;
+		int nY = platformType.multiY() ? (int)(height/image.getHeight() + 0.5) : 1;
+		image = new Image(platformType.getPath(), width/nX + 1, height/nY + 1, false, true);
+		for(int i = 0; i < nX; i++) {
+			for(int j = 0; j < nY; j++) {
+				getChildren().add(new ImageView(image));
+				getChildren().get(getChildren().size() - 1).setLayoutX(width/nX*i);
+				getChildren().get(getChildren().size() - 1).setLayoutY(height/nY*j);
+			}
+		}
+	}
+	
+	public Platform(PlatformType platformType, double x, double y, double width, double height, 
+			boolean flipX, boolean flipY) {
+		this(platformType, x, y, width, height);
+		if(flipX) {
+			setScaleX(-1);
+		}
+		if(flipY) {
+			setScaleY(-1);
+		}
 	}
 	
 	public Platform(String ImagePath, double x, double y, double width, double height,
@@ -18,9 +44,9 @@ public class Platform extends GameObject {
 		image = new Image(ImagePath, width/nX + 1, height/nY + 1, false, true);
 		for(int i = 0; i < nX; i++) {
 			for(int j = 0; j < nY; j++) {
-				body.getChildren().add(new ImageView(image));
-				body.getChildren().get(body.getChildren().size() - 1).setLayoutX(width/nX*i);
-				body.getChildren().get(body.getChildren().size() - 1).setLayoutY(height/nY*j);
+				getChildren().add(new ImageView(image));
+				getChildren().get(getChildren().size() - 1).setLayoutX(width/nX*i);
+				getChildren().get(getChildren().size() - 1).setLayoutY(height/nY*j);
 			}
 		}
 	}
@@ -29,55 +55,47 @@ public class Platform extends GameObject {
 			boolean multiX, boolean multiY ,boolean flipX, boolean flipY) {
 		this(ImagePath, x, y, width, height, multiX, multiY);
 		if(flipX) {
-			body.setScaleX(-1);
+			setScaleX(-1);
 		}
 		if(flipY) {
-			body.setScaleY(-1);
+			setScaleY(-1);
 		}
 	}
 	
-	public boolean checkTop(MoveableObject character) {
-		if(character.getX() + character.getSize()[0] > x && 
-				character.getX() < x+size[0] && 
-				character.getY() + character.getSize()[1] <= y && 
-				character.getY() + character.getSize()[1] + character.getDy() >= y) {
-			character.setDy(y - character.getY() - character.getSize()[1]);
-			return true;
+	public void checkTop(MoveableObject character) throws HitWallException {
+		if(character.getX() + character.getSize()[0] > x 
+				&& character.getX() < x+size[0] 
+				&& character.getY() + character.getSize()[1] <= y 
+				&& character.getY() + character.getSize()[1] + character.getDy() >= y) {
+			throw new HitWallException(y - character.getY() - character.getSize()[1]);
 		}
-		return false;
 	}
 	
-	public boolean checkBottom(MoveableObject character) {
-		if(character.getX() + character.getSize()[0] > x && 
-				character.getX() < x+size[0] && 
-				character.getY() >= y+size[1] && 
-				character.getY() + character.getDy() < y+size[1]) {
-			character.setDy(y+size[1] - character.getY());
-			return true;
+	public void checkBottom(MoveableObject character) throws HitWallException {
+		if(character.getX() + character.getSize()[0] > x 
+				&& character.getX() < x+size[0] 
+				&& character.getY() >= y+size[1] 
+				&& character.getY() + character.getDy() < y+size[1]) {
+			throw new HitWallException(y+size[1] - character.getY());
 		}
-		return false;
 	}
 	
-	public boolean checkLeft(MoveableObject character) {
-		if(character.getY() + character.getSize()[1] > y && 
-				character.getY() < y+size[1] && 
-				character.getX() + character.getSize()[0] <= x && 
-				character.getX() + character.getSize()[0] + character.getDx() > x) {
-			character.setDx(x - character.getX() - character.getSize()[0]);
-			return true;
+	public void checkLeft(MoveableObject character) throws HitWallException {
+		if(character.getY() + character.getSize()[1] > y 
+				&& character.getY() < y+size[1] 
+				&& character.getX() + character.getSize()[0] <= x 
+				&& character.getX() + character.getSize()[0] + character.getDx() > x) {
+			throw new HitWallException(x - character.getX() - character.getSize()[0]);
 		}
-		return false;
 	}
 	
-	public boolean checkRight(MoveableObject character) {
-		if(character.getY() + character.getSize()[1] > y && 
-				character.getY() < y+size[1] && 
-				character.getX() >= x+size[0] && 
-				character.getX() + character.getDx() < x+size[0]) {
-			character.setDx(x+size[0] - character.getX());
-			return true;
+	public void checkRight(MoveableObject character) throws HitWallException {
+		if(character.getY() + character.getSize()[1] > y 
+				&& character.getY() < y+size[1] 
+				&& character.getX() >= x+size[0] 
+				&& character.getX() + character.getDx() < x+size[0]) {
+			throw new HitWallException(x+size[0] - character.getX());
 		}
-		return false;
 	}
 	
 }

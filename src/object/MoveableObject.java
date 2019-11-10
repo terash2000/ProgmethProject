@@ -5,10 +5,10 @@ import application.Main;
 public abstract class MoveableObject extends GameObject {
 	
 	protected double dx, dy;
-	protected double gravity = 1;
 	protected double friction = 0.3;
-	protected double speed;
+	protected double gravity = 1;
 	protected double maxFallSpeed = 25;
+	protected double speed;
 	protected boolean fallSpeedLimit = true;
 	
 	public MoveableObject(double x, double y, double width, double height) {
@@ -27,11 +27,22 @@ public abstract class MoveableObject extends GameObject {
 	
 	protected void moveX() {
 		if(dx < 0) {
-			leftWallCheck();
+			try {
+				leftWallCheck();
+				x +=dx;
+			} catch(HitWallException exception) {
+				x += exception.distance;
+				dx = 0;
+			}
 		}else if(dx > 0) {
-			rightWallCheck();
+			try {
+				rightWallCheck();
+				x +=dx;
+			} catch(HitWallException exception) {
+				x += exception.distance;
+				dx = 0;
+			}
 		}
-		x +=dx;
 	}
 	
 	protected void moveY() {
@@ -39,64 +50,75 @@ public abstract class MoveableObject extends GameObject {
 			dy = maxFallSpeed;
 		}
 		if(dy < 0) {
-			topCheck();
+			try {
+				topCheck();
+				y += dy;
+			} catch(HitWallException exception) {
+				y += exception.distance;
+				dy = 0;
+			}
 		}else if(dy >= 0) {
-			landingCheck();
+			try {
+				landingCheck();
+				y += dy;
+			} catch(HitWallException exception) {
+				y += exception.distance;
+				dy = 0;
+			}
 		}
-		y += dy;
 	}
 	
-	protected boolean leftWallCheck() {
-		for(Platform i:Main.world.getCerrentMap().getPlatformList()) {
-			if(i.checkRight(this)) {
-				return true;
+	protected void leftWallCheck() throws HitWallException {
+		for(Platform platform:Main.world.getCerrentMap().getPlatformList()) {
+			try {
+				platform.checkRight(this);
+			} catch(HitWallException exception) {
+				throw exception;
 			}
 		}
 		if(x + dx < 0) {
-			dx = -x;
-			return true;
+			throw new HitWallException(-x);
 		}
-		return false;
 	}
 	
-	protected boolean rightWallCheck() {
-		for(Platform i:Main.world.getCerrentMap().getPlatformList()) {
-			if(i.checkLeft(this)) {
-				return true;
+	protected void rightWallCheck() throws HitWallException {
+		for(Platform platform:Main.world.getCerrentMap().getPlatformList()) {
+			try {
+				platform.checkLeft(this);
+			} catch(HitWallException exception) {
+				throw exception;
 			}
 		}
 		if(x + dx > Main.world.getCerrentMap().getWidth() - size[0]) {
-			dx = Main.world.getCerrentMap().getWidth() - size[0] - x;
-			return true;
+			throw new HitWallException(Main.world.getCerrentMap().getWidth() - size[0] - x);
 		}
-		return false;
 	}
 	
-	protected boolean topCheck() {
-		for(Platform i:Main.world.getCerrentMap().getPlatformList()) {
-			if(i.checkBottom(this)) {
-				return true;
+	protected void topCheck() throws HitWallException {
+		for(Platform platform:Main.world.getCerrentMap().getPlatformList()) {
+			try {
+				platform.checkBottom(this);
+			} catch(HitWallException exception) {
+				throw exception;
 			}
 		}
 		if(y + dy < 0) {
-			dy = -y;
-			return true;
+			throw new HitWallException(-y);
 		}
-		return false;
 	}
 	
 	
-	protected boolean landingCheck() {
-		for(Platform i:Main.world.getCerrentMap().getPlatformList()) {
-			if(i.checkTop(this)) {
-				return true;
+	protected void landingCheck() throws HitWallException {
+		for(Platform platform:Main.world.getCerrentMap().getPlatformList()) {
+			try {
+				platform.checkTop(this);
+			} catch(HitWallException exception) {
+				throw exception;
 			}
 		}
 		if(y + dy > Main.world.getCerrentMap().getHeight() - size[1]) {
-			dy = Main.world.getCerrentMap().getHeight() - size[1] - y;
-			return true;
+			throw new HitWallException(Main.world.getCerrentMap().getHeight() - size[1] - y);
 		}
-		return false;
 	}
 
 	public double getDx() {
@@ -117,14 +139,6 @@ public abstract class MoveableObject extends GameObject {
 
 	public void setFallSpeedLimit(boolean fallSpeedLimit) {
 		this.fallSpeedLimit = fallSpeedLimit;
-	}
-
-	public double getFriction() {
-		return friction;
-	}
-
-	public void setFriction(double friction) {
-		this.friction = friction > 1 ? 1 : (friction < 0 ? 0 : friction);
 	}
 
 	public double getGravity() {

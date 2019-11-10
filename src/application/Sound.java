@@ -15,7 +15,7 @@ public class Sound {
 			if(bgmPlayer != null) {
 				bgmPlayer.stop();
 			}
-			bgmPlayer = new MediaPlayer(new Media(music.toString()));
+			bgmPlayer = new MediaPlayer(new Media(music.getPath()));
 			bgmPlayer.setVolume(volume);
 			bgmPlayer.play();
 			bgmPlayer.setOnEndOfMedia(new Runnable() {

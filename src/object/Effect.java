@@ -15,17 +15,17 @@ public class Effect extends GameObject implements Actionable {
 	public Effect(String imagePath, long time, double x, double y, double width, double height, boolean flipX, boolean flipY) {
 		this(imagePath, time, x, y, width, height);
 		if(flipX) {
-			body.setScaleX(-1);
+			setScaleX(-1);
 		}
 		if(flipY) {
-			body.setScaleY(-1);
+			setScaleY(-1);
 		}
 	}
 	
 	public void action() {
 		if(!delay.isAlive()) {
 			Main.world.getActionableList().remove(this);
-			Main.game.getChildren().remove(body);
+			Main.game.getChildren().remove(this);
 		}
 	}
 

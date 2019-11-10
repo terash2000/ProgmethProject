@@ -1,15 +1,15 @@
 package monster;
 
-import application.Main;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import application.Main;
 import object.MoveableEnemy;
 
 public class Vengefly extends MoveableEnemy {
 	
 	public Vengefly(double x, double y) {
 		super(x, y, 130, 80);
-		body.getChildren().add(new ImageView(new Image(
+		getChildren().add(new ImageView(new Image(
 				ClassLoader.getSystemResource("Character/Vengefly.png").toString(), 130, 80, false, true)));
 		artList.add("normal");
 		friction = 0.05;

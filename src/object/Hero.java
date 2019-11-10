@@ -1,10 +1,5 @@
 package object;
 
-import application.Delay;
-import application.Main;
-import menu.HpBar;
-import map.MapName;
-
 import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +8,10 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
+import application.Delay;
+import application.Main;
+import menu.HeroHpBar;
+import map.MapName;
 
 public class Hero extends MoveableCharacter {
 	
@@ -35,28 +34,27 @@ public class Hero extends MoveableCharacter {
 	private boolean doubleJumped = true;
 	private boolean doubleJumpable, dashable;
 	private String attackEffect = ClassLoader.getSystemResource("Effect/attacking.png").toString();
-	private HpBar hpBar;
-	private Circle light;
+	private HeroHpBar hpBar;
+	private Circle light = new Circle(0, 0, 400, new RadialGradient(0, 0, 0, 0, 400, false, 
+			CycleMethod.NO_CYCLE, new Stop(0, Color.WHITE), new Stop(1, Color.TRANSPARENT)));;
 	
 	public Hero() {
 		super(0, 0, 80, 85);
-		body.getChildren().add(new ImageView(new Image(
+		getChildren().add(new ImageView(new Image(
 				ClassLoader.getSystemResource("Character/hero.png").toString(), 80, 100, false, true)));
-		body.getChildren().get(0).setLayoutY(-15);
+		getChildren().get(0).setLayoutY(-15);
 		artList.add("normal");
-		body.getChildren().add(new ImageView(new Image(
+		getChildren().add(new ImageView(new Image(
 				ClassLoader.getSystemResource("Character/dash.png").toString(), 200, 100, false, true)));
-		body.getChildren().get(0).setVisible(false);
-		body.getChildren().get(1).setLayoutY(-15);
+		getChildren().get(0).setVisible(false);
+		getChildren().get(1).setLayoutY(-15);
 		artList.add("dash");
 		speed = 8;
 		maxHp = 100;
 		hp = 100;
 		attackDamage = 20;
-		hpBar = new HpBar(maxHp);
-		light = new Circle(0, 0, 400);
-		light.setFill(new RadialGradient(0, 0, 0, 0, 400, false, 
-				CycleMethod.NO_CYCLE, new Stop(0, Color.WHITE), new Stop(1, Color.TRANSPARENT)));
+		hpBar = new HeroHpBar(maxHp);
+		Main.HpBar = hpBar;
 		light.setOpacity(0.5);
 	}
 	
@@ -77,7 +75,7 @@ public class Hero extends MoveableCharacter {
 	
 	public void turn(boolean turnLeft) {
 		super.turn(turnLeft);
-		body.getChildren().get(1).setLayoutX(turnLeft ? 0 : -120);
+		getChildren().get(1).setLayoutX(turnLeft ? 0 : -120);
 	}
 	
 	public void die() {
@@ -89,8 +87,10 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void attacked(double damage, double knockbackX, double knockbackY) {
-		makeImmune(recoverTime);
-		makeUnstable(recoverTime/2);
+		immune.interrupt();
+		immune = new Delay(recoverTime);
+		unstable.interrupt();
+		unstable = new Delay(recoverTime/2);
 		dash.interrupt();
 		dashable = true;
 		super.attacked(damage, knockbackX, knockbackY);
@@ -98,8 +98,8 @@ public class Hero extends MoveableCharacter {
 	
 	public void changeView() {
 		Main.world.changeView();
-		body.setLayoutX(x - Main.world.getViewX());
-		body.setLayoutY(y - Main.world.getViewY());
+		setLayoutX(x - Main.world.getViewX());
+		setLayoutY(y - Main.world.getViewY());
 		light.setLayoutX(x + 40 - Main.world.getViewX());
 		light.setLayoutY(y + 42 - Main.world.getViewY());
 	}
@@ -109,21 +109,30 @@ public class Hero extends MoveableCharacter {
 			dy = maxFallSpeed;
 		}
 		if(dy < 0) {
-			topCheck();
-			inAir = true;
-		}else if(dy >= 0) {
-			if(landingCheck()) {
+			try {
+				topCheck();
+				y += dy;
+				inAir = true;
+			} catch(HitWallException exception) {
+				y += exception.distance;
+				dy = 0;
+			}
+		}else if(dy >= 0) {		
+			try {
+				landingCheck();
+				y += dy;
+				inAir = true;
+			} catch(HitWallException exception) {
+				y += exception.distance;
+				dy = 0;
 				inAir = false;
 				doubleJumped = false;
 				doubleJumpable = false;
 				if(!dashCooldown.isAlive()) {
 					dashable = true;
 				}
-			}else {
-				inAir = true;
 			}
 		}
-		y += dy;
 	}
 	
 	public void reset() {
@@ -140,44 +149,44 @@ public class Hero extends MoveableCharacter {
 		dashable = false;
 	}
 	
-	protected boolean leftWallCheck() {
+	protected void leftWallCheck() throws HitWallException {
 		if(x + dx < 0 && Main.world.getCerrentMap().getLeftMap() != null
 				&& !Main.world.isBossFight()) {
 			Main.world.getCerrentMap().getLeftMap().travel();
-			return false;
+		}else {
+			super.leftWallCheck();
 		}
-		return super.leftWallCheck();
 	}
 	
-	protected boolean rightWallCheck() {
+	protected void rightWallCheck() throws HitWallException {
 		if(x + dx > Main.world.getCerrentMap().getWidth() - size[0]
 				&& Main.world.getCerrentMap().getRightMap() != null
 				&& !Main.world.isBossFight()) {
 			Main.world.getCerrentMap().getRightMap().travel();
-			return false;
+		}else {
+			super.rightWallCheck();
 		}
-		return super.rightWallCheck();
 	}
 	
-	protected boolean topCheck() {
+	protected void topCheck() throws HitWallException {
 		if(y + dy < 0 && Main.world.getCerrentMap().getUpperMap() != null
 				&& !Main.world.isBossFight()) {
 			Main.world.getCerrentMap().getUpperMap().travel();
 			dy = -28;
-			return false;
+		}else {
+			super.topCheck();
 		}
-		return super.topCheck();
 	}
 	
 	
-	protected boolean landingCheck() {
+	protected void landingCheck() throws HitWallException {
 		if(y + dy > Main.world.getCerrentMap().getHeight() - size[1] 
 				&& Main.world.getCerrentMap().getLowerMap() != null
 				&& !Main.world.isBossFight()) {
 			Main.world.getCerrentMap().getLowerMap().travel();
-			return false;
+		}else {
+			super.landingCheck();
 		}
-		return super.landingCheck();
 	}
 	
 	public boolean hitCheck(double x, double y, double width, double height) {
@@ -194,9 +203,9 @@ public class Hero extends MoveableCharacter {
 			Main.world.addObject(
 					new Effect(attackEffect, 30, x+dx+(turnLeft?-120:0), y+dy-30, 200, 100, turnLeft, false));
 			boolean hit = false;
-			for(Destroyable i:new ArrayList<Destroyable>(Main.world.getDestroyableList())) {
-				if(i.hitCheck(x+dx+(turnLeft?-120:0), y+dy-30, 200, 100)) {
-					i.attacked(attackDamage, turnLeft?-15:15, 0);
+			for(Destroyable destroyable: new ArrayList<Destroyable>(Main.world.getDestroyableList())) {
+				if(destroyable.hitCheck(x+dx+(turnLeft?-120:0), y+dy-30, 200, 100)) {
+					destroyable.attacked(attackDamage, turnLeft?-15:15, 0);
 					hit = true;
 				}
 			}
@@ -211,12 +220,12 @@ public class Hero extends MoveableCharacter {
 			dash.interrupt();
 			attackCooldown = new Delay(attackTime);
 			Effect effect = new Effect(attackEffect, 20, x+dx+(turnLeft ? -50 : -70), y+dy-75, 200, 100, turnLeft, false);
-			effect.getBody().setRotate(turnLeft ? 90 : 270);
+			effect.setRotate(turnLeft ? 90 : 270);
 			Main.world.addObject(effect);
 			boolean hit = false;
-			for(Destroyable i:new ArrayList<Destroyable>(Main.world.getDestroyableList())) {
-				if(i.hitCheck(x+dx+(turnLeft?0:-20), y+dy-125, 100, 200)) {
-					i.attacked(attackDamage, 0, 12);
+			for(Destroyable destroyable: new ArrayList<Destroyable>(Main.world.getDestroyableList())) {
+				if(destroyable.hitCheck(x+dx+(turnLeft?0:-20), y+dy-125, 100, 200)) {
+					destroyable.attacked(attackDamage, 0, 12);
 					hit = true;
 				}
 			}
@@ -232,11 +241,11 @@ public class Hero extends MoveableCharacter {
 				dash.interrupt();
 				attackCooldown = new Delay(attackTime);
 				Effect effect = new Effect(attackEffect, 20, x+dx+(turnLeft ? -70 : -50), y+dy+60, 200, 100, turnLeft, false);
-				effect.getBody().setRotate(turnLeft ? 270 : 90);
+				effect.setRotate(turnLeft ? 270 : 90);
 				Main.world.addObject(effect);
-				for(Destroyable i:new ArrayList<Destroyable>(Main.world.getDestroyableList())) {
-					if(i.hitCheck(x+dx+(turnLeft?-20:0), y+dy+10, 100, 200)) {
-						i.attacked(attackDamage, 0, -5);
+				for(Destroyable destroyable: new ArrayList<Destroyable>(Main.world.getDestroyableList())) {
+					if(destroyable.hitCheck(x+dx+(turnLeft?-20:0), y+dy+10, 100, 200)) {
+						destroyable.attacked(attackDamage, 0, -5);
 						dy = -15;
 					}
 				}
@@ -296,7 +305,8 @@ public class Hero extends MoveableCharacter {
 			dash = new Delay(dashTime, turnLeft ? -dashPower : dashPower);
 			dashCooldown = new Delay(dashCooldownTime);
 			dashable = false;
-			makeUnstable(300);
+			unstable.interrupt();
+			unstable = new Delay(dashCooldownTime*2/3);
 		}
 	}
 	
@@ -308,16 +318,6 @@ public class Hero extends MoveableCharacter {
 			return true;
 		}
 		return false;
-	}
-	
-	public void makeImmune(long time) {
-		immune.interrupt();
-		immune = new Delay(time);
-	}
-	
-	public void makeUnstable(long time) {
-		unstable.interrupt();
-		unstable = new Delay(time);
 	}
 
 	public double getDivePower() {

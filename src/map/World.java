@@ -1,5 +1,9 @@
 package map;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javafx.scene.image.ImageView;
 import application.Main;
 import application.Sound;
 import object.Actionable;
@@ -8,10 +12,6 @@ import object.Enemy;
 import object.GameObject;
 import object.Platform;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import javafx.scene.image.ImageView;
 public class World {
 	
 	private HashMap<MapName, Map> mapList = new HashMap<MapName, Map>();
@@ -35,7 +35,7 @@ public class World {
 			Destroyable destroyable = (Destroyable) object;
 			destroyableList.add(destroyable);
 		}
-		Main.game.getChildren().add(object.getBody());
+		Main.game.getChildren().add(object);
 		object.changeView();
 	}
 	
@@ -51,15 +51,15 @@ public class World {
 		if(cerrentMap.isDarkArea()) {
 			Main.game.getChildren().add(Main.hero.getLight());
 		}
-		Main.game.getChildren().add(Main.hero.getBody());
-		for(Enemy i:cerrentMap.getEnemyList()) {
-			actionableList.add(i);
-			destroyableList.add(i);
-			i.spawn();
+		Main.game.getChildren().add(Main.hero);
+		for(Enemy enemy: cerrentMap.getEnemyList()) {
+			actionableList.add(enemy);
+			destroyableList.add(enemy);
+			enemy.spawn();
 		}
-		for(Platform i:cerrentMap.getPlatformList()) {
-			platformList.add(i);
-			Main.game.getChildren().add(i.getBody());
+		for(Platform platform: cerrentMap.getPlatformList()) {
+			platformList.add(platform);
+			Main.game.getChildren().add(platform);
 		}
 		setHeroLocation(x, y);
 		Sound.changeBackgroundMusic(cerrentMap.getMusic());
@@ -83,11 +83,11 @@ public class World {
 			i.setLayoutX(-viewX*(i.getImage().getWidth()-Main.getSceneWidth())/(width-Main.getSceneWidth()));
 			i.setLayoutY(-viewY*(i.getImage().getHeight()-Main.getSceneHeight())/(height-Main.getSceneHeight()));
 		}
-		for(Platform i:platformList) {
-			i.changeView();
+		for(Platform platform: platformList) {
+			platform.changeView();
 		}
-		for(Actionable i:actionableList) {
-			i.changeView();
+		for(Actionable actionable: actionableList) {
+			actionable.changeView();
 		}
 	}
 	

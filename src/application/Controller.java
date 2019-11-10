@@ -1,11 +1,10 @@
 package application;
 
-import object.Actionable;
-
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import object.Actionable;
 
 public class Controller {
 	
@@ -58,10 +57,10 @@ public class Controller {
 				case I:
 					if(pause) {
 						pause = false;
-						//close Inventory
+						//TODO close Inventory
 					}else {
 						pause = true;
-						//open Inventory
+						//TODO open Inventory
 					}
 					break;
 				default:	   
@@ -132,8 +131,8 @@ public class Controller {
 	}
 	
 	private static void updateObject(){
-		for(Actionable i:new ArrayList<Actionable>(Main.world.getActionableList())) {
-			i.action();
+		for(Actionable actionable: new ArrayList<Actionable>(Main.world.getActionableList())) {
+			actionable.action();
 		}
 	}
 

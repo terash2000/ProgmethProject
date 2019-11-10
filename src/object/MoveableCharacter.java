@@ -37,10 +37,10 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 	}
 	
 	protected void changeArt(String art) {
-		body.getChildren().forEach((i)->{
-			i.setVisible(false);
+		getChildren().forEach((image)->{
+			image.setVisible(false);
 		});
-		body.getChildren().get(artList.indexOf(art)).setVisible(true);
+		getChildren().get(artList.indexOf(art)).setVisible(true);
 	}
 	
 	public void reset() {
@@ -51,7 +51,7 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 	
 	public void turn(boolean turnLeft) {
 		this.turnLeft = turnLeft;
-		body.setScaleX(turnLeft ? -1 : 1);
+		setScaleX(turnLeft ? -1 : 1);
 	}
 	
 	public double getHp() {
