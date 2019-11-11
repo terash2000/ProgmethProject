@@ -2,8 +2,11 @@ package menu;
 
 public class HeroHpBar extends HpBar {
 	
-	public HeroHpBar(double maxHp) {
-		super(maxHp, 20, 3);
+	public HeroHpBar() {
+		super(20);
+		scale = 3;
+		this.setLayoutX(50);
+		this.setLayoutY(50);
 	}
 	
 }

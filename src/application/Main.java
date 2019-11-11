@@ -2,9 +2,9 @@ package application;
 
 import javafx.application.Application;
 import javafx.scene.*;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import map.*;
+import menu.HeroHpBar;
 import monster.*;
 import object.Hero;
 import object.Platform;
@@ -15,7 +15,7 @@ public class Main extends Application {
 	public static Stage stage;
 	public static Scene gameScene;
 	public static Group game = new Group();
-	public static StackPane HpBar = new StackPane();
+	public static HeroHpBar HpBar = new HeroHpBar();
 	public static Group inventory = new Group();
 	public static World world;
 	public static Hero hero;

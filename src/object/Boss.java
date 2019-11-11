@@ -3,18 +3,28 @@ package object;
 import application.Main;
 import application.Music;
 import application.Sound;
+import menu.BossHpBar;
 
 public abstract class Boss extends MoveableEnemy {
 	
 	protected Music bossTheme;
+	protected BossHpBar hpBar;
 	
 	public Boss(double x, double y, double width, double height) {
 		super(x, y, width, height);
 	}
 	
+	public void action() {
+		if (hpBar != null) {
+			hpBar.update(hp);
+		}
+		super.action();
+	}
+	
 	public void die() {
 		Main.world.exitBossFight();
 		Main.world.getCerrentMap().getEnemyList().remove(this);
+		Main.game.getChildren().remove(hpBar);
 		super.die();
 	}
 	
@@ -32,8 +42,10 @@ public abstract class Boss extends MoveableEnemy {
 	}
 	
 	protected void startBossFight() {
-		Main.world.setBossFight(true);
 		Sound.changeBackgroundMusic(bossTheme);
+		Main.world.setBossFight(true);
+		hpBar = new BossHpBar(maxHp);
+		Main.game.getChildren().add(hpBar);
 	}
 	
 }

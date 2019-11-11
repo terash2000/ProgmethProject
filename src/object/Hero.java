@@ -10,7 +10,6 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import application.Delay;
 import application.Main;
-import menu.HeroHpBar;
 import map.MapName;
 
 public class Hero extends MoveableCharacter {
@@ -34,7 +33,6 @@ public class Hero extends MoveableCharacter {
 	private boolean doubleJumped = true;
 	private boolean doubleJumpable, dashable;
 	private String attackEffect = ClassLoader.getSystemResource("Effect/attacking.png").toString();
-	private HeroHpBar hpBar;
 	private Circle light = new Circle(0, 0, 400, new RadialGradient(0, 0, 0, 0, 400, false, 
 			CycleMethod.NO_CYCLE, new Stop(0, Color.WHITE), new Stop(1, Color.TRANSPARENT)));;
 	
@@ -53,8 +51,7 @@ public class Hero extends MoveableCharacter {
 		maxHp = 100;
 		hp = 100;
 		attackDamage = 20;
-		hpBar = new HeroHpBar(maxHp);
-		Main.HpBar = hpBar;
+		Main.HpBar.setMaxHp(maxHp);
 		light.setOpacity(0.5);
 	}
 	
@@ -69,7 +66,7 @@ public class Hero extends MoveableCharacter {
 	
 	public void move() {
 		artCheck();
-		hpBar.update(hp);
+		Main.HpBar.update(hp);
 		super.move();
 	}
 	
