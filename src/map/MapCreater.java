@@ -13,6 +13,7 @@ public class MapCreater {
 		world.addMap(MapName.False_Knight_room, createFalseKnightRoom());
 		world.addMap(MapName.Town, createTownMap());
 		world.addMap(MapName.Cave, createCaveMap());
+		world.addMap(MapName.Dark_Cave, createDarkCaveMap());
 		return world;
 	}
 	
@@ -71,6 +72,7 @@ public class MapCreater {
 	private static Map createCaveMap() {
 		Map map = new Map(1800,2400);
 		map.setUpperMap(new Gate(MapName.Town, 2220, 1440));
+		map.setLeftMap(new Gate(MapName.Dark_Cave, 2000, 1135));
 		map.addBackground(
 				ClassLoader.getSystemResource("Background/Cave.jpg").toString(), 1500, 2000);
 		map.addPlatform(new  Platform(PlatformType.Platform1, 800, 1900));
@@ -90,6 +92,19 @@ public class MapCreater {
 		map.addEnemy(new Vengefly(1100, 1600));
 		map.addEnemy(new Vengefly(1300, 1000));
 		map.addEnemy(new Glimback(1300, 2020));
+		map.setMusic(Music.Friend_shitai);
+		map.setDarkArea(true);
+		return map;
+	}
+	
+	private static Map createDarkCaveMap() {
+		Map map = new Map(2100,1400);
+		map.setRightMap(new Gate(MapName.Cave, 20, 1515));
+		map.addBackground(
+				ClassLoader.getSystemResource("Background/Dark_Cave.jpg").toString(), 1650, 1100);
+		map.addPlatform(new  Platform(PlatformType.FloorPlatform1, 0, 1220, 2100, 218));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform1, 0, 0, 200, 1330));
+		map.addPlatform(new  Platform(PlatformType.SidePlatform1, 1950, 0, 200, 1020, true, false));
 		map.setMusic(Music.Friend_shitai);
 		map.setDarkArea(true);
 		return map;

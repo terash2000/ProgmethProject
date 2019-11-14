@@ -4,5 +4,6 @@ public enum MapName {
 	Starter,
 	False_Knight_room,
 	Town,
-	Cave;
+	Cave,
+	Dark_Cave;
 }

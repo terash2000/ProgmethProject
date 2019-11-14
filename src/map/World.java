@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import application.Main;
 import application.Sound;
 import object.Actionable;
+import object.Boss;
 import object.Destroyable;
 import object.Enemy;
 import object.GameObject;
@@ -19,8 +20,8 @@ public class World {
 	private List<Platform> platformList = new ArrayList<Platform>();
 	private List<Actionable> actionableList = new ArrayList<Actionable>();
 	private List<Destroyable> destroyableList = new ArrayList<Destroyable>();
-	private boolean bossFight;
 	private double width, height, viewX, viewY;
+	private Boss cerrentBoss;
 	
 	public void addMap(MapName name, Map map) {
 		mapList.put(name, map);
@@ -48,10 +49,6 @@ public class World {
 		platformList.clear();
 		actionableList.clear();
 		destroyableList.clear();
-		if(cerrentMap.isDarkArea()) {
-			Main.game.getChildren().add(Main.hero.getLight());
-		}
-		Main.game.getChildren().add(Main.hero);
 		for(Enemy enemy: cerrentMap.getEnemyList()) {
 			actionableList.add(enemy);
 			destroyableList.add(enemy);
@@ -61,6 +58,10 @@ public class World {
 			platformList.add(platform);
 			Main.game.getChildren().add(platform);
 		}
+		if(cerrentMap.isDarkArea()) {
+			Main.game.getChildren().add(Main.hero.getLight());
+		}
+		Main.game.getChildren().add(Main.hero);
 		setHeroLocation(x, y);
 		Sound.changeBackgroundMusic(cerrentMap.getMusic());
 	}
@@ -91,17 +92,18 @@ public class World {
 		}
 	}
 	
-	public boolean isBossFight() {
-		return bossFight;
-	}
-
-	public void setBossFight(boolean bossFight) {
-		this.bossFight = bossFight;
-	}
-
 	public void exitBossFight() {
-		setBossFight(false);
+		Main.root.getChildren().remove(cerrentBoss.getHpBar());
+		cerrentBoss = null;
 		Sound.changeBackgroundMusic(cerrentMap.getMusic());
+	}
+	
+	public void startBossFight(Boss boss) {
+		this.cerrentBoss = boss;
+	}
+	
+	public boolean isBossFight() {
+		return cerrentBoss != null;
 	}
 	
 	public HashMap<MapName, Map> getMapList() {

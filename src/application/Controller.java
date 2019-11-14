@@ -136,4 +136,8 @@ public class Controller {
 		}
 	}
 
+	public static void setPause(boolean pause) {
+		Controller.pause = pause;
+	}
+
 }

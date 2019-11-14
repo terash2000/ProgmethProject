@@ -5,9 +5,7 @@ import application.Main;
 public class BossHpBar extends HpBar {
 	
 	public BossHpBar(double maxHp) {
-		super(30);
-		scale = (Main.getSceneWidth() - 100)/maxHp;
-		setMaxHp(maxHp);
+		super(30, maxHp,  (Main.getSceneWidth() - 100)/maxHp);
 		setLayoutX(50);
 		setLayoutY(Main.getSceneHeight() - 100);
 	}

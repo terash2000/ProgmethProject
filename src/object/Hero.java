@@ -14,9 +14,8 @@ import map.MapName;
 
 public class Hero extends MoveableCharacter {
 	
-	private double divePower = 1.5;
 	private double jumpPower = 16;
-	private double doubleJumpPower = 10;
+	private double doubleJumpPower = 12;
 	private double dashPower = 25;
 	private double unstableFriction = 0.1;
 	private long jumpTime = 180;
@@ -33,8 +32,8 @@ public class Hero extends MoveableCharacter {
 	private boolean doubleJumped = true;
 	private boolean doubleJumpable, dashable;
 	private String attackEffect = ClassLoader.getSystemResource("Effect/attacking.png").toString();
-	private Circle light = new Circle(0, 0, 400, new RadialGradient(0, 0, 0, 0, 400, false, 
-			CycleMethod.NO_CYCLE, new Stop(0, Color.WHITE), new Stop(1, Color.TRANSPARENT)));;
+	private Circle light = new Circle(0, 0, 1500, new RadialGradient(0, 0, 0, 0, 600, false, 
+			CycleMethod.NO_CYCLE, new Stop(0, Color.rgb(250, 250, 250, 0.3)), new Stop(0.5, Color.TRANSPARENT), new Stop(1, Color.BLACK)));
 	
 	public Hero() {
 		super(0, 0, 80, 85);
@@ -52,7 +51,7 @@ public class Hero extends MoveableCharacter {
 		hp = 100;
 		attackDamage = 20;
 		Main.HpBar.setMaxHp(maxHp);
-		light.setOpacity(0.5);
+		light.setOpacity(0.9);
 	}
 	
 	private void artCheck() {
@@ -315,14 +314,6 @@ public class Hero extends MoveableCharacter {
 			return true;
 		}
 		return false;
-	}
-
-	public double getDivePower() {
-		return divePower;
-	}
-
-	public void setDivePower(double divePower) {
-		this.divePower = divePower < 0 ? 0 : divePower;
 	}
 
 	public double getJumpPower() {

@@ -20,6 +20,16 @@ public abstract class HpBar extends StackPane {
 		setAlignment(Pos.CENTER_LEFT);
 	}
 	
+	public HpBar(double size, double maxHp, double scale) {
+		this.maxHp = maxHp;
+		this.scale = scale;
+		border = new Rectangle(maxHp*scale, size, Color.DARKGRAY);
+		yellowBar = new Rectangle(maxHp*scale, size, Color.LIGHTYELLOW);
+		bar = new Rectangle(maxHp*scale, size, Color.RED);
+		this.getChildren().addAll(border, yellowBar, bar);
+		setAlignment(Pos.CENTER_LEFT);
+	}
+	
 	public void update(double hp) {
 		this.hp = hp;
 		if(yellowHp > hp) {

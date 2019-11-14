@@ -2,6 +2,7 @@ package application;
 
 import javafx.application.Application;
 import javafx.scene.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import map.MapCreater;
 import map.MapName;
@@ -13,11 +14,12 @@ public class Main extends Application {
 	private static double sceneWidth, sceneHeight;
 	public static Stage stage;
 	public static Scene gameScene;
+	public static Group root;
 	public static Group game = new Group();
 	public static HeroHpBar HpBar = new HeroHpBar();
-	public static Group inventory = new Group();
+	public static VBox inventory = new VBox();
+	public static Hero hero = new Hero();
 	public static World world;
-	public static Hero hero;
 
 	public static void main(String[] args) { 
 		launch(args); 
@@ -33,13 +35,12 @@ public class Main extends Application {
 	}
 	
 	public static void newGame() {
-		hero = new Hero();
 		world = MapCreater.createWorld();
 		world.setCerrentMap(MapName.Starter, 500, 1175);
-		gameScene = new Scene(new Group(game, HpBar, inventory), 1000, 600);
+		root = new Group(game, HpBar);
+		gameScene = new Scene(root, 1000, 600);
 		HpBar.setLayoutX(50);
 		HpBar.setLayoutY(50);
-		inventory.setVisible(false);
 		
 		stage.setScene(gameScene);
 		stage.setFullScreen(true);
