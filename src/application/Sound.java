@@ -11,8 +11,8 @@ public class Sound {
 	private static double volume = 0.3;
 	
 	public static void changeBackgroundMusic(Music music) {
-		if(currentMusic != music) {
-			if(bgmPlayer != null) {
+		if (currentMusic != music) {
+			if (bgmPlayer != null) {
 				bgmPlayer.stop();
 			}
 			bgmPlayer = new MediaPlayer(new Media(music.getPath()));

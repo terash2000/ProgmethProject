@@ -17,23 +17,26 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	
 	public abstract void setMovement();
 	
-	protected void changeArt(String art) {
-		cerrentStage = art;
-		super.changeArt(art);
+	public void action() {
+		setMovement();
+		move();
+		if (Main.hero.hitCheck(x, y, size[0], size[1])) {
+			Main.hero.attacked(attackDamage, Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -25 : 25, 15);
+		}
 	}
 	
 	protected void moveY() {
-		if(dy > maxFallSpeed && fallSpeedLimit) {
+		if (dy > maxFallSpeed && fallSpeedLimit) {
 			dy = maxFallSpeed;
 		}
-		if(dy < 0) {
+		if (dy < 0) {
 			try {
 				topCheck();
 				inAir = true;
 			} catch(HitWallException exception) {
 				dy = exception.distance;
 			}
-		}else if(dy >= 0) {
+		}else if (dy >= 0) {
 			try {
 				landingCheck();
 				inAir = true;
@@ -45,10 +48,9 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 		y += dy;
 	}
 	
-	public void die() {
-		Main.world.getActionableList().remove(this);
-		Main.world.getDestroyableList().remove(this);
-		Main.game.getChildren().remove(this);
+	protected void changeArt(String art) {
+		cerrentStage = art;
+		super.changeArt(art);
 	}
 	
 	public void spawn() {
@@ -60,12 +62,10 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 		fallSpeedLimit = true;
 	}
 	
-	public void action() {
-		setMovement();
-		move();
-		if(Main.hero.hitCheck(x, y, size[0], size[1])) {
-			Main.hero.attacked(attackDamage, Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -25 : 25, 15);
-		}
+	public void die() {
+		Main.world.getActionableList().remove(this);
+		Main.world.getDestroyableList().remove(this);
+		Main.game.getChildren().remove(this);
 	}
 	
 }

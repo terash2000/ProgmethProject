@@ -22,20 +22,20 @@ public class Projectile extends MoveableObject implements Actionable {
 	public void action() {
 		dy += gravity;
 		move();
-		if(Main.hero.hitCheck(x, y, size[0], size[1])) {
+		if (Main.hero.hitCheck(x, y, size[0], size[1])) {
 			Main.hero.attacked(damage, Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -25 : 25, 15);
 		}
 	}
 	
 	protected void moveX() {
-		if(dx < 0) {
+		if (dx < 0) {
 			try {
 				leftWallCheck();
 				x +=dx;
 			} catch(HitWallException e) {
 				remove();
 			}
-		}else if(dx > 0) {
+		}else if (dx > 0) {
 			try {
 				rightWallCheck();
 				x +=dx;
@@ -46,16 +46,16 @@ public class Projectile extends MoveableObject implements Actionable {
 	}
 	
 	protected void moveY() {
-		if(dy > maxFallSpeed && fallSpeedLimit) {
+		if (dy > maxFallSpeed && fallSpeedLimit) {
 			dy = maxFallSpeed;
 		}
-		if(dy < 0) {
+		if (dy < 0) {
 			try {
 				topCheck();
 			} catch(HitWallException e) {
 				remove();
 			}
-		}else if(dy > 0) {
+		}else if (dy > 0) {
 			try {
 				landingCheck();
 			} catch(HitWallException e) {

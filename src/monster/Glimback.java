@@ -23,14 +23,14 @@ public class Glimback extends MoveableEnemy {
 	}
 	
 	protected void moveX() {
-		if(dx < 0) {
+		if (dx < 0) {
 			try {
 				leftWallCheck();
 				x +=dx;
 			} catch(HitWallException e) {
 				turn(false);
 			}
-		}else if(dx > 0) {
+		}else if (dx > 0) {
 			try {
 				rightWallCheck();
 				x +=dx;

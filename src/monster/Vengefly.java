@@ -18,17 +18,12 @@ public class Vengefly extends MoveableEnemy {
 		attackDamage = 20;
 	}
 	
-	public void reset() {
-		cerrentStage = "idle";
-		super.reset();
-	}
-	
 	public void setMovement() {
 		switch(cerrentStage) {
 		case "idle":
 			dx -= (dx)*friction;
 			dy -= (dy)*friction;
-			if(Math.pow((Main.hero.getX()+Main.hero.getSize()[0]/2) - (x+size[0]/2), 2) + 
+			if (Math.pow((Main.hero.getX()+Main.hero.getSize()[0]/2) - (x+size[0]/2), 2) + 
 					Math.pow((Main.hero.getY()+Main.hero.getSize()[1]/2) - (y+size[1]/2), 2)
 					< 200000) {
 				changeArt("normal");
@@ -42,4 +37,8 @@ public class Vengefly extends MoveableEnemy {
 		}
 	}
 
+	public void reset() {
+		cerrentStage = "idle";
+		super.reset();
+	}
 }

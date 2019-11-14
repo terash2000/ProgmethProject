@@ -16,7 +16,7 @@ public class Controller {
 			@Override
 			public void handle(long now) {
 				Main.setSceneWidth(Main.stage.getWidth());
-				if(Main.stage.isFullScreen()) {
+				if (Main.stage.isFullScreen()) {
 					Main.setSceneHeight(Main.stage.getHeight());
 				}else {
 					Main.setSceneHeight(Main.stage.getHeight() - 30);
@@ -118,10 +118,10 @@ public class Controller {
 		if (dash && !pause) {
 			Main.hero.dash();
 		}
-		if(attack && !pause) {
-			if(down && !up) {
+		if (attack && !pause) {
+			if (down && !up) {
 				Main.hero.downwardSlash();
-			}else if(up && !down){
+			}else if (up && !down){
 				Main.hero.upperSlash();
 			}else {
 				Main.hero.frontAttack();
@@ -131,7 +131,7 @@ public class Controller {
 	}
 	
 	private static void updateObject(){
-		for(Actionable actionable: new ArrayList<Actionable>(Main.world.getActionableList())) {
+		for (Actionable actionable: new ArrayList<Actionable>(Main.world.getActionableList())) {
 			actionable.action();
 		}
 	}

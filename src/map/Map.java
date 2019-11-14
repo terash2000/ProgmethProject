@@ -13,10 +13,10 @@ public class Map {
 	private List<ImageView> background = new ArrayList<ImageView>();
 	private List<Platform> platformList = new ArrayList<Platform>();
 	private List<Enemy> enemyList = new ArrayList<Enemy>();
-	private double width, height;
-	private boolean darkArea;
 	private Gate leftMap, rightMap, upperMap, lowerMap;
 	private Music music;
+	private double width, height;
+	private boolean darkArea;
 	
 	public Map(double width, double height) {
 		this.width = width;
@@ -28,28 +28,20 @@ public class Map {
 		background.add(new ImageView(backgroundImage));
 	}
 	
+	public List<ImageView> getBackground() {
+		return background;
+	}
+	
 	public void addPlatform(Platform platform) {
 		platformList.add(platform);
 	}
 	
-	public void addEnemy(Enemy enemy) {
-		enemyList.add(enemy);
-	}
-
-	public List<ImageView> getBackground() {
-		return background;
-	}
-
-	public boolean isDarkArea() {
-		return darkArea;
-	}
-
-	public void setDarkArea(boolean darkArea) {
-		this.darkArea = darkArea;
-	}
-
 	public List<Platform> getPlatformList() {
 		return platformList;
+	}
+	
+	public void addEnemy(Enemy enemy) {
+		enemyList.add(enemy);
 	}
 
 	public List<Enemy> getEnemyList() {
@@ -62,14 +54,6 @@ public class Map {
 
 	public void setLeftMap(Gate leftMap) {
 		this.leftMap = leftMap;
-	}
-
-	public Music getMusic() {
-		return music;
-	}
-
-	public void setMusic(Music music) {
-		this.music = music;
 	}
 
 	public Gate getRightMap() {
@@ -95,6 +79,14 @@ public class Map {
 	public void setLowerMap(Gate lowerMap) {
 		this.lowerMap = lowerMap;
 	}
+	
+	public Music getMusic() {
+		return music;
+	}
+
+	public void setMusic(Music music) {
+		this.music = music;
+	}
 
 	public double getWidth() {
 		return width;
@@ -103,5 +95,12 @@ public class Map {
 	public double getHeight() {
 		return height;
 	}
+	
+	public boolean isDarkArea() {
+		return darkArea;
+	}
 
+	public void setDarkArea(boolean darkArea) {
+		this.darkArea = darkArea;
+	}
 }

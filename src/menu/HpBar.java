@@ -32,7 +32,7 @@ public abstract class HpBar extends StackPane {
 	
 	public void update(double hp) {
 		this.hp = hp;
-		if(yellowHp > hp) {
+		if (yellowHp > hp) {
 			yellowHp -= 0.5;
 		}else {
 			yellowHp = hp;
@@ -41,13 +41,13 @@ public abstract class HpBar extends StackPane {
 		yellowBar.setWidth(yellowHp*scale);
 	}
 	
+	public double getMaxHp() {
+		return maxHp;
+	}
+	
 	public void setMaxHp(double maxHp) {
 		this.maxHp = maxHp;
 		border.setWidth(maxHp*scale);
-	}
-	
-	public double getMaxHp() {
-		return maxHp;
 	}
 
 	public double getHp() {
