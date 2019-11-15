@@ -6,12 +6,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import application.Music;
 import object.Enemy;
-import object.Platform;
+import object.GamePlatform;
 
 public class Map {
 	
 	private List<ImageView> background = new ArrayList<ImageView>();
-	private List<Platform> platformList = new ArrayList<Platform>();
+	private List<GamePlatform> platformList = new ArrayList<GamePlatform>();
 	private List<Enemy> enemyList = new ArrayList<Enemy>();
 	private Gate leftMap, rightMap, upperMap, lowerMap;
 	private Music music;
@@ -32,11 +32,11 @@ public class Map {
 		return background;
 	}
 	
-	public void addPlatform(Platform platform) {
+	public void addPlatform(GamePlatform platform) {
 		platformList.add(platform);
 	}
 	
-	public List<Platform> getPlatformList() {
+	public List<GamePlatform> getPlatformList() {
 		return platformList;
 	}
 	

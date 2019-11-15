@@ -6,38 +6,36 @@ import java.util.List;
 import javafx.scene.image.ImageView;
 import application.Main;
 import application.Sound;
-import object.Actionable;
-import object.Boss;
 import object.Destroyable;
 import object.Enemy;
 import object.GameObject;
-import object.Platform;
+import object.GamePlatform;
+import object.Updateable;
 
 public class World {
 	
 	private HashMap<MapName, Map> mapList = new HashMap<MapName, Map>();
 	private Map cerrentMap;
-	private List<Platform> platformList = new ArrayList<Platform>();
-	private List<Actionable> actionableList = new ArrayList<Actionable>();
+	private List<Updateable> objectList = new ArrayList<Updateable>();
 	private List<Destroyable> destroyableList = new ArrayList<Destroyable>();
 	private double width, height, viewX, viewY;
-	private Boss cerrentBoss;
+	private boolean bossFight;
 	
 	public void setCerrentMap(MapName name, double x, double y) {
+		Main.game.getChildren().clear();
+		for (Updateable object: new ArrayList<Updateable>(Main.world.getObjectList())) {
+			object.remove();
+		}
 		cerrentMap = mapList.get(name);
 		width = cerrentMap.getWidth();
 		height = cerrentMap.getHeight();
-		Main.game.getChildren().clear();
 		Main.game.getChildren().addAll(cerrentMap.getBackground());
-		platformList.clear();
-		actionableList.clear();
-		destroyableList.clear();
-		for (Platform platform: cerrentMap.getPlatformList()) {
-			platformList.add(platform);
+		for (GamePlatform platform: cerrentMap.getPlatformList()) {
+			objectList.add(platform);
 			Main.game.getChildren().add(platform);
 		}
 		for (Enemy enemy: cerrentMap.getEnemyList()) {
-			actionableList.add(enemy);
+			objectList.add(enemy);
 			destroyableList.add(enemy);
 			enemy.spawn();
 		}
@@ -54,9 +52,12 @@ public class World {
 		Main.hero.setX(x);
 		Main.hero.setY(y);
 		Main.hero.changeView();
+		for (Updateable updateable: objectList) {
+			updateable.changeView();
+		}
 	}
 	
-	public void changeView() {
+	public void changeBackgroundView() {
 		double x = Main.hero.getX() + Main.hero.getSize()[0]/2;
 		double y = Main.hero.getY() + Main.hero.getSize()[1]/2;
 		viewX = x < Main.getSceneWidth()/2 ? 0 : 
@@ -67,12 +68,6 @@ public class World {
 			i.setLayoutX(-viewX*(i.getImage().getWidth()-Main.getSceneWidth())/(width-Main.getSceneWidth()));
 			i.setLayoutY(-viewY*(i.getImage().getHeight()-Main.getSceneHeight())/(height-Main.getSceneHeight()));
 		}
-		for (Platform platform: platformList) {
-			platform.changeView();
-		}
-		for (Actionable actionable: actionableList) {
-			actionable.changeView();
-		}
 	}
 	
 	public void addMap(MapName name, Map map) {
@@ -80,10 +75,7 @@ public class World {
 	}
 	
 	public void addObject(GameObject object) {
-		if (object instanceof Actionable) {
-			Actionable actionable = (Actionable) object;
-			actionableList.add(actionable);
-		}
+		objectList.add(object);
 		if (object instanceof Destroyable) {
 			Destroyable destroyable = (Destroyable) object;
 			destroyableList.add(destroyable);
@@ -91,19 +83,13 @@ public class World {
 		Main.game.getChildren().add(object);
 		object.changeView();
 	}
-	
-	public void startBossFight(Boss boss) {
-		this.cerrentBoss = boss;
-	}
-	
-	public void exitBossFight() {
-		Main.root.getChildren().remove(cerrentBoss.getHpBar());
-		cerrentBoss = null;
-		Sound.changeBackgroundMusic(cerrentMap.getMusic());
-	}
-	
+
 	public boolean isBossFight() {
-		return cerrentBoss != null;
+		return bossFight;
+	}
+	
+	public void setBossFight(Boolean bossFight) {
+		this.bossFight = bossFight;
 	}
 	
 	public HashMap<MapName, Map> getMapList() {
@@ -114,12 +100,8 @@ public class World {
 		return cerrentMap;
 	}
 	
-	public List<Platform> getPlatformList() {
-		return platformList;
-	}
-	
-	public List<Actionable> getActionableList() {
-		return actionableList;
+	public List<Updateable> getObjectList() {
+		return objectList;
 	}
 
 	public List<Destroyable> getDestroyableList() {

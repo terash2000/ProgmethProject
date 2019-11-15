@@ -3,13 +3,13 @@ package object;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Platform extends GameObject {
+public class GamePlatform extends GameObject {
 	
-	public Platform(PlatformType platformType, double x, double y) {
+	public GamePlatform(PlatformType platformType, double x, double y) {
 		super(platformType.getPath(), x, y, platformType.getWidth(), platformType.getHeight());
 	}
 	
-	public Platform(PlatformType platformType, double x, double y, double width, double height) {
+	public GamePlatform(PlatformType platformType, double x, double y, double width, double height) {
 		super(x, y, width, height);
 		Image image = new Image(platformType.getPath());
 		int duplicateX = platformType.multiX() ? (int)(width/image.getWidth() + 0.5) : 1;
@@ -24,7 +24,7 @@ public class Platform extends GameObject {
 		}
 	}
 	
-	public Platform(PlatformType platformType, double x, double y, double width, double height, 
+	public GamePlatform(PlatformType platformType, double x, double y, double width, double height, 
 			boolean flipX, boolean flipY) {
 		this(platformType, x, y, width, height);
 		if (flipX) {
@@ -71,4 +71,7 @@ public class Platform extends GameObject {
 		}
 	}
 	
+	public void remove() {
+		super.remove();
+	}
 }

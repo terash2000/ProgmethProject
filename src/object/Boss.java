@@ -14,24 +14,18 @@ public abstract class Boss extends MoveableEnemy {
 		super(x, y, width, height);
 	}
 	
-	public void action() {
+	public void update() {
 		if (hpBar != null) {
 			hpBar.update(hp);
 		}
-		super.action();
+		super.update();
 	}
 	
 	protected void startBossFight() {
 		Sound.changeBackgroundMusic(bossTheme);
-		Main.world.startBossFight(this);
+		Main.world.setBossFight(true);
 		hpBar = new BossHpBar(maxHp);
 		Main.root.getChildren().add(hpBar);
-	}
-	
-	public void die() {
-		Main.world.exitBossFight();
-		Main.world.getCerrentMap().getEnemyList().remove(this);
-		super.die();
 	}
 	
 	public void attacked(double damage, double knockbackX, double knockbackY) {
@@ -45,6 +39,18 @@ public abstract class Boss extends MoveableEnemy {
 		if(hp == 0) {
 			die();
 		}
+	}
+	
+	public void die() {
+		Main.world.getCerrentMap().getEnemyList().remove(this);
+		Sound.changeBackgroundMusic(Main.world.getCerrentMap().getMusic());
+		super.die();
+	}
+	
+	public void remove() {
+		Main.root.getChildren().remove(hpBar);
+		Main.world.setBossFight(false);
+		super.remove();
 	}
 
 	public BossHpBar getHpBar() {

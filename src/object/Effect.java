@@ -1,15 +1,10 @@
 package object;
 
-import application.Delay;
-import application.Main;;
-
-public class Effect extends GameObject implements Actionable {
-	
-	private Delay delay;
+public class Effect extends GameObject {
 	
 	public Effect(String imagePath, long time, double x, double y, double width, double height) {
 		super(imagePath, x, y, width, height);
-		delay = new Delay(time);
+		holdStage(time);
 	}
 	
 	public Effect(String imagePath, long time, double x, double y, double width, double height, boolean flipX, boolean flipY) {
@@ -22,11 +17,8 @@ public class Effect extends GameObject implements Actionable {
 		}
 	}
 	
-	public void action() {
-		if (!delay.isAlive()) {
-			Main.world.getActionableList().remove(this);
-			Main.game.getChildren().remove(this);
-		}
+	public void changeStage() {
+		remove();
 	}
 
 }

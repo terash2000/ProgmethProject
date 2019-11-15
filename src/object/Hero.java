@@ -274,17 +274,14 @@ public class Hero extends MoveableCharacter {
 	}
 	
 	public void changeView() {
-		Main.world.changeView();
-		setLayoutX(x - Main.world.getViewX());
-		setLayoutY(y - Main.world.getViewY());
+		Main.world.changeBackgroundView();
 		light.setLayoutX(x + 40 - Main.world.getViewX());
 		light.setLayoutY(y + 42 - Main.world.getViewY());
+		super.changeView();
 	}
 	
 	public void die() {
-		if (Main.world.isBossFight()) {
-			Main.world.exitBossFight();
-		}
+		Main.world.setBossFight(false);
 		Main.world.setCerrentMap(MapName.Starter, 500, 1175);
 		hp = maxHp;
 	}

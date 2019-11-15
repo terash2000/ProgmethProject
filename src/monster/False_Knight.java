@@ -2,7 +2,6 @@ package monster;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import application.Delay;
 import application.Main;
 import application.Music;
 import object.Boss;
@@ -51,15 +50,9 @@ public class False_Knight extends Boss {
 			break;
 		case "normal":
 			turn(Main.hero.getX() + Main.hero.getSize()[0]/2 < x + size[0]/2);
-			if (!hold.isAlive()) {
-				changeStage();
-			}
 			break;
 		case "jump":
 			dx += speed;
-			if (!hold.isAlive()) {
-				changeStage();
-			}
 			break;
 		case "leap":
 			if (inAir) {
@@ -69,24 +62,22 @@ public class False_Knight extends Boss {
 			}
 			break;
 		default:
-			if (!hold.isAlive()) {
-				changeStage();
-			}
+			break;
 		}
 	}
 	
-	private void changeStage() {
+	public void changeStage() {
 		switch (cerrentStage) {
 		case "idle":
 			inAir = true;
 			changeArt("jump");
-			hold = new Delay(1200);
+			holdStage(1200);
 			break;
 		case "normal":
 			double nextMove = Math.random();
 			if (nextMove < 0.4) {
 				changeArt("charge");
-				hold = new Delay(500);
+				holdStage(500);
 				break;
 			}else {
 				dy = -25;
@@ -94,7 +85,7 @@ public class False_Knight extends Boss {
 				double jumpRange = Math.random()*4 - 1;
 				speed = ((Main.hero.getX() + Main.hero.getSize()[0]/2) 
 						- (x + size[0]/2))*0.01 + (turnLeft ? jumpRange : -jumpRange);
-				hold = new Delay(700);
+				holdStage(700);
 				break;
 			}
 		case "charge":
@@ -106,11 +97,11 @@ public class False_Knight extends Boss {
 				Main.hero.attacked(attackDamage, turnLeft ? -25 : 25, 15);
 			}
 			changeArt("slam");
-			hold = new Delay(200);
+			holdStage(200);
 			break;
 		case "slam":
 			changeArt("normal");
-			hold = new Delay(800);
+			holdStage(800);
 			break;
 		case "jump":
 			changeArt("leap");
@@ -120,7 +111,7 @@ public class False_Knight extends Boss {
 				Main.hero.attacked(attackDamage, turnLeft ? -25 : 25, 15);
 			}
 			changeArt("slam");
-			hold = new Delay(200);
+			holdStage(200);
 			break;
 		}
 	}

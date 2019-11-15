@@ -1,13 +1,11 @@
 package object;
 
-import application.Delay;
 import application.Main;
 
 public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	
 	private double[] spawnLocation = new double[2];
 	protected String cerrentStage;
-	protected Delay hold;
 	
 	public MoveableEnemy(double x, double y, double width, double height) {
 		super(x, y, width, height);
@@ -17,12 +15,13 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	
 	public abstract void setMovement();
 	
-	public void action() {
+	public void update() {
 		setMovement();
 		move();
 		if (Main.hero.hitCheck(x, y, size[0], size[1])) {
 			Main.hero.attacked(attackDamage, Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -25 : 25, 15);
 		}
+		changeView();
 	}
 	
 	protected void moveY() {
@@ -63,9 +62,12 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	}
 	
 	public void die() {
-		Main.world.getActionableList().remove(this);
+		remove();
+	}
+	
+	public void remove() {
 		Main.world.getDestroyableList().remove(this);
-		Main.game.getChildren().remove(this);
+		super.remove();
 	}
 	
 }

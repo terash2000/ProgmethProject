@@ -1,6 +1,6 @@
 package object;
 
-public interface Enemy extends Actionable, Destroyable {
+public interface Enemy extends Destroyable {
 	
 	public void spawn();
 	

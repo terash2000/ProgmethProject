@@ -68,7 +68,7 @@ public abstract class MoveableObject extends GameObject {
 	}
 	
 	protected void leftWallCheck() throws HitWallException {
-		for (Platform platform:Main.world.getCerrentMap().getPlatformList()) {
+		for (GamePlatform platform:Main.world.getCerrentMap().getPlatformList()) {
 			try {
 				platform.checkRight(this);
 			} catch(HitWallException exception) {
@@ -81,7 +81,7 @@ public abstract class MoveableObject extends GameObject {
 	}
 	
 	protected void rightWallCheck() throws HitWallException {
-		for (Platform platform:Main.world.getCerrentMap().getPlatformList()) {
+		for (GamePlatform platform:Main.world.getCerrentMap().getPlatformList()) {
 			try {
 				platform.checkLeft(this);
 			} catch(HitWallException exception) {
@@ -94,7 +94,7 @@ public abstract class MoveableObject extends GameObject {
 	}
 	
 	protected void topCheck() throws HitWallException {
-		for (Platform platform:Main.world.getCerrentMap().getPlatformList()) {
+		for (GamePlatform platform:Main.world.getCerrentMap().getPlatformList()) {
 			try {
 				platform.checkBottom(this);
 			} catch(HitWallException exception) {
@@ -108,7 +108,7 @@ public abstract class MoveableObject extends GameObject {
 	
 	
 	protected void landingCheck() throws HitWallException {
-		for (Platform platform:Main.world.getCerrentMap().getPlatformList()) {
+		for (GamePlatform platform:Main.world.getCerrentMap().getPlatformList()) {
 			try {
 				platform.checkTop(this);
 			} catch(HitWallException exception) {

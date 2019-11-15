@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import object.Actionable;
+import object.Updateable;
 
 public class Controller {
 	
@@ -18,7 +18,7 @@ public class Controller {
 				Main.setSceneWidth(Main.stage.getWidth());
 				if (Main.stage.isFullScreen()) {
 					Main.setSceneHeight(Main.stage.getHeight());
-				}else {
+				} else {
 					Main.setSceneHeight(Main.stage.getHeight() - 30);
 				}
 				updateHero();
@@ -55,10 +55,10 @@ public class Controller {
 					dash = true;
 					break;
 				case I:
-					if(pause) {
+					if (pause) {
 						pause = false;
 						//TODO close Inventory
-					}else {
+					} else {
 						pause = true;
 						//TODO open Inventory
 					}
@@ -104,15 +104,15 @@ public class Controller {
 		if (left && !right && !pause) {
 			Main.hero.walk(-1);
 			Main.hero.turn(true);
-		}else if (right && !left && !pause) {
+		} else if (right && !left && !pause) {
 			Main.hero.walk(1);
 			Main.hero.turn(false);
-		}else {
+		} else {
 			Main.hero.walk(0);
 		}
 		if (jump && !pause) {
 			Main.hero.jumping();
-		}else {
+		} else {
 			Main.hero.stopJump();
 		}
 		if (dash && !pause) {
@@ -121,9 +121,9 @@ public class Controller {
 		if (attack && !pause) {
 			if (down && !up) {
 				Main.hero.downwardSlash();
-			}else if (up && !down){
+			} else if (up && !down){
 				Main.hero.upperSlash();
-			}else {
+			} else {
 				Main.hero.frontAttack();
 			}
 		}
@@ -131,8 +131,8 @@ public class Controller {
 	}
 	
 	private static void updateObject(){
-		for (Actionable actionable: new ArrayList<Actionable>(Main.world.getActionableList())) {
-			actionable.action();
+		for (Updateable updateable: new ArrayList<Updateable>(Main.world.getObjectList())) {
+			updateable.update();
 		}
 	}
 

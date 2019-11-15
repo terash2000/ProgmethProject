@@ -1,6 +1,6 @@
 package object;
 
-public interface Destroyable {
+public interface Destroyable extends Updateable {
 	
 	public void attacked(double damage, double knockbackX, double knockbackY);
 	

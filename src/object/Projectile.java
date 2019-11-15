@@ -2,7 +2,7 @@ package object;
 
 import application.Main;
 
-public class Projectile extends MoveableObject implements Actionable {
+public class Projectile extends MoveableObject {
 	
 	private double damage;
 	
@@ -19,12 +19,13 @@ public class Projectile extends MoveableObject implements Actionable {
 		this.gravity = gravity;
 	}
 	
-	public void action() {
+	public void update() {
 		dy += gravity;
 		move();
 		if (Main.hero.hitCheck(x, y, size[0], size[1])) {
 			Main.hero.attacked(damage, Main.hero.getX()+Main.hero.getSize()[0]/2 < x+size[0]/2 ? -25 : 25, 15);
 		}
+		changeView();
 	}
 	
 	protected void moveX() {
@@ -63,11 +64,6 @@ public class Projectile extends MoveableObject implements Actionable {
 			}
 		}
 		y += dy;
-	}
-	
-	private void remove() {
-		Main.world.getActionableList().remove(this);
-		Main.game.getChildren().remove(this);
 	}
 
 }
