@@ -29,9 +29,10 @@ public class Delay extends Thread {
 	public void run() {
 		try {
 			Thread.sleep(time);
-			end();
 		} catch (InterruptedException e) {
 			
+		} finally {
+			end();
 		}
 	}
 	

@@ -9,6 +9,16 @@ import object.Projectile;
 
 public class False_Knight extends Boss {
 	
+	private static final double shockwaveSpeed = 15;
+	private static final double shockwaveWidth = 100;
+	private static final double shockwaveHeight = 200;
+	private static final double jumpSpeed = 25;
+	private static final long recoverTime = 800;
+	private static final long jumpTime = 700;
+	private static final long chargeTime = 500;
+	private static final long slamTime = 200;
+	private static final long fallTime = 1200;
+	
 	public False_Knight(double x, double y) {
 		super(x, y, 200, 250);
 		getChildren().add(new ImageView(new Image(
@@ -49,7 +59,7 @@ public class False_Knight extends Boss {
 			}
 			break;
 		case "normal":
-			turn(Main.hero.getX() + Main.hero.getSize()[0]/2 < x + size[0]/2);
+			turn((Main.hero.getX() + Main.hero.getSize()[0]/2) < (x + size[0]/2));
 			break;
 		case "jump":
 			dx += speed;
@@ -61,57 +71,56 @@ public class False_Knight extends Boss {
 				changeStage();
 			}
 			break;
-		default:
-			break;
 		}
 	}
 	
-	public void changeStage() {
+	protected void changeStage() {
 		switch (cerrentStage) {
 		case "idle":
 			inAir = true;
 			changeArt("jump");
-			holdStage(1200);
+			holdStage(fallTime);
 			break;
 		case "normal":
 			double nextMove = Math.random();
 			if (nextMove < 0.4) {
 				changeArt("charge");
-				holdStage(500);
+				holdStage(chargeTime);
 				break;
 			}else {
-				dy = -25;
+				dy = -jumpSpeed;
 				changeArt("jump");
 				double jumpRange = Math.random()*4 - 1;
 				speed = ((Main.hero.getX() + Main.hero.getSize()[0]/2) 
 						- (x + size[0]/2))*0.01 + (turnLeft ? jumpRange : -jumpRange);
-				holdStage(700);
+				holdStage(jumpTime);
 				break;
 			}
 		case "charge":
 			Projectile shockwave = new Projectile(ClassLoader.getSystemResource("Effect/shockwave.png").toString(), 
-					x + (turnLeft ? -100 : 200), y + 50, 100, 200, turnLeft ? -15 : 15, 0, attackDamage);
+					x + (turnLeft ? -100 : 200), y + 50, shockwaveWidth, shockwaveHeight, 
+					(turnLeft ? -shockwaveSpeed : shockwaveSpeed), 0, attackDamage);
 			shockwave.setScaleX(turnLeft ? -1 : 1);
 			Main.world.addObject(shockwave);
 			if(Main.hero.hitCheck(x + (turnLeft ? -300 : 200), y - 100, 250, 350)) {
-				Main.hero.attacked(attackDamage, turnLeft ? -25 : 25, 15);
+				Main.hero.attacked(attackDamage, (turnLeft ? -heroKnockBackX : heroKnockBackX), heroKnockBackY);
 			}
 			changeArt("slam");
-			holdStage(200);
+			holdStage(slamTime);
 			break;
 		case "slam":
 			changeArt("normal");
-			holdStage(800);
+			holdStage(recoverTime);
 			break;
 		case "jump":
 			changeArt("leap");
 			break;
 		case "leap":
 			if(Main.hero.hitCheck(x + (turnLeft ? -300 : 200), y - 150, 250, 400)) {
-				Main.hero.attacked(attackDamage, turnLeft ? -25 : 25, 15);
+				Main.hero.attacked(attackDamage, (turnLeft ? -heroKnockBackX : heroKnockBackX), heroKnockBackY);
 			}
 			changeArt("slam");
-			holdStage(200);
+			holdStage(slamTime);
 			break;
 		}
 	}
@@ -125,9 +134,9 @@ public class False_Knight extends Boss {
 		getChildren().get(4).setLayoutX(turnLeft ? -100 : -160);
 	}
 	
-	public void reset() {
+	protected void reset() {
+		super.reset();
 		speed = 0;
 		cerrentStage = "idle";
-		super.reset();
 	}
 }

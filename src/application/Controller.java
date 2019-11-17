@@ -1,6 +1,7 @@
 package application;
 
 import java.util.ArrayList;
+
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
@@ -54,17 +55,7 @@ public class Controller {
 				case D:
 					dash = true;
 					break;
-				case I:
-					if (pause) {
-						pause = false;
-						//TODO close Inventory
-					} else {
-						pause = true;
-						//TODO open Inventory
-					}
-					break;
 				default:	   
-					break;
 				}
 			}
 		});
@@ -93,8 +84,19 @@ public class Controller {
 				case D:
 					dash = false;
 					break;
-				default:	   
+				case I:
+					if (pause) {
+						pause = false;
+						Main.root.getChildren().remove(Main.inventory);
+						Main.inventory.getChildren().clear();
+						Main.world.reloadBackground();
+					} else {
+						pause = true;
+						Main.root.getChildren().add(Main.inventory);
+						Main.inventory.update();
+					}
 					break;
+				default:
 				}
 			}
 		});
@@ -124,10 +126,10 @@ public class Controller {
 			} else if (up && !down){
 				Main.hero.upperSlash();
 			} else {
-				Main.hero.frontAttack();
+				Main.hero.frontSlash();
 			}
 		}
-		Main.hero.move();
+		Main.hero.update();
 	}
 	
 	private static void updateObject(){
@@ -135,9 +137,5 @@ public class Controller {
 			updateable.update();
 		}
 	}
-
-	public static void setPause(boolean pause) {
-		Controller.pause = pause;
-	}
-
+	
 }

@@ -18,7 +18,7 @@ public abstract class MoveableObject extends GameObject {
 		super(imagePath, x, y, width, height);
 	}
 	
-	public void move() {
+	public void update() {
 		moveX();
 		moveY();
 		changeView();
@@ -45,7 +45,7 @@ public abstract class MoveableObject extends GameObject {
 	}
 	
 	protected void moveY() {
-		if (dy > maxFallSpeed && fallSpeedLimit) {
+		if ((dy > maxFallSpeed) && fallSpeedLimit) {
 			dy = maxFallSpeed;
 		}
 		if (dy < 0) {
@@ -75,7 +75,7 @@ public abstract class MoveableObject extends GameObject {
 				throw exception;
 			}
 		}
-		if (x + dx < 0) {
+		if ((x + dx) < 0) {
 			throw new HitWallException(-x);
 		}
 	}
@@ -88,7 +88,7 @@ public abstract class MoveableObject extends GameObject {
 				throw exception;
 			}
 		}
-		if (x + dx > Main.world.getCerrentMap().getWidth() - size[0]) {
+		if ((x + dx) > (Main.world.getCerrentMap().getWidth() - size[0])) {
 			throw new HitWallException(Main.world.getCerrentMap().getWidth() - size[0] - x);
 		}
 	}
@@ -101,7 +101,7 @@ public abstract class MoveableObject extends GameObject {
 				throw exception;
 			}
 		}
-		if (y + dy < 0) {
+		if ((y + dy) < 0) {
 			throw new HitWallException(-y);
 		}
 	}
@@ -115,9 +115,14 @@ public abstract class MoveableObject extends GameObject {
 				throw exception;
 			}
 		}
-		if (y + dy > Main.world.getCerrentMap().getHeight() - size[1]) {
+		if ((y + dy) > (Main.world.getCerrentMap().getHeight() - size[1])) {
 			throw new HitWallException(Main.world.getCerrentMap().getHeight() - size[1] - y);
 		}
+	}
+	
+	protected void reset() {
+		dx = 0;
+		dy = 0;
 	}
 	
 	public double getSpeed() {

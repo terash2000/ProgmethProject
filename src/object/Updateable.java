@@ -7,5 +7,7 @@ public interface Updateable {
 	public void changeView();
 	
 	public void remove();
+	
+	public void setAlive(boolean alive);
 
 }

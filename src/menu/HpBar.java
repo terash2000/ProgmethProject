@@ -11,6 +11,7 @@ public abstract class HpBar extends StackPane {
 	protected Rectangle yellowBar;
 	protected Rectangle bar;
 	protected double maxHp, hp, yellowHp, scale;
+	private static final double hpDecreaseSpeed = 0.5;
 	
 	public HpBar(double size) {
 		border = new Rectangle(0, size, Color.DARKGRAY);
@@ -33,7 +34,7 @@ public abstract class HpBar extends StackPane {
 	public void update(double hp) {
 		this.hp = hp;
 		if (yellowHp > hp) {
-			yellowHp -= 0.5;
+			yellowHp -= hpDecreaseSpeed;
 		}else {
 			yellowHp = hp;
 		}
