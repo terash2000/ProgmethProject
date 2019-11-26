@@ -18,4 +18,9 @@ public class Sword extends Item {
 	public void unapplyBonuses(Hero hero) {
 		hero.setAttackDamage(hero.getAttackDamage() - attackDamageBonus );
 	}
+	
+	@Override
+	public String getTypeOfItem() {
+		return "Sword";
+	}
 }

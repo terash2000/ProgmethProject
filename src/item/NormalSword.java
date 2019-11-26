@@ -9,7 +9,12 @@ public class NormalSword extends Sword {
 	
 	public NormalSword() {
 		super(attackDamageBonus);
-		setGraphic(new ImageView(new Image(ClassLoader.getSystemResource("ItemImage/NormalSword.ico").toString())));
+		ImageView normalSword = new ImageView(new Image(ClassLoader.getSystemResource("ItemImage/NormalSword.png").toString()));
+//		normalSword.setFitHeight(100);
+//		normalSword.setFitWidth(100);
+//		this.setPrefHeight(100);
+//		this.setPrefWidth(100);
+		setGraphic(normalSword);
 	}
 	
 }

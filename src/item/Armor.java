@@ -18,5 +18,10 @@ public class Armor extends Item {
 	public void unapplyBonuses(Hero hero) {
 		hero.setMaxHp(hero.getMaxHp() - maxHpBonus );
 	}
+	
+	@Override
+	public String getTypeOfItem() {
+		return "Armor";
+	}
 
 }

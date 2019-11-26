@@ -9,5 +9,7 @@ public class GoldenSword extends Sword{
 	public GoldenSword() {
 		super(attackDamageBonus);
 		setGraphic(new ImageView(new Image(ClassLoader.getSystemResource("ItemImage/GoldenSword.png").toString())));
+		this.setPrefHeight(10);
+		this.setPrefWidth(10);
 	}
 }

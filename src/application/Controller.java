@@ -94,13 +94,13 @@ public class Controller {
 				case I:
 					if (pause) {
 						pause = false;
-						Main.root.getChildren().remove(Main.inventory);
-						Main.inventory.getChildren().clear();
+//						Main.controlInventory.getInventory().getChildren().clear();
+						Main.root.getChildren().remove(Main.controlInventory);
 						Main.world.reloadBackground();
 					} else {
 						pause = true;
-						Main.root.getChildren().add(Main.inventory);
-						Main.inventory.update();
+						Main.root.getChildren().add(Main.controlInventory);
+//						Main.controlInventory.getInventory().MyInventoryUpdate();
 					}
 					break;
 				default:
