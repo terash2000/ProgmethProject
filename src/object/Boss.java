@@ -28,19 +28,6 @@ public abstract class Boss extends MoveableEnemy {
 		Main.root.getChildren().add(hpBar);
 	}
 	
-	public void attacked(double damage, double knockbackX, double knockbackY) {
-		if (knockbackX != 0) {
-			dx += knockbackX;
-		}
-		if (knockbackY != 0) {
-			dy += -knockbackY;
-		}
-		hp = damage > hp ? 0 : hp - damage;
-		if(hp == 0) {
-			die();
-		}
-	}
-	
 	public void die() {
 		Main.world.getCerrentMap().getEnemyList().remove(this);
 		Sound.changeBackgroundMusic(Main.world.getCerrentMap().getMusic());

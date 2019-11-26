@@ -60,6 +60,7 @@ public class Hero extends MoveableCharacter {
 		hp = 100;
 		attackDamage = 20;
 		Main.hpBar.setMaxHp(maxHp);
+		turn(false);
 	}
 	
 	public void update() {

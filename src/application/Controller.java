@@ -12,6 +12,11 @@ public class Controller {
 	private static AnimationTimer gameLoop;
 	private static boolean left, right, up, down, jump, attack, dash, pause;
 	
+	private static final double barHeigth = 30;
+	private static final int LEFT_DIRECTION = -1;
+	private static final int RIGHT_DIRECTION = 1;
+	private static final int NO_MOVE = 0;
+	
 	public static void startGameLoop() {
 		gameLoop = new AnimationTimer() {
 			@Override
@@ -20,7 +25,7 @@ public class Controller {
 				if (Main.stage.isFullScreen()) {
 					Main.setSceneHeight(Main.stage.getHeight());
 				} else {
-					Main.setSceneHeight(Main.stage.getHeight() - 30);
+					Main.setSceneHeight(Main.stage.getHeight() - barHeigth);
 				}
 				updateHero();
 				updateObject();
@@ -34,10 +39,10 @@ public class Controller {
 			@Override 
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {
-				case LEFT:  
+				case LEFT:
 					left = true;
 					break;
-				case RIGHT: 
+				case RIGHT:
 					right = true;
 					break;
 				case UP:
@@ -46,7 +51,8 @@ public class Controller {
 				case DOWN:  
 					down = true;
 					break;
-				case A:    
+				case A:
+				case SPACE:
 					jump = true;
 					break;
 				case S:
@@ -63,7 +69,7 @@ public class Controller {
 		    @Override 
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {
-				case LEFT:  
+				case LEFT:
 					left = false;
 					break;
 				case RIGHT: 
@@ -72,10 +78,11 @@ public class Controller {
 				case UP:
 					up = false;
 					break;
-				case DOWN:  
+				case DOWN:
 					down = false; 
 					break;
-				case A:    
+				case A:
+				case SPACE:
 					jump = false;
 					break;
 				case S:
@@ -103,31 +110,36 @@ public class Controller {
 	}
 	
 	private static void updateHero(){
-		if (left && !right && !pause) {
-			Main.hero.walk(-1);
-			Main.hero.turn(true);
-		} else if (right && !left && !pause) {
-			Main.hero.walk(1);
-			Main.hero.turn(false);
-		} else {
-			Main.hero.walk(0);
-		}
-		if (jump && !pause) {
-			Main.hero.jumping();
-		} else {
-			Main.hero.stopJump();
-		}
-		if (dash && !pause) {
-			Main.hero.dash();
-		}
-		if (attack && !pause) {
-			if (down && !up) {
-				Main.hero.downwardSlash();
-			} else if (up && !down){
-				Main.hero.upperSlash();
+		if (!pause) {
+			if (left && !right) {
+				Main.hero.walk(LEFT_DIRECTION);
+				Main.hero.turn(true);
+			} else if (right && !left) {
+				Main.hero.walk(RIGHT_DIRECTION);
+				Main.hero.turn(false);
 			} else {
-				Main.hero.frontSlash();
+				Main.hero.walk(NO_MOVE);
 			}
+			if (jump) {
+				Main.hero.jumping();
+			} else {
+				Main.hero.stopJump();
+			}
+			if (dash) {
+				Main.hero.dash();
+			}
+			if (attack) {
+				if (down && !up) {
+					Main.hero.downwardSlash();
+				} else if (up && !down){
+					Main.hero.upperSlash();
+				} else {
+					Main.hero.frontSlash();
+				}
+			}
+		} else {
+			Main.hero.walk(NO_MOVE);
+			Main.hero.stopJump();
 		}
 		Main.hero.update();
 	}

@@ -28,7 +28,7 @@ public enum PlatformType {
 		}
 	}
 	
-	public boolean multiX() {
+	public boolean repeatX() {
 		switch(this) {
 		case FloorPlatform1:
 			return true;
@@ -39,7 +39,7 @@ public enum PlatformType {
 		}
 	}
 	
-	public boolean multiY() {
+	public boolean repeatY() {
 		switch(this) {
 		case SidePlatform1:
 			return true;

@@ -8,7 +8,6 @@ public class Sound {
 	
 	private static MediaPlayer bgmPlayer;
 	private static Music currentMusic;
-	private static double volume = 0.3;
 	
 	public static void changeBackgroundMusic(Music music) {
 		if (currentMusic != music) {
@@ -16,7 +15,7 @@ public class Sound {
 				bgmPlayer.stop();
 			}
 			bgmPlayer = new MediaPlayer(new Media(music.getPath()));
-			bgmPlayer.setVolume(volume);
+			bgmPlayer.setVolume(music.getVolume());
 			bgmPlayer.play();
 			bgmPlayer.setOnEndOfMedia(new Runnable() {
 				public void run() {

@@ -5,6 +5,8 @@ import application.Main;
 public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	
 	private double[] spawnLocation = new double[2];
+	protected String cerrentStage;
+	
 	protected static final double heroKnockBackX = 25;
 	protected static final double heroKnockBackY = 15;
 	
@@ -19,8 +21,7 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	public void update() {
 		setMovement();
 		if (Main.hero.hitCheck(x, y, size[0], size[1])) {
-			Main.hero.attacked(attackDamage, ((Main.hero.getX() + Main.hero.getSize()[0]/2 < x+size[0]/2)
-					? -heroKnockBackX : heroKnockBackX), heroKnockBackY);
+			Main.hero.attacked(attackDamage, ((Main.hero.getCenterX() < getCenterX()) ? -heroKnockBackX : heroKnockBackX), heroKnockBackY);
 		}
 		super.update();
 	}
@@ -52,7 +53,7 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 		reset();
 		alive = true;
 		hp = maxHp;
-		Main.game.getChildren().add(this);
+		Main.world.getChildren().add(this);
 		x = spawnLocation[0];
 		y = spawnLocation[1];
 		turn(false);
@@ -70,6 +71,11 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	public void remove() {
 		Main.world.getDestroyableList().remove(this);
 		super.remove();
+	}
+	
+	protected void changeArt(String art) {
+		cerrentStage = art;
+		super.changeArt(art);
 	}
 	
 }

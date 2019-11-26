@@ -4,10 +4,9 @@ import javafx.application.Application;
 import javafx.scene.*;
 import javafx.stage.Stage;
 import item.Inventory;
-import map.MapCreater;
-import map.MapName;
 import map.World;
 import menu.HeroHpBar;
+import menu.MainMenu;
 import object.Hero;
 
 public class Main extends Application {
@@ -15,11 +14,13 @@ public class Main extends Application {
 	public static Stage stage;
 	public static Scene gameScene;
 	public static Group root;
-	public static Group game = new Group();
 	public static HeroHpBar hpBar = new HeroHpBar();
 	public static Inventory inventory = new Inventory();
-	public static Hero hero = new Hero();
+	public static Hero hero;
 	public static World world;
+	
+	public static final double defaultWidth = 1000;
+	public static final double defaultHeight = 600;
 
 	public static void main(String[] args) { 
 		launch(args); 
@@ -27,23 +28,13 @@ public class Main extends Application {
   
 	@Override 
 	public void start(Stage primaryStage) throws Exception {
+		Scene mainMenuScene = new Scene(new MainMenu(), defaultWidth, defaultHeight);
 		stage = primaryStage;
+		stage.setScene(mainMenuScene);
 		stage.setTitle("Hollow Knight");
 		stage.show();
 		stage.setFullScreenExitHint("");
-		newGame();
-	}
-	
-	public static void newGame() {
-		world = MapCreater.createWorld();
-		world.setCerrentMap(MapName.Starter, 500, 1175);
-		root = new Group(game, hpBar);
-		gameScene = new Scene(root, 1000, 600);
-		
-		stage.setScene(gameScene);
-		stage.setFullScreen(true);
-		Controller.setGameKey();
-		Controller.startGameLoop();
+		Sound.changeBackgroundMusic(Music.Friend_shitai);
 	}
 
 	public static double getSceneWidth() {

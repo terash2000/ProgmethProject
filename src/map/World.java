@@ -3,6 +3,8 @@ package map;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import application.Main;
 import application.Sound;
@@ -12,7 +14,7 @@ import object.GameObject;
 import object.GamePlatform;
 import object.Updateable;
 
-public class World {
+public class World extends Group {
 	
 	private HashMap<MapName, Map> mapList = new HashMap<MapName, Map>();
 	private Map cerrentMap;
@@ -22,17 +24,17 @@ public class World {
 	private boolean bossFight;
 	
 	public void setCerrentMap(MapName name, double x, double y) {
-		Main.game.getChildren().clear();
+		getChildren().clear();
 		for (Updateable object: new ArrayList<Updateable>(Main.world.getObjectList())) {
 			object.remove();
 		}
 		cerrentMap = mapList.get(name);
 		width = cerrentMap.getWidth();
 		height = cerrentMap.getHeight();
-		Main.game.getChildren().addAll(cerrentMap.getBackground());
+		getChildren().addAll(cerrentMap.getBackground());
 		for (GamePlatform platform: cerrentMap.getPlatformList()) {
 			objectList.add(platform);
-			Main.game.getChildren().add(platform);
+			getChildren().add(platform);
 			platform.setAlive(true);
 		}
 		for (Enemy enemy: cerrentMap.getEnemyList()) {
@@ -41,9 +43,9 @@ public class World {
 			enemy.spawn();
 		}
 		if (cerrentMap.isDarkArea()) {
-			Main.game.getChildren().add(Main.hero.getLight());
+			getChildren().add(Main.hero.getLight());
 		}
-		Main.game.getChildren().add(Main.hero);
+		getChildren().add(Main.hero);
 		Main.hero.setAlive(true);
 		Main.hero.setLocation(x, y);
 		Sound.changeBackgroundMusic(cerrentMap.getMusic());
@@ -74,14 +76,14 @@ public class World {
 			Destroyable destroyable = (Destroyable) object;
 			destroyableList.add(destroyable);
 		}
-		Main.game.getChildren().add(object);
+		getChildren().add(object);
 		object.changeView();
 		object.setAlive(true);
 	}
 	
 	public void reloadBackground() {
-		Main.game.getChildren().removeAll(cerrentMap.getBackground());
-		Main.game.getChildren().addAll(0, cerrentMap.getBackground());
+		getChildren().removeAll(cerrentMap.getBackground());
+		getChildren().addAll(0, cerrentMap.getBackground());
 	}
 
 	public boolean isBossFight() {

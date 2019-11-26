@@ -8,7 +8,6 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 	protected double attackDamage, maxHp, hp;
 	protected boolean turnLeft, inAir;
 	protected List<String> artList = new ArrayList<String>();
-	protected String cerrentStage;
 	
 	public MoveableCharacter(double x, double y, double width, double height) {
 		super(x, y, width, height);
@@ -36,7 +35,6 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 	}
 	
 	protected void changeArt(String art) {
-		cerrentStage = art;
 		getChildren().forEach((image)->{
 			image.setVisible(false);
 		});

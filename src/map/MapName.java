@@ -5,5 +5,6 @@ public enum MapName {
 	False_Knight_room,
 	Town,
 	Cave,
-	Dark_Cave;
+	Dark_Cave,
+	Crystal_Cave;
 }
