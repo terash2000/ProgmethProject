@@ -5,7 +5,6 @@ import javafx.scene.*;
 import javafx.stage.Stage;
 import item.ControlInventory;
 import map.World;
-import menu.HeroHpBar;
 import menu.MainMenu;
 import object.Hero;
 
@@ -14,13 +13,13 @@ public class Main extends Application {
 	public static Stage stage;
 	public static Scene gameScene;
 	public static Group root;
-	public static HeroHpBar hpBar = new HeroHpBar();
 	public static ControlInventory controlInventory = new ControlInventory();
 	public static Hero hero;
 	public static World world;
 	
 	public static final double defaultWidth = 1000;
 	public static final double defaultHeight = 600;
+	private static final double barHeigth = 30;
 
 	public static void main(String[] args) { 
 		launch(args); 
@@ -36,21 +35,22 @@ public class Main extends Application {
 		stage.setFullScreenExitHint("");
 		Sound.changeBackgroundMusic(Music.Friend_shitai);
 	}
+	
+	public static void updateSceneSize() {
+		sceneWidth = stage.getWidth();
+		if (stage.isFullScreen()) {
+			sceneHeight = stage.getHeight();
+		} else {
+			sceneHeight = stage.getHeight() - barHeigth;
+		}
+	}
 
 	public static double getSceneWidth() {
 		return sceneWidth;
 	}
 
-	public static void setSceneWidth(double sceneWidth) {
-		Main.sceneWidth = sceneWidth;
-	}
-
 	public static double getSceneHeight() {
 		return sceneHeight;
-	}
-
-	public static void setSceneHeight(double sceneHeight) {
-		Main.sceneHeight = sceneHeight;
 	}
 
 }

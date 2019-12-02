@@ -4,7 +4,7 @@ public interface Updateable {
 	
 	public void update();
 	
-	public void changeView();
+	public void draw();
 	
 	public void remove();
 	

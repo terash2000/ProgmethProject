@@ -5,10 +5,15 @@ import application.Music;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import object.Boss;
+import object.Projectile;
 
 public class Illya extends Boss {
 	
 	private static final double range = 500;
+	private static final double fullSpeed = 10;
+	private static final double slashSpeed = 20;
+	private static final double slashWidth = 200;
+	private static final double slashHeight = 100;
 	
 	public Illya(double x, double y) {
 		super(x, y, 60, 200);
@@ -49,13 +54,8 @@ public class Illya extends Boss {
 			break;
 		case "attack":
 			turn(Main.hero.getCenterX() < getCenterX());
-			if (distance > range) {
-				dx += (speed*distanceX/distance - dx)*friction;
-				dy += (speed*distanceY/distance - dy)*friction;
-			} else {
-				dx += ((speed*distanceY/distance)*((distanceX*distanceY) > 0 ? -1 : 1) - dx)*friction;
-				dy += ((speed*distanceX/distance)*((distanceX*distanceY) > 0 ? -1 : 1) - dy)*friction;
-			}
+			dx += ((fullSpeed*distanceY/distance)*((distanceX*distanceY) > 0 ? -1 : 1) - dx)*friction;
+			dy += ((fullSpeed*distanceX/distance)*((distanceX*distanceY) > 0 ? 1 : -1) - dy)*friction;
 			break;
 		}
 	}
@@ -63,17 +63,22 @@ public class Illya extends Boss {
 	protected void changeStage() {
 		switch (cerrentStage) {
 		case "idle":
-			changeArt("normal");
+			changeSprite("normal");
 			turn((Main.hero.getX() + Main.hero.getSize()[0]/2) < (x + size[0]/2));
 			setVisible(true);
 			holdStage(3000);
 			break;
 		case "normal":
-			changeArt("attack");
+			changeSprite("attack");
 			holdStage(1000);
 			break;
 		case "attack":
-			changeArt("normal");
+			Projectile slash = new Projectile(ClassLoader.getSystemResource("Effect/slash.png").toString(), 
+					x + (turnLeft ? -200 : 60), y + 50, slashWidth, slashHeight, 
+					(turnLeft ? -slashSpeed : slashSpeed), 0, attackDamage);
+			slash.setScaleX(turnLeft ? -1 : 1);
+			Main.world.addObject(slash);
+			changeSprite("normal");
 			holdStage(3000);
 			break;
 		}

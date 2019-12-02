@@ -20,7 +20,7 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 	
 	public void update() {
 		setMovement();
-		if (Main.hero.hitCheck(x, y, size[0], size[1])) {
+		if (Main.hero.intersectCheck(x, y, size[0], size[1])) {
 			Main.hero.attacked(attackDamage, ((Main.hero.getCenterX() < getCenterX()) ? -heroKnockBackX : heroKnockBackX), heroKnockBackY);
 		}
 		super.update();
@@ -73,9 +73,9 @@ public abstract class MoveableEnemy extends MoveableCharacter implements Enemy {
 		super.remove();
 	}
 	
-	protected void changeArt(String art) {
+	protected void changeSprite(String art) {
 		cerrentStage = art;
-		super.changeArt(art);
+		super.changeSprite(art);
 	}
 	
 }

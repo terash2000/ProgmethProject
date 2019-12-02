@@ -18,10 +18,10 @@ import javafx.scene.paint.Color;
 import object.Hero;
 
 public class Item extends Button{
-	private int attackDamageBonus;
-	private int hpBonus;
-	private int maxHpBonus;
-	private int jumpPowerBonus;
+	protected int attackDamageBonus;
+	protected int hpBonus;
+	protected int maxHpBonus;
+	protected int jumpPowerBonus;
 	
 	public Item(int attackDamageBonus, int jumpPowerBonus, int maxHpBonus, int hpBonus) {
 		this.attackDamageBonus = attackDamageBonus;
@@ -55,11 +55,11 @@ public class Item extends Button{
 		return "NULL" ;
 	}
 	
-	public void applyBonuses(Hero hero) {
+	public void applyBonuses() {
 	
 	}
 	
-	public void unapplyBonuses(Hero hero) {
+	public void unapplyBonuses() {
 
 	}
 	

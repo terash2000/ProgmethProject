@@ -1,22 +1,21 @@
 package item;
 
-import object.Hero;
+import application.Main;
 
 public class Sword extends Item {
-	private int attackDamageBonus;
 	
 	public Sword(int attackDamageBonus) {
 		super( attackDamageBonus , 0, 0, 0 );
 	}
 	
 	@Override
-	public void applyBonuses(Hero hero) {
-		hero.setAttackDamage(hero.getAttackDamage() + attackDamageBonus );
+	public void applyBonuses() {
+		Main.hero.setAttackDamage(Main.hero.getAttackDamage() + attackDamageBonus );
 	}
 	
 	@Override
-	public void unapplyBonuses(Hero hero) {
-		hero.setAttackDamage(hero.getAttackDamage() - attackDamageBonus );
+	public void unapplyBonuses() {
+		Main.hero.setAttackDamage(Main.hero.getAttackDamage() - attackDamageBonus );
 	}
 	
 	@Override

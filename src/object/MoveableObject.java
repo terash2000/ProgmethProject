@@ -21,7 +21,7 @@ public abstract class MoveableObject extends GameObject {
 	public void update() {
 		moveX();
 		moveY();
-		changeView();
+		draw();
 	}
 	
 	protected void moveX() {

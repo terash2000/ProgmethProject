@@ -27,10 +27,10 @@ public abstract class GameObject extends Group implements Updateable {
 	}
 	
 	public void update() {
-		changeView();
+		draw();
 	}
 	
-	public void changeView() {
+	public void draw() {
 		setLayoutX(x - Main.world.getViewX());
 		setLayoutY(y - Main.world.getViewY());
 	}

@@ -10,9 +10,8 @@ import object.Updateable;
 public class Controller {
 	
 	private static AnimationTimer gameLoop;
-	private static boolean left, right, up, down, jump, attack, dash, pause;
+	private static boolean left, right, up, down, jump, attack, dash, openInventory, pause;
 	
-	private static final double barHeigth = 30;
 	private static final int LEFT_DIRECTION = -1;
 	private static final int RIGHT_DIRECTION = 1;
 	private static final int NO_MOVE = 0;
@@ -21,13 +20,9 @@ public class Controller {
 		gameLoop = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				Main.setSceneWidth(Main.stage.getWidth());
-				if (Main.stage.isFullScreen()) {
-					Main.setSceneHeight(Main.stage.getHeight());
-				} else {
-					Main.setSceneHeight(Main.stage.getHeight() - barHeigth);
-				}
-				updateHero();
+				Main.updateSceneSize();
+				updateKey();
+				Main.hero.update();
 				updateObject();
 			}
 		};
@@ -61,6 +56,9 @@ public class Controller {
 				case D:
 					dash = true;
 					break;
+				case I:
+					openInventory = true;
+					break;
 				default:	   
 				}
 			}
@@ -91,25 +89,24 @@ public class Controller {
 				case D:
 					dash = false;
 					break;
-				case I:
-					if (pause) {
-						pause = false;
-//						Main.controlInventory.getInventory().getChildren().clear();
-						Main.root.getChildren().remove(Main.controlInventory);
-						Main.world.reloadBackground();
-					} else {
-						pause = true;
-						Main.root.getChildren().add(Main.controlInventory);
-//						Main.controlInventory.getInventory().MyInventoryUpdate();
-					}
-					break;
 				default:
 				}
 			}
 		});
 	}
 	
-	private static void updateHero(){
+	private static void updateKey(){
+		if (openInventory) {
+			openInventory = false;
+			if (pause) {
+				pause = false;
+				Main.root.getChildren().remove(Main.controlInventory);
+				Main.world.reloadBackground();
+			} else {
+				pause = true;
+				Main.root.getChildren().add(Main.controlInventory);
+			}
+		}
 		if (!pause) {
 			if (left && !right) {
 				Main.hero.walk(LEFT_DIRECTION);
@@ -141,7 +138,6 @@ public class Controller {
 			Main.hero.walk(NO_MOVE);
 			Main.hero.stopJump();
 		}
-		Main.hero.update();
 	}
 	
 	private static void updateObject(){

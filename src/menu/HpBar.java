@@ -10,8 +10,7 @@ public abstract class HpBar extends StackPane {
 	protected Rectangle border;
 	protected Rectangle yellowBar;
 	protected Rectangle bar;
-	protected double maxHp, hp, yellowHp, scale;
-	private static final double hpDecreaseSpeed = 0.5;
+	protected double maxHp, hp, yellowHp, scale, hpDecreaseSpeed;
 	
 	public HpBar(double size) {
 		border = new Rectangle(0, size, Color.DARKGRAY);

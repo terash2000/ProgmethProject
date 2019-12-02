@@ -17,7 +17,7 @@ public class Projectile extends MoveableObject {
 	}
 	
 	public void update() {
-		if (Main.hero.hitCheck(x, y, size[0], size[1])) {
+		if (Main.hero.intersectCheck(x, y, size[0], size[1])) {
 			Main.hero.attacked(damage, ((Main.hero.getCenterX() < getCenterX()) ? -heroKnockBackX : heroKnockBackX), heroKnockBackY);
 		}
 		super.update();

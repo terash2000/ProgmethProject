@@ -5,14 +5,17 @@ import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import application.Music;
+import object.CheckPoint;
 import object.Enemy;
 import object.GamePlatform;
 
 public class Map {
 	
+	private MapName name;
 	private List<ImageView> background = new ArrayList<ImageView>();
 	private List<GamePlatform> platformList = new ArrayList<GamePlatform>();
 	private List<Enemy> enemyList = new ArrayList<Enemy>();
+	private List<CheckPoint> checkPointList = new ArrayList<CheckPoint>();
 	private Gate leftMap, rightMap, upperMap, lowerMap;
 	private Music music;
 	private double width, height;
@@ -46,6 +49,22 @@ public class Map {
 
 	public List<Enemy> getEnemyList() {
 		return enemyList;
+	}
+
+	public void addCheckPoint(CheckPoint checkPoint) {
+		checkPointList.add(checkPoint);
+	}
+	
+	public List<CheckPoint> getCheckPointList() {
+		return checkPointList;
+	}
+
+	public MapName getName() {
+		return name;
+	}
+
+	public void setName(MapName name) {
+		this.name = name;
 	}
 
 	public Gate getLeftMap() {

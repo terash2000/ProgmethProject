@@ -78,18 +78,18 @@ public class False_Knight extends Boss {
 		switch (cerrentStage) {
 		case "idle":
 			inAir = true;
-			changeArt("jump");
+			changeSprite("jump");
 			holdStage(fallTime);
 			break;
 		case "normal":
 			double nextMove = Math.random();
 			if (nextMove < 0.4) {
-				changeArt("charge");
+				changeSprite("charge");
 				holdStage(chargeTime);
 				break;
 			}else {
 				dy = -jumpSpeed;
-				changeArt("jump");
+				changeSprite("jump");
 				double jumpRange = Math.random()*4 - 1;
 				speed = ((Main.hero.getX() + Main.hero.getSize()[0]/2) 
 						- (x + size[0]/2))*0.01 + (turnLeft ? jumpRange : -jumpRange);
@@ -102,24 +102,24 @@ public class False_Knight extends Boss {
 					(turnLeft ? -shockwaveSpeed : shockwaveSpeed), 0, attackDamage);
 			shockwave.setScaleX(turnLeft ? -1 : 1);
 			Main.world.addObject(shockwave);
-			if(Main.hero.hitCheck(x + (turnLeft ? -300 : 200), y - 100, 250, 350)) {
+			if(Main.hero.intersectCheck(x + (turnLeft ? -300 : 200), y - 100, 250, 350)) {
 				Main.hero.attacked(attackDamage, (turnLeft ? -heroKnockBackX : heroKnockBackX), heroKnockBackY);
 			}
-			changeArt("slam");
+			changeSprite("slam");
 			holdStage(slamTime);
 			break;
 		case "slam":
-			changeArt("normal");
+			changeSprite("normal");
 			holdStage(recoverTime);
 			break;
 		case "jump":
-			changeArt("leap");
+			changeSprite("leap");
 			break;
 		case "leap":
-			if(Main.hero.hitCheck(x + (turnLeft ? -300 : 200), y - 150, 250, 400)) {
+			if(Main.hero.intersectCheck(x + (turnLeft ? -300 : 200), y - 150, 250, 400)) {
 				Main.hero.attacked(attackDamage, (turnLeft ? -heroKnockBackX : heroKnockBackX), heroKnockBackY);
 			}
-			changeArt("slam");
+			changeSprite("slam");
 			holdStage(slamTime);
 			break;
 		}

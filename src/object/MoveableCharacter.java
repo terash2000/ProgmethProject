@@ -13,7 +13,7 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 		super(x, y, width, height);
 	}
 	
-	public boolean hitCheck(double x, double y, double width, double height) {
+	public boolean intersectCheck(double x, double y, double width, double height) {
 		if ((this.x <= (x + width)) && ((this.x + size[0]) >= x) 
 				&& (this.y <= (y + height)) && ((this.y + size[1]) >= y)) {
 			return true;
@@ -34,7 +34,7 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 		}
 	}
 	
-	protected void changeArt(String art) {
+	protected void changeSprite(String art) {
 		getChildren().forEach((image)->{
 			image.setVisible(false);
 		});
@@ -67,6 +67,6 @@ public abstract class MoveableCharacter extends MoveableObject implements Destro
 	}
 
 	public void setHp(double hp) {
-		this.hp = hp;
+		this.hp = (hp < maxHp) ? hp : maxHp;
 	}
 }

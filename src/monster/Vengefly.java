@@ -14,7 +14,6 @@ public class Vengefly extends MoveableEnemy {
 		super(x, y, 130, 80);
 		getChildren().add(new ImageView(new Image(
 				ClassLoader.getSystemResource("Character/Vengefly.png").toString(), 130, 80, false, true)));
-		artList.add("normal");
 		friction = 0.05;
 		speed = 7;
 		maxHp = 40;
@@ -30,7 +29,7 @@ public class Vengefly extends MoveableEnemy {
 			dx -= dx*friction;
 			dy -= dy*friction;
 			if (distance < vision) {
-				changeArt("normal");
+				cerrentStage = "normal";
 			}
 			break;
 		case "normal":

@@ -6,6 +6,6 @@ public interface Destroyable extends Updateable {
 	
 	public void die();
 	
-	public boolean hitCheck(double x0, double x1, double y0, double y1);
+	public boolean intersectCheck(double x0, double x1, double y0, double y1);
 
 }

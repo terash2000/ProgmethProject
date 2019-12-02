@@ -6,6 +6,7 @@ public class BossHpBar extends HpBar {
 	
 	public BossHpBar(double maxHp) {
 		super(30, maxHp,  (Main.getSceneWidth() - 100)/maxHp);
+		hpDecreaseSpeed = 1;
 		setLayoutX(50);
 		setLayoutY(Main.getSceneHeight() - 100);
 	}
